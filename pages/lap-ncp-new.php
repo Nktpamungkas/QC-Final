@@ -700,7 +700,7 @@ include "koneksi.php";
                   <td><?php echo $row1['nodemand']; ?></td>
                   <td>
                     <?php
-                      $sql_ori_pd_code	= db2_exec($conn2, "SELECT p.CODE, a.VALUESTRING 
+                      $sql_ori_pd_code	= db2_exec($conn2, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
                                                             FROM
                                                               PRODUCTIONDEMAND p
                                                             LEFT JOIN ADSTORAGE a ON a.UNIQUEID = p.ABSUNIQUEID AND a.FIELDNAME = 'OriginalPDCode'
