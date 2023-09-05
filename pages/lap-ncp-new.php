@@ -1,8 +1,7 @@
 <?PHP
-ini_set("error_reporting", 1);
-session_start();
-include "koneksi.php";
-
+  ini_set("error_reporting", 1);
+  session_start();
+  include "koneksi.php";
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,18 +15,29 @@ include "koneksi.php";
 
 <body>
   <?php
-  $Awal    = isset($_POST['awal']) ? $_POST['awal'] : '';
-  $Akhir    = isset($_POST['akhir']) ? $_POST['akhir'] : '';
-  $Dept    = isset($_POST['dept']) ? $_POST['dept'] : '';
-  $Kategori  = isset($_POST['kategori']) ? $_POST['kategori'] : '';
-  $Cancel    = isset($_POST['chkcancel']) ? $_POST['chkcancel'] : '';
-  $Rev2A    = isset($_POST['chkrev']) ? $_POST['chkrev'] : '';
-
-  if ($_POST['gshift'] == "ALL") {
-    $shft = " ";
-  } else {
-    $shft = " AND b.g_shift = '$GShift' ";
-  }
+    $Awal    = isset($_POST['awal']) ? $_POST['awal'] : '';
+    $Akhir    = isset($_POST['akhir']) ? $_POST['akhir'] : '';
+    $Dept    = isset($_POST['dept']) ? $_POST['dept'] : '';
+    $Kategori  = isset($_POST['kategori']) ? $_POST['kategori'] : '';
+    $Cancel    = isset($_POST['chkcancel']) ? $_POST['chkcancel'] : '';
+    $Rev2A    = isset($_POST['chkrev']) ? $_POST['chkrev'] : '';
+    $jamA  = isset($_POST['jam_awal']) ? $_POST['jam_awal'] : '';
+    $jamAr  = isset($_POST['jam_akhir']) ? $_POST['jam_akhir'] : '';
+    if ($_POST['gshift'] == "ALL") {
+      $shft = " ";
+    } else {
+      $shft = " AND b.g_shift = '$GShift' ";
+    }
+    if (strlen($jamA) == 5) {
+      $start_date = $Awal . " " . $jamA;
+    } else {
+      $start_date = $Awal . " 0" . $jamA;
+    }
+    if (strlen($jamAr) == 5) {
+      $stop_date  = $Akhir . " " . $jamAr;
+    } else {
+      $stop_date  = $Akhir . " 0" . $jamAr;
+    }
   ?>
   <div class="row">
     <div class="col-xs-2">
@@ -45,20 +55,26 @@ include "koneksi.php";
         <form method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1">
           <div class="box-body">
             <div class="form-group">
-              <div class="col-sm-10">
+              <div class="col-sm-8">
                 <div class="input-group date">
                   <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
                   <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" autocomplete="off" />
                 </div>
               </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control timepicker" name="jam_awal" placeholder="00:00" value="<?php echo $jamA; ?>" autocomplete="off">
+              </div>
               <!-- /.input group -->
             </div>
             <div class="form-group">
-              <div class="col-sm-10">
+              <div class="col-sm-8">
                 <div class="input-group date">
                   <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
                   <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir;  ?>" autocomplete="off" 1 />
                 </div>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control timepicker" name="jam_akhir" placeholder="00:00" value="<?php echo $jamAr; ?>" autocomplete="off">
               </div>
               <!-- /.input group -->
             </div>
@@ -180,15 +196,15 @@ include "koneksi.php";
         <div class="box-header with-border">
           <h3 class="box-title"> TOP 5 NCP Berdasarkan Masalah</h3>
           <?php if ($Awal != "") { ?><br><b>Periode: <?php echo tanggal_indo($Awal) . " - " . tanggal_indo($Akhir);
-                                                } ?> Ket: <?php if ($Kategori == "ALL") {
-                                                                                                                        echo "ALL";
-                                                                                                                      } elseif ($Kategori == "hitung") {
-                                                                                                                        echo "NCP dihitung";
-                                                                                                                      } elseif ($Kategori == "tidakhitung") {
-                                                                                                                        echo "NCP tidak dihitung";
-                                                                                                                      } elseif ($Kategori == "gerobak") {
-                                                                                                                        echo "diGerobak";
-                                                                                                                      } ?></b>
+                                                    } ?> Ket: <?php if ($Kategori == "ALL") {
+                                                            echo "ALL";
+                                                          } elseif ($Kategori == "hitung") {
+                                                            echo "NCP dihitung";
+                                                          } elseif ($Kategori == "tidakhitung") {
+                                                            echo "NCP tidak dihitung";
+                                                          } elseif ($Kategori == "gerobak") {
+                                                            echo "diGerobak";
+                                                          } ?></b>
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -251,29 +267,29 @@ include "koneksi.php";
               $totaldll = 0;
               $totaldDis = 0;
               $totaldllDis = 0;
-              $qryAll = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts ");
+              $qryAll = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts ");
               $rAll = mysqli_fetch_array($qryAll);
-              $qryAllDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan!='' OR masalah_dominan!=NULL) AND `status`='Disposisi' $sts ");
+              $qryAllDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) AND `status`='Disposisi' $sts ");
               $rAllDis = mysqli_fetch_array($qryAllDis);
-              $qrydef = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts
+              $qrydef = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts
             AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS persen,
             masalah_dominan
             FROM
             `tbl_ncp_qcf_new`
-            WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts  
+            WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts  
             GROUP BY masalah_dominan
             ORDER BY berat DESC LIMIT 5");
-              $qryBDominan = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan='' OR masalah_dominan=NULL) $sts ");
+              $qryBDominan = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan='' OR masalah_dominan=NULL) $sts ");
               $rBD = mysqli_fetch_array($qryBDominan);
-              $qryAllDisBD = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan='' OR masalah_dominan=NULL) AND `status`='Disposisi' $sts ");
+              $qryAllDisBD = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan='' OR masalah_dominan=NULL) AND `status`='Disposisi' $sts ");
               $rAllDisBD = mysqli_fetch_array($qryAllDisBD);
               while ($rd = mysqli_fetch_array($qrydef)) {
-                $qrydefDis = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND `status`='Disposisi' AND masalah_dominan='$rd[masalah_dominan]' $sts
+                $qrydefDis = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND `status`='Disposisi' AND masalah_dominan='$rd[masalah_dominan]' $sts
               AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS persen,
               masalah_dominan
               FROM
               `tbl_ncp_qcf_new`
-              WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND `status`='Disposisi' AND masalah_dominan='$rd[masalah_dominan]' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts ");
+              WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND `status`='Disposisi' AND masalah_dominan='$rd[masalah_dominan]' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts ");
                 $rdDis = mysqli_fetch_array($qrydefDis);
               ?>
                 <tr valign="top">
@@ -335,15 +351,15 @@ include "koneksi.php";
         <div class="box-header with-border">
           <h3 class="box-title"> TOP 5 NCP Berdasarkan Dept Penyebab</h3>
           <?php if ($Awal != "") { ?><br><b>Periode: <?php echo tanggal_indo($Awal) . " - " . tanggal_indo($Akhir);
-                                                } ?> Ket: <?php if ($Kategori == "ALL") {
-                                                                                                                        echo "ALL";
-                                                                                                                      } elseif ($Kategori == "hitung") {
-                                                                                                                        echo "NCP dihitung";
-                                                                                                                      } elseif ($Kategori == "tidakhitung") {
-                                                                                                                        echo "NCP tidak dihitung";
-                                                                                                                      } elseif ($Kategori == "gerobak") {
-                                                                                                                        echo "diGerobak";
-                                                                                                                      } ?></b>
+                                                    } ?> Ket: <?php if ($Kategori == "ALL") {
+                                                            echo "ALL";
+                                                          } elseif ($Kategori == "hitung") {
+                                                            echo "NCP dihitung";
+                                                          } elseif ($Kategori == "tidakhitung") {
+                                                            echo "NCP tidak dihitung";
+                                                          } elseif ($Kategori == "gerobak") {
+                                                            echo "diGerobak";
+                                                          } ?></b>
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -376,25 +392,25 @@ include "koneksi.php";
               $totaldlldpt = 0;
               $totaldptDis = 0;
               $totaldlldptDis = 0;
-              $qryAllDpt = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (dept!='' OR dept!=NULL) AND NOT status='Cancel' AND ncp_hitung='ya' ");
+              $qryAllDpt = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND NOT status='Cancel' AND ncp_hitung='ya' ");
               $rAllDpt = mysqli_fetch_array($qryAllDpt);
-              $qryAllDptDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (dept!='' OR dept!=NULL) AND `status`='Disposisi' AND NOT status='Cancel' AND ncp_hitung='ya' ");
+              $qryAllDptDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND `status`='Disposisi' AND NOT status='Cancel' AND ncp_hitung='ya' ");
               $rAllDptDis = mysqli_fetch_array($qryAllDptDis);
-              $qrydpt = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND NOT status='Cancel'
+              $qrydpt = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND NOT status='Cancel'
             AND (dept!='' OR dept!=NULL))*100,1) AS persen,
             dept
             FROM
             `tbl_ncp_qcf_new`
-            WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND (dept!='' OR dept!=NULL) AND $WKategori NOT status='Cancel'  
+            WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND $WKategori NOT status='Cancel'  
             GROUP BY dept
             ORDER BY berat DESC LIMIT 5");
               while ($rdpt = mysqli_fetch_array($qrydpt)) {
-                $qrydptDis = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND `status`='Disposisi' AND dept='$rdpt[dept]' AND NOT status='Cancel'
+                $qrydptDis = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_new WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND `status`='Disposisi' AND dept='$rdpt[dept]' AND NOT status='Cancel'
               AND (dept!='' OR dept!=NULL))*100,1) AS persen,
               dept
               FROM
               `tbl_ncp_qcf_new`
-              WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND `status`='Disposisi' AND dept='$rdpt[dept]' AND (dept!='' OR dept!=NULL) AND NOT status='Cancel' AND ncp_hitung='ya'");
+              WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND `status`='Disposisi' AND dept='$rdpt[dept]' AND (dept!='' OR dept!=NULL) AND NOT status='Cancel' AND ncp_hitung='ya'");
                 $rdptDis = mysqli_fetch_array($qrydptDis);
               ?>
                 <tr valign="top">
@@ -434,18 +450,17 @@ include "koneksi.php";
     </div>
   </div>
   <?php
-
-  $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_new WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts $WR2A 
-	$GR2A
-	");
-  $qrySUM = mysqli_query($con, "SELECT COUNT(*) as Lot, SUM(rol) as Rol,SUM(berat) as Berat FROM tbl_ncp_qcf_new WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts ");
-  $rSUM = mysqli_fetch_array($qrySUM);
+    $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_new WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts $WR2A 
+    $GR2A
+    ");
+    $qrySUM = mysqli_query($con, "SELECT COUNT(*) as Lot, SUM(rol) as Rol,SUM(berat) as Berat FROM tbl_ncp_qcf_new WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts ");
+    $rSUM = mysqli_fetch_array($qrySUM);
   ?>
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Data NCP <?php echo $Dept; ?> Kategori <?php echo $Kategori; ?> <span class="pull-right-container">
+          <h3 class="box-title">Data NCP <?php echo $Dept; ?> Kategori <?php echo $Kategori; ?> <span class="pull-right-container"> 
               <small class="label pull-right bg-green blink_me">new</small>
             </span></h3>
           <?php if ($Awal != "") { ?>
@@ -465,7 +480,7 @@ include "koneksi.php";
 
         </div>
         <div class="box-body">
-          <table class="table table-bordered table-hover table-striped nowrap" id="example3" style="width:100%">
+          <table class="table table-bordered table-hover table-striped nowrap" id="example1" style="width:100%">
             <thead class="bg-green">
               <tr>
                 <th>
@@ -527,6 +542,9 @@ include "koneksi.php";
                 </th>
                 <th>
                   <div align="center">Masalah Utama</div>
+                </th>
+                <th>
+                  <div align="center">Proses</div>
                 </th>
                 <th>
                   <div align="center">Ket</div>
@@ -604,19 +622,25 @@ include "koneksi.php";
                 <th align="center" class="table-list1">Production Order</th>
                 <th align="center" class="table-list1">Production Demand</th>
                 <th align="center" class="table-list1">Original PD Code</th>
+                <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
+                  <th align="center" class="table-list1">Akar Masalah Dye</th>
+                  <th align="center" class="table-list1">Solusi Jangka Panjang Dye</th>
+                  <th align="center" class="table-list1">Keterangan Dye</th>
+                  <th align="center" class="table-list1">Suffix Dye</th>
+                <?php endif; ?>
               </tr>
             </thead>
             <tbody>
               <?php
-              $no = 1;
-              while ($row1 = mysqli_fetch_array($qry1)) {
-                if ($row1['nokk_salinan'] != "") {
-                  $nokk1 = $row1['nokk_salinan'];
-                } else {
-                  $nokk1 = $row1['nokk'];
-                }
-                $qryckw = mysqli_query($con, "SELECT * FROM tbl_cocok_warna_dye WHERE `dept`='QCF' AND nokk='$nokk1' ORDER BY id DESC");
-                $rowckw = mysqli_fetch_array($qryckw);
+                $no = 1;
+                while ($row1 = mysqli_fetch_array($qry1)) {
+                  if ($row1['nokk_salinan'] != "") {
+                    $nokk1 = $row1['nokk_salinan'];
+                  } else {
+                    $nokk1 = $row1['nokk'];
+                  }
+                  $qryckw = mysqli_query($con, "SELECT * FROM tbl_cocok_warna_dye WHERE `dept`='QCF' AND nokk='$nokk1' ORDER BY id DESC");
+                  $rowckw = mysqli_fetch_array($qryckw);
               ?>
                 <tr bgcolor="<?php echo $bgcolor; ?>">
                   <td height="39" align="center"><?php echo $no; ?></td>
@@ -628,12 +652,12 @@ include "koneksi.php";
                                                           } else {
                                                             echo "disabled";
                                                           } ?>" id="<?php echo $row1['id']; ?>"><span class="label <?php if ($row1['status'] == "OK") {
-                                                                                                                                                                                                                                                                                                                                echo "label-success";
-                                                                                                                                                                                                                                                                                                                              } else if ($row1['status'] == "Cancel") {
-                                                                                                                                                                                                                                                                                                                                echo "label-danger";
-                                                                                                                                                                                                                                                                                                                              } else {
-                                                                                                                                                                                                                                                                                                                                echo "label-warning";
-                                                                                                                                                                                                                                                                                                                              } ?> "><?php echo $row1['status']; ?></span></a></td>
+                                                                                                                      echo "label-success";
+                                                                                                                    } else if ($row1['status'] == "Cancel") {
+                                                                                                                      echo "label-danger";
+                                                                                                                    } else {
+                                                                                                                      echo "label-warning";
+                                                                                                                    } ?> "><?php echo $row1['status']; ?></span></a></td>
                   <td><?php echo $row1['langganan']; ?></td>
                   <td><?php echo $row1['buyer']; ?></td>
                   <td align="center"><?php echo $row1['po']; ?></td>
@@ -653,6 +677,7 @@ include "koneksi.php";
                   <td align="center"><?php echo $row1['dept']; ?></td>
                   <td><?php echo $row1['masalah']; ?></td>
                   <td><?php echo $row1['masalah_dominan']; ?></td>
+                  <td><?php echo $row1['m_proses']; ?></td>
                   <td><?php echo $row1['ket']; ?></td>
                   <td><?php echo $row1['penyelesaian']; ?></td>
                   <td><?php echo $row1['rincian']; ?></td>
@@ -698,17 +723,22 @@ include "koneksi.php";
                   <td><?php echo $rowckw['no_mesin']; ?></td>
                   <td><?php echo $row1['prod_order']; ?></td>
                   <td><?php echo $row1['nodemand']; ?></td>
-                  <td>
-                    <?php
-                      $sql_ori_pd_code	= db2_exec($conn2, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
+                  <td><?php
+                      $sql_ori_pd_code  = db2_exec($conn2, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
                                                             FROM
                                                               PRODUCTIONDEMAND p
                                                             LEFT JOIN ADSTORAGE a ON a.UNIQUEID = p.ABSUNIQUEID AND a.FIELDNAME = 'OriginalPDCode'
                                                             WHERE p.CODE = '$row1[nodemand]'");
-		                  $dt_ori_pd_code		= db2_fetch_assoc($sql_ori_pd_code);
+                      $dt_ori_pd_code    = db2_fetch_assoc($sql_ori_pd_code);
                       echo $dt_ori_pd_code['VALUESTRING'];
-                    ?>
+                      ?>
                   </td>
+                  <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
+                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['akar_masalah_dye'] ?>" class="akarmasalah_dye" href="javascipt:void(0)"><?php echo $row1['akar_masalah_dye'] ?></a></td>
+                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['solusi_dye'] ?>" class="solusi_dye" href="javascipt:void(0)"><?php echo $row1['solusi_jangka_panjang_dye'] ?></a></td>
+                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['ket_dye'] ?>" class="ket_dye" href="javascipt:void(0)"><?php echo $row1['ket_dye'] ?></a></td>
+                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['suffix_dye'] ?>" class="suffix_dye" href="javascipt:void(0)"><?php echo $row1['suffix_dye'] ?></a></td>
+                  <?php endif; ?>
                 </tr>
               <?php $no++;
               } ?>
