@@ -1060,7 +1060,15 @@ $.fn.editable.defaults.mode = 'inline';
         url: 'pages/editable/editable_codeproses.php',
         showbuttons : false,
         disabled : false,
-        source:[{value: "", text: ""}, {value: "Fin", text: "Fin"}, {value: "Fin 1X", text: "Fin 1X"}, {value: "Pdr", text: "Pdr"}, {value: "Oven", text: "Oven"}, {value: "Comp", text: "Comp"}, {value: "Setting", text: "Setting"}, {value: "AP", text: "AP"}, {value: "PB", text: "PB"}]
+        source:[{value: "", text: ""}, 
+              {value: "Fin", text: "Fin"}, 
+              {value: "Fin 1X", text: "Fin 1X"}, 
+              {value: "Pdr", text: "Pdr"}, 
+              {value: "Oven", text: "Oven"}, 
+              {value: "Comp", text: "Comp"}, 
+              {value: "Setting", text: "Setting"}, 
+              {value: "AP", text: "AP"}, 
+              {value: "PB", text: "PB"}]
       });
       $('.review_qcf').editable({
         type: 'select',
@@ -1221,11 +1229,48 @@ $.fn.editable.defaults.mode = 'inline';
       });
 
       // UPDATE NILO
+      // $('.akarmasalah_dye').editable({
+      //   type: 'text',
+      //   disabled : false,
+      //   url: 'pages/editable/editable_akar_masalah_dye.php',
+      // });
       $('.akarmasalah_dye').editable({
-        type: 'text',
-        disabled : false,
+        type: 'select',
         url: 'pages/editable/editable_akar_masalah_dye.php',
+        disabled : false,
+        showbuttons : false,
+        source:[{value: "", text: ""}, 
+                {value: "RESEP BARU TIDAK OK", text: "RESEP BARU TIDAK OK"},
+                {value: "SALAH BUKA RESEP", text: "SALAH BUKA RESEP"},
+                {value: "BEDA ALUR STEP DYE  (RESEP JADI TIDAK OK)", text: "BEDA ALUR STEP DYE  (RESEP JADI TIDAK OK)"},
+                {value: "BEDA MESIN", text: "BEDA MESIN"},
+                {value: "BEDA ROLL / SHADING / BELANG", text: "BEDA ROLL / SHADING / BELANG"},
+                {value: "BJ TIDAK SESUAI", text: "BJ TIDAK SESUAI"},
+                {value: "BODY BELUM CELUP", text: "BEDA SUHU/CHEMICAL FINISHING"},
+                {value: "HUMAN (STD KERJA OPR TIDAK SESUAI)", text: "HUMAN (STD KERJA OPR TIDAK SESUAI)"},
+                {value: "GABUNG CELUP AKSESORIS NAMUN BODY BERBEDA", text: "GABUNG CELUP AKSESORIS NAMUN BODY BERBEDA"},
+                {value: "GABUNG CELUP BODY DAN AKSESORIS (BEDA PENYERAPAN)", text: "GABUNG CELUP BODY DAN AKSESORIS (BEDA PENYERAPAN)"},
+                {value: "PARAMETER KOMP DATACOLOR", text: "PARAMETER KOMP DATACOLOR"},
+                {value: "L:R TIDAK SESUAI", text: "L:R TIDAK SESUAI"},
+                {value: "LABORAT SALAH BUKA RESEP", text: "LABORAT SALAH BUKA RESEP"},
+                {value: "LOADING TIDAK SESUAI", text: "LOADING TIDAK SESUAI"},
+                {value: "MASALAH TEKNIS DI DYEING ", text: "MASALAH TEKNIS DI DYEING "},
+                {value: "PH TIDAK SESUAI", text: "PH TIDAK SESUAI"},
+                {value: "COLORIST SALAH AMBIL KEPUTUSAN / SOP TIDAK SESUAI", text: "COLORIST SALAH AMBIL KEPUTUSAN / SOP TIDAK SESUAI"},
+                {value: "SALAH STANDAR COCOK WARNA", text: "SALAH STANDAR COCOK WARNA"},
+                {value: "SAMPLE TIDAK KONDITIONING", text: "SAMPLE TIDAK KONDITIONING"},
+                {value: "SETTING MESIN / TEST PROGRAM", text: "SETTING MESIN / TEST PROGRAM"},
+                {value: "STANDAR RESEP VS AKTUAL TIDAK SAMA", text: "STANDAR RESEP VS AKTUAL TIDAK SAMA"},
+                {value: "TEST 1  ROLL TIDAK OK (NAMUN SETTING DI BULK)", text: "TEST 1  ROLL TIDAK OK (NAMUN SETTING DI BULK)"},
+                {value: "WHITENESS TIDAK SESUAI", text: "WHITENESS TIDAK SESUAI"},
+                {value: "KESTABILAN DYEING", text: "KESTABILAN DYEING"},
+                {value: "BEDA / SALAH ALUR PROSES  (HASIL JADI TIDAK OK)", text: "BEDA / SALAH ALUR PROSES  (HASIL JADI TIDAK OK)"},
+                {value: "PERUBAHAN WARNA TIDAK SESUAI DI FINISHING ", text: "PERUBAHAN WARNA TIDAK SESUAI DI FINISHING "},
+                {value: "HUMAN DATACOLOR", text: "HUMAN DATACOLOR"},
+                {value: "RESEP SETTING TIDAK OK", text: "RESEP SETTING TIDAK OK"}]
       });
+
+
       $('.solusi_dye').editable({
         type: 'text',
         disabled : false,
