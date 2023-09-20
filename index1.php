@@ -1060,7 +1060,15 @@ $.fn.editable.defaults.mode = 'inline';
         url: 'pages/editable/editable_codeproses.php',
         showbuttons : false,
         disabled : false,
-        source:[{value: "", text: ""}, {value: "Fin", text: "Fin"}, {value: "Fin 1X", text: "Fin 1X"}, {value: "Pdr", text: "Pdr"}, {value: "Oven", text: "Oven"}, {value: "Comp", text: "Comp"}, {value: "Setting", text: "Setting"}, {value: "AP", text: "AP"}, {value: "PB", text: "PB"}]
+        source:[{value: "", text: ""}, 
+              {value: "Fin", text: "Fin"}, 
+              {value: "Fin 1X", text: "Fin 1X"}, 
+              {value: "Pdr", text: "Pdr"}, 
+              {value: "Oven", text: "Oven"}, 
+              {value: "Comp", text: "Comp"}, 
+              {value: "Setting", text: "Setting"}, 
+              {value: "AP", text: "AP"}, 
+              {value: "PB", text: "PB"}]
       });
       $('.review_qcf').editable({
         type: 'select',

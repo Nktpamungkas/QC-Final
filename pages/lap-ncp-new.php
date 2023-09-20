@@ -465,6 +465,9 @@
             </span></h3>
           <?php if ($Awal != "") { ?>
             <div class="pull-right">
+              <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
+                <a href="pages/cetak/cetak_harianncp_excel_dye.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-success" target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP ke Excel Khusus DYEING"><i class="fa fa-lock"></i> Cetak Ke Excel (DYEING ONLY)</a>
+              <?php endif; ?>
               <a href="./index1.php?p=lappenyelesaian&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&kategori=<?php echo $Kategori; ?>" class="btn btn-primary " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan Penyelesaian"><i class="fa fa-file"></i> Detail Penyelesaian</a>
               <a href="pages/cetak/cetak_harianncp_new.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-danger " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP"><i class="fa fa-print"></i> Cetak</a>
               <a href="pages/cetak/cetak_harianncpwrn_new.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-danger " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP"><i class="fa fa-print"></i> Cetak Per Warna</a>
