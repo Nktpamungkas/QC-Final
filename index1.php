@@ -1286,7 +1286,6 @@ $.fn.editable.defaults.mode = 'inline';
         disabled : false,
         url: 'pages/editable/editable_suffix_dye.php',
       });
-      // UPDATE NILO
     })
 </script>
 <!-- AdminLTE App -->

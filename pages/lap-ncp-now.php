@@ -1,7 +1,8 @@
 <?PHP
-  ini_set("error_reporting", 1);
-  session_start();
-  include "koneksi.php";
+ini_set("error_reporting", 1);
+session_start();
+include "koneksi.php";
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,37 +16,35 @@
 
 <body>
   <?php
-    $Awal    = isset($_POST['awal']) ? $_POST['awal'] : '';
-    $Akhir    = isset($_POST['akhir']) ? $_POST['akhir'] : '';
-    $Dept    = isset($_POST['dept']) ? $_POST['dept'] : '';
-    $Kategori  = isset($_POST['kategori']) ? $_POST['kategori'] : '';
-    $Cancel    = isset($_POST['chkcancel']) ? $_POST['chkcancel'] : '';
-    $Rev2A    = isset($_POST['chkrev']) ? $_POST['chkrev'] : '';
-    $jamA  = isset($_POST['jam_awal']) ? $_POST['jam_awal'] : '';
-    $jamAr  = isset($_POST['jam_akhir']) ? $_POST['jam_akhir'] : '';
-    if ($_POST['gshift'] == "ALL") {
-      $shft = " ";
-    } else {
-      $shft = " AND b.g_shift = '$GShift' ";
-    }
-    if (strlen($jamA) == 5) {
-      $start_date = $Awal . " " . $jamA;
-    } else {
-      $start_date = $Awal . " 0" . $jamA;
-    }
-    if (strlen($jamAr) == 5) {
-      $stop_date  = $Akhir . " " . $jamAr;
-    } else {
-      $stop_date  = $Akhir . " 0" . $jamAr;
-    }
+  $Awal    = isset($_POST['awal']) ? $_POST['awal'] : '';
+  $Akhir    = isset($_POST['akhir']) ? $_POST['akhir'] : '';
+  $Dept    = isset($_POST['dept']) ? $_POST['dept'] : '';
+  $Kategori  = isset($_POST['kategori']) ? $_POST['kategori'] : '';
+  $Cancel    = isset($_POST['chkcancel']) ? $_POST['chkcancel'] : '';
+  $Rev2A    = isset($_POST['chkrev']) ? $_POST['chkrev'] : '';
+  $jamA	= isset($_POST['jam_awal']) ? $_POST['jam_awal'] : '';
+  $jamAr	= isset($_POST['jam_akhir']) ? $_POST['jam_akhir'] : '';
+  if ($_POST['gshift'] == "ALL") {
+    $shft = " ";
+  } else {
+    $shft = " AND b.g_shift = '$GShift' ";
+  }
+  if(strlen($jamA)==5){
+	$start_date = $Awal." ".$jamA;
+}else{ 
+	$start_date = $Awal." 0".$jamA;
+}	
+if(strlen($jamAr)==5){
+	$stop_date  = $Akhir." ".$jamAr;
+}else{ 
+	$stop_date  = $Akhir." 0".$jamAr;
+}	
   ?>
   <div class="row">
     <div class="col-xs-2">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title"> Filter Laporan NCP <span class="pull-right-container">
-              <small class="label pull-right bg-green blink_me">new</small>
-            </span></h3>
+          <h3 class="box-title"> Filter Laporan NCP </h3>
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
@@ -61,9 +60,9 @@
                   <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" autocomplete="off" />
                 </div>
               </div>
-              <div class="col-sm-4">
-                <input type="text" class="form-control timepicker" name="jam_awal" placeholder="00:00" value="<?php echo $jamA; ?>" autocomplete="off">
-              </div>
+			  <div class="col-sm-4">				
+                    <input type="text" class="form-control timepicker" name="jam_awal" placeholder="00:00" value="<?php echo $jamA;?>" autocomplete="off"> 				
+			</div>	
               <!-- /.input group -->
             </div>
             <div class="form-group">
@@ -73,9 +72,9 @@
                   <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir;  ?>" autocomplete="off" 1 />
                 </div>
               </div>
-              <div class="col-sm-4">
-                <input type="text" class="form-control timepicker" name="jam_akhir" placeholder="00:00" value="<?php echo $jamAr; ?>" autocomplete="off">
-              </div>
+			  <div class="col-sm-4">				
+                    <input type="text" class="form-control timepicker" name="jam_akhir" placeholder="00:00" value="<?php echo $jamAr;?>" autocomplete="off"> 				
+			</div>	
               <!-- /.input group -->
             </div>
             <div class="form-group">
@@ -196,15 +195,15 @@
         <div class="box-header with-border">
           <h3 class="box-title"> TOP 5 NCP Berdasarkan Masalah</h3>
           <?php if ($Awal != "") { ?><br><b>Periode: <?php echo tanggal_indo($Awal) . " - " . tanggal_indo($Akhir);
-                                                    } ?> Ket: <?php if ($Kategori == "ALL") {
-                                                            echo "ALL";
-                                                          } elseif ($Kategori == "hitung") {
-                                                            echo "NCP dihitung";
-                                                          } elseif ($Kategori == "tidakhitung") {
-                                                            echo "NCP tidak dihitung";
-                                                          } elseif ($Kategori == "gerobak") {
-                                                            echo "diGerobak";
-                                                          } ?></b>
+                                                } ?> Ket: <?php if ($Kategori == "ALL") {
+                                                                                                                        echo "ALL";
+                                                                                                                      } elseif ($Kategori == "hitung") {
+                                                                                                                        echo "NCP dihitung";
+                                                                                                                      } elseif ($Kategori == "tidakhitung") {
+                                                                                                                        echo "NCP tidak dihitung";
+                                                                                                                      } elseif ($Kategori == "gerobak") {
+                                                                                                                        echo "diGerobak";
+                                                                                                                      } ?></b>
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -351,15 +350,15 @@
         <div class="box-header with-border">
           <h3 class="box-title"> TOP 5 NCP Berdasarkan Dept Penyebab</h3>
           <?php if ($Awal != "") { ?><br><b>Periode: <?php echo tanggal_indo($Awal) . " - " . tanggal_indo($Akhir);
-                                                    } ?> Ket: <?php if ($Kategori == "ALL") {
-                                                            echo "ALL";
-                                                          } elseif ($Kategori == "hitung") {
-                                                            echo "NCP dihitung";
-                                                          } elseif ($Kategori == "tidakhitung") {
-                                                            echo "NCP tidak dihitung";
-                                                          } elseif ($Kategori == "gerobak") {
-                                                            echo "diGerobak";
-                                                          } ?></b>
+                                                } ?> Ket: <?php if ($Kategori == "ALL") {
+                                                                                                                        echo "ALL";
+                                                                                                                      } elseif ($Kategori == "hitung") {
+                                                                                                                        echo "NCP dihitung";
+                                                                                                                      } elseif ($Kategori == "tidakhitung") {
+                                                                                                                        echo "NCP tidak dihitung";
+                                                                                                                      } elseif ($Kategori == "gerobak") {
+                                                                                                                        echo "diGerobak";
+                                                                                                                      } ?></b>
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -450,23 +449,22 @@
     </div>
   </div>
   <?php
-    $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts $WR2A 
-    $GR2A");
-    $qrySUM = mysqli_query($con, "SELECT COUNT(*) as Lot, SUM(rol) as Rol,SUM(berat) as Berat FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts ");
-    $rSUM = mysqli_fetch_array($qrySUM);
+
+  $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts $WR2A 
+	$GR2A
+	");
+  $qrySUM = mysqli_query($con, "SELECT COUNT(*) as Lot, SUM(rol) as Rol,SUM(berat) as Berat FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts ");
+  $rSUM = mysqli_fetch_array($qrySUM);
   ?>
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Data NCP <?php echo $Dept; ?> Kategori <?php echo $Kategori; ?> <span class="pull-right-container"> 
+          <h3 class="box-title">Data NCP <?php echo $Dept; ?> Kategori <?php echo $Kategori; ?> <span class="pull-right-container">
               <small class="label pull-right bg-green blink_me">new</small>
             </span></h3>
           <?php if ($Awal != "") { ?>
             <div class="pull-right">
-              <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
-                <a href="pages/cetak/cetak_harianncp_excel_dye.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-success" target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP ke Excel Khusus DYEING"><i class="fa fa-lock"></i> Cetak Ke Excel (DYEING ONLY)</a>
-              <?php endif; ?>
               <a href="./index1.php?p=lappenyelesaian&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&kategori=<?php echo $Kategori; ?>" class="btn btn-primary " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan Penyelesaian"><i class="fa fa-file"></i> Detail Penyelesaian</a>
               <a href="pages/cetak/cetak_harianncp_new.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-danger " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP"><i class="fa fa-print"></i> Cetak</a>
               <a href="pages/cetak/cetak_harianncpwrn_new.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-danger " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP"><i class="fa fa-print"></i> Cetak Per Warna</a>
@@ -476,10 +474,13 @@
           <?php } ?>
           <?php if ($Awal != "") { ?><br><b>Periode: <?php echo tanggal_indo($Awal) . " - " . tanggal_indo($Akhir); ?></b>
             <div style="font-size:20px; ">Total Lot: <span class="label label-info"><?php echo $rSUM['Lot']; ?></span> || Total Rol: <span class="label label-warning"><?php echo number_format($rSUM['Rol']); ?></span> || Total Qty : <span class="label label-danger"><?php echo number_format($rSUM['Berat'], "2") . " Kg"; ?></span></div>
+
           <?php } ?>
+
+
         </div>
         <div class="box-body">
-          <table class="table table-bordered table-hover table-striped nowrap" id="example1" style="width:100%">
+          <table class="table table-bordered table-hover table-striped nowrap" id="example3" style="width:100%">
             <thead class="bg-green">
               <tr>
                 <th>
@@ -542,9 +543,7 @@
                 <th>
                   <div align="center">Masalah Utama</div>
                 </th>
-                <th>
-                  <div align="center">Proses</div>
-                </th>
+                <th><div align="center">Proses</div></th>
                 <th>
                   <div align="center">Ket</div>
                 </th>
@@ -621,42 +620,36 @@
                 <th align="center" class="table-list1">Production Order</th>
                 <th align="center" class="table-list1">Production Demand</th>
                 <th align="center" class="table-list1">Original PD Code</th>
-                <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
-                  <th align="center" class="table-list1">Akar Masalah Dye</th>
-                  <th align="center" class="table-list1">Solusi Jangka Panjang Dye</th>
-                  <th align="center" class="table-list1">Keterangan Dye</th>
-                  <th align="center" class="table-list1">Suffix Dye</th>
-                <?php endif; ?>
               </tr>
             </thead>
             <tbody>
               <?php
-                $no = 1;
-                while ($row1 = mysqli_fetch_array($qry1)) {
-                  if ($row1['nokk_salinan'] != "") {
-                    $nokk1 = $row1['nokk_salinan'];
-                  } else {
-                    $nokk1 = $row1['nokk'];
-                  }
-                  $qryckw = mysqli_query($con, "SELECT * FROM tbl_cocok_warna_dye WHERE `dept`='QCF' AND nokk='$nokk1' ORDER BY id DESC");
-                  $rowckw = mysqli_fetch_array($qryckw);
+              $no = 1;
+              while ($row1 = mysqli_fetch_array($qry1)) {
+                if ($row1['nokk_salinan'] != "") {
+                  $nokk1 = $row1['nokk_salinan'];
+                } else {
+                  $nokk1 = $row1['nokk'];
+                }
+                $qryckw = mysqli_query($con, "SELECT * FROM tbl_cocok_warna_dye WHERE `dept`='QCF' AND nokk='$nokk1' ORDER BY id DESC");
+                $rowckw = mysqli_fetch_array($qryckw);
               ?>
                 <tr bgcolor="<?php echo $bgcolor; ?>">
                   <td height="39" align="center"><?php echo $no; ?></td>
                   <td align="center"><?php echo $row1['tgl_buat']; ?><br>
-                    <div class="btn-group"><a href="pages/cetak/cetak_ncp_new.php?id=<?php echo $row1['id']; ?>" class="btn btn-xs btn-danger" target="_blank"><i class="fa fa-print"></i></a><a href="pages/cetak/cetak_ncp_pdf_new.php?id=<?php echo $row1['id']; ?>" class="btn btn-xs btn-info" target="_blank"><i class="fa fa-file-pdf-o"></i></a></div>
+                    <div class="btn-group"><a href="pages/cetak/cetak_ncp_now.php?id=<?php echo $row1['id']; ?>" class="btn btn-xs btn-danger" target="_blank"><i class="fa fa-print"></i></a><a href="pages/cetak/cetak_ncp_now_pdf.php?id=<?php echo $row1['id']; ?>" class="btn btn-xs btn-info" target="_blank"><i class="fa fa-file-pdf-o"></i></a></div>
                   </td>
                   <td><a href="#" class="btn sts_new_edit <?php if ($_SESSION['dept'] == "QC" or strtoupper($_SESSION['usrid']) == "TENNY" or strtoupper($_SESSION['usrid']) == "AISYAH" or strtoupper($_SESSION['usrid']) == "CRISTIN") {
                                                             echo "enabled";
                                                           } else {
                                                             echo "disabled";
                                                           } ?>" id="<?php echo $row1['id']; ?>"><span class="label <?php if ($row1['status'] == "OK") {
-                                                                                                                      echo "label-success";
-                                                                                                                    } else if ($row1['status'] == "Cancel") {
-                                                                                                                      echo "label-danger";
-                                                                                                                    } else {
-                                                                                                                      echo "label-warning";
-                                                                                                                    } ?> "><?php echo $row1['status']; ?></span></a></td>
+                                                                                                                                                                                                                                                                                                                                echo "label-success";
+                                                                                                                                                                                                                                                                                                                              } else if ($row1['status'] == "Cancel") {
+                                                                                                                                                                                                                                                                                                                                echo "label-danger";
+                                                                                                                                                                                                                                                                                                                              } else {
+                                                                                                                                                                                                                                                                                                                                echo "label-warning";
+                                                                                                                                                                                                                                                                                                                              } ?> "><?php echo $row1['status']; ?></span></a></td>
                   <td><?php echo $row1['langganan']; ?></td>
                   <td><?php echo $row1['buyer']; ?></td>
                   <td align="center"><?php echo $row1['po']; ?></td>
@@ -723,21 +716,14 @@
                   <td><?php echo $row1['prod_order']; ?></td>
                   <td><?php echo $row1['nodemand']; ?></td>
                   <td><?php
-                      $sql_ori_pd_code  = db2_exec($conn2, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
+                      $sql_ori_pd_code	= db2_exec($conn1, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
                                                             FROM
                                                               PRODUCTIONDEMAND p
                                                             LEFT JOIN ADSTORAGE a ON a.UNIQUEID = p.ABSUNIQUEID AND a.FIELDNAME = 'OriginalPDCode'
                                                             WHERE p.CODE = '$row1[nodemand]'");
-                      $dt_ori_pd_code    = db2_fetch_assoc($sql_ori_pd_code);
+		                  $dt_ori_pd_code		= db2_fetch_assoc($sql_ori_pd_code);
                       echo $dt_ori_pd_code['VALUESTRING'];
-                      ?>
-                  </td>
-                  <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
-                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['akar_masalah_dye'] ?>" class="akarmasalah_dye" href="javascipt:void(0)"><?php echo $row1['akar_masalah_dye'] ?></a></td>
-                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['solusi_dye'] ?>" class="solusi_dye" href="javascipt:void(0)"><?php echo $row1['solusi_jangka_panjang_dye'] ?></a></td>
-                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['ket_dye'] ?>" class="ket_dye" href="javascipt:void(0)"><?php echo $row1['ket_dye'] ?></a></td>
-                    <td align="center"><a data-pk="<?php echo $row1['id'] ?>" data-value="<?php echo $row1['suffix_dye'] ?>" class="suffix_dye" href="javascipt:void(0)"><?php echo $row1['suffix_dye'] ?></a></td>
-                  <?php endif; ?>
+                    ?></td>
                 </tr>
               <?php $no++;
               } ?>

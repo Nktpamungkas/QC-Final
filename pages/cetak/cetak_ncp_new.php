@@ -4,10 +4,10 @@ session_start();
 include "../../koneksi.php";
 include "../../tgl_indo.php";
 if ($_GET['id'] != "") {
-	$qry = mysqli_query($con, "SELECT * FROM tbl_ncp_qcf_new WHERE id='$_GET[id]'");
+	$qry = mysqli_query($con, "SELECT * FROM tbl_ncp_qcf_now WHERE id='$_GET[id]'");
 } else {
-	$qry = mysqli_query($con, "SELECT * FROM tbl_ncp_qcf_new WHERE no_ncp='$_GET[no_ncp]' and dept='$_GET[dept]' and nokk='$_GET[nokk]' ORDER BY revisi DESC ");
-	//$qry=mysqli_query($con,"SELECT * FROM tbl_ncp_qcf_new WHERE no_ncp='$_GET[no_ncp]' and dept='$_GET[dept]' and nokk='$_GET[nokk]' and revisi='$_GET[revisi]' ORDER BY revisi DESC ");	
+	$qry = mysqli_query($con, "SELECT * FROM tbl_ncp_qcf_now WHERE no_ncp='$_GET[no_ncp]' and dept='$_GET[dept]' and nokk='$_GET[nokk]' ORDER BY revisi DESC ");
+	//$qry=mysqli_query($con,"SELECT * FROM tbl_ncp_qcf_now WHERE no_ncp='$_GET[no_ncp]' and dept='$_GET[dept]' and nokk='$_GET[nokk]' and revisi='$_GET[revisi]' ORDER BY revisi DESC ");	
 }
 $d = mysqli_fetch_array($qry);
 if ($d['nokk_salinan'] != "") {

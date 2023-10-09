@@ -227,7 +227,7 @@ Periode : <?php echo tanggal_indo($_GET['awal']);?> s/d <?php echo tanggal_indo(
 		$GR2A= " ORDER BY id ASC ";
 	}	  
 			
-	$qry1=mysqli_query($con,"SELECT * $FR2A FROM tbl_ncp_qcf_new WHERE $Wdept $Wkategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts $WR2A 
+	$qry1=mysqli_query($con,"SELECT * $FR2A FROM tbl_ncp_qcf_now WHERE $Wdept $Wkategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts $WR2A 
 	$GR2A ");
 			while($row1=mysqli_fetch_array($qry1)){
 				
