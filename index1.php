@@ -1269,8 +1269,6 @@ $.fn.editable.defaults.mode = 'inline';
                 {value: "HUMAN DATACOLOR", text: "HUMAN DATACOLOR"},
                 {value: "RESEP SETTING TIDAK OK", text: "RESEP SETTING TIDAK OK"}]
       });
-
-
       $('.solusi_dye').editable({
         type: 'text',
         disabled : false,
