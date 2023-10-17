@@ -21,6 +21,7 @@
     $Kategori  = isset($_POST['kategori']) ? $_POST['kategori'] : '';
     $Cancel    = isset($_POST['chkcancel']) ? $_POST['chkcancel'] : '';
     $Rev2A    = isset($_POST['chkrev']) ? $_POST['chkrev'] : '';
+    $Cek_datalama    = isset($_POST['chk_datalama']) ? $_POST['chk_datalama'] : '';
     $jamA  = isset($_POST['jam_awal']) ? $_POST['jam_awal'] : '';
     $jamAr  = isset($_POST['jam_akhir']) ? $_POST['jam_akhir'] : '';
     if ($_POST['gshift'] == "ALL") {
@@ -180,6 +181,16 @@
                 </label>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-10">
+                <label>
+                  <input type="checkbox" value="1" name="chk_datalama" class="minimal-red" <?php if ($Cek_datalama == "1") {
+                                                                                        echo "checked";
+                                                                                      } ?>>
+                  Tampil Data Lama
+                </label>
+              </div>
+            </div>
           </div>
           <!-- /.box-body -->
           <div class="box-footer">
@@ -272,13 +283,13 @@
               $qryAllDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_now WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) AND `status`='Disposisi' $sts ");
               $rAllDis = mysqli_fetch_array($qryAllDis);
               $qrydef = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_ncp_qcf_now WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts
-            AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS persen,
-            masalah_dominan
-            FROM
-            `tbl_ncp_qcf_now`
-            WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts  
-            GROUP BY masalah_dominan
-            ORDER BY berat DESC LIMIT 5");
+                                            AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS persen,
+                                            masalah_dominan
+                                            FROM
+                                            `tbl_ncp_qcf_now`
+                                            WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan!='' OR masalah_dominan!=NULL) $sts  
+                                            GROUP BY masalah_dominan
+                                            ORDER BY berat DESC LIMIT 5");
               $qryBDominan = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_now WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan='' OR masalah_dominan=NULL) $sts ");
               $rBD = mysqli_fetch_array($qryBDominan);
               $qryAllDisBD = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_now WHERE $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (masalah_dominan='' OR masalah_dominan=NULL) AND `status`='Disposisi' $sts ");
@@ -397,13 +408,13 @@
               $qryAllDptDis = mysqli_query($con, "SELECT COUNT(*) AS jml_all, SUM(berat) AS berat_all FROM tbl_ncp_qcf_now WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND `status`='Disposisi' AND NOT status='Cancel' AND ncp_hitung='ya' ");
               $rAllDptDis = mysqli_fetch_array($qryAllDptDis);
               $qrydpt = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_now WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND NOT status='Cancel'
-            AND (dept!='' OR dept!=NULL))*100,1) AS persen,
-            dept
-            FROM
-            `tbl_ncp_qcf_now`
-            WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND $WKategori NOT status='Cancel'  
-            GROUP BY dept
-            ORDER BY berat DESC LIMIT 5");
+                                      AND (dept!='' OR dept!=NULL))*100,1) AS persen,
+                                      dept
+                                      FROM
+                                      `tbl_ncp_qcf_now`
+                                      WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND (dept!='' OR dept!=NULL) AND $WKategori NOT status='Cancel'  
+                                      GROUP BY dept
+                                      ORDER BY berat DESC LIMIT 5");
               while ($rdpt = mysqli_fetch_array($qrydpt)) {
                 $qrydptDis = mysqli_query($con, "SELECT SUM(berat) AS berat, ROUND(COUNT(dept)/(SELECT COUNT(*) FROM tbl_ncp_qcf_now WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' AND `status`='Disposisi' AND dept='$rdpt[dept]' AND NOT status='Cancel'
               AND (dept!='' OR dept!=NULL))*100,1) AS persen,
@@ -450,7 +461,14 @@
     </div>
   </div>
   <?php
-    $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts $WR2A 
+    
+    if($Cek_datalama == "1"){
+        $tabel_ncp = 'tbl_ncp_qcf_new';
+    }else{
+        $tabel_ncp = 'tbl_ncp_qcf_now';
+    }
+
+    $qry1 = mysqli_query($con, "SELECT * $FR2A FROM $tabel_ncp WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts $WR2A 
     $GR2A");
     $qrySUM = mysqli_query($con, "SELECT COUNT(*) as Lot, SUM(rol) as Rol,SUM(berat) as Berat FROM tbl_ncp_qcf_now WHERE $Wdept $WKategori DATE_FORMAT( tgl_buat, '%Y-%m-%d %H:%i' ) BETWEEN '$start_date' AND '$stop_date' $sts ");
     $rSUM = mysqli_fetch_array($qrySUM);
@@ -465,7 +483,7 @@
           <?php if ($Awal != "") { ?>
             <div class="pull-right">
               <?php if(strtoupper($_SESSION['nama1']) == 'ADM-DYE') : ?>
-                <a href="pages/cetak/cetak_harianncp_excel_dye.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-success" target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP ke Excel Khusus DYEING"><i class="fa fa-lock"></i> Cetak Ke Excel (DYEING ONLY)</a>
+                <a href="pages/cetak/cetak_harianncp_excel_dye.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>&datalama=<?= $Cek_datalama; ?>" class="btn btn-success" target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP ke Excel Khusus DYEING"><i class="fa fa-lock"></i> Cetak Ke Excel (DYEING ONLY)</a>
               <?php endif; ?>
               <a href="./index1.php?p=lappenyelesaian&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&kategori=<?php echo $Kategori; ?>" class="btn btn-primary " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan Penyelesaian"><i class="fa fa-file"></i> Detail Penyelesaian</a>
               <a href="pages/cetak/cetak_harianncp_new.php?&awal=<?php echo $Awal; ?>&akhir=<?php echo $Akhir; ?>&dept=<?php echo $Dept; ?>&kategori=<?php echo $Kategori; ?>&cancel=<?php echo $Cancel; ?>&chkrev=<?php echo $Rev2A; ?>" class="btn btn-danger " target="_blank" data-toggle="tooltip" data-html="true" title="Laporan NCP"><i class="fa fa-print"></i> Cetak</a>

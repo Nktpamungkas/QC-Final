@@ -19,6 +19,7 @@
     $Kategori = $_GET['kategori'];
     $Cancel = $_GET['cancel'];
     $Rev2A = $_GET['chkrev'];
+    $Cek_datalama = $_GET['datalama'];
 
     $qTgl = mysqli_query($con, "SELECT DATE_FORMAT(now(),'%Y-%m-%d') as tgl_skrg,DATE_FORMAT(now(),'%H:%i:%s') as jam_skrg");
     $rTgl = mysqli_fetch_array($qTgl);
@@ -242,7 +243,13 @@
                                 $GR2A = " ORDER BY id ASC ";
                             }
 
-                            $qry1 = mysqli_query($con, "SELECT * $FR2A FROM tbl_ncp_qcf_now WHERE $Wdept $Wkategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts $WR2A $GR2A");
+                            if($Cek_datalama == "1"){
+                                $tabel_ncp = 'tbl_ncp_qcf_new';
+                            }else{
+                                $tabel_ncp = 'tbl_ncp_qcf_now';
+                            }
+
+                            $qry1 = mysqli_query($con, "SELECT * $FR2A FROM $tabel_ncp WHERE $Wdept $Wkategori DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' $sts $WR2A $GR2A");
                             while ($row1 = mysqli_fetch_array($qry1)) {
                                 $sql_ori_pd_code  = db2_exec($conn2, "SELECT p.CODE, SUBSTRING(a.VALUESTRING, 5) AS VALUESTRING 
                                                                         FROM
