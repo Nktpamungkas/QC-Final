@@ -327,7 +327,13 @@ $Item	= isset($_POST['no_item']) ? $_POST['no_item'] : '';
               <td><?php echo $row1['pelanggan'];?></td>
               <td align="center"><?php echo $row1['no_order'];?></td>
               <td><?php echo substr($row1['jenis_kain'],0,15)."...";?></td>
-              <td align="center"><?php echo $row1['no_item'];?></td>
+              <td align="center">
+                <?php
+                  $q_hanger = db2_exec($conn2, "SELECT TRIM(SUBCODE02) || TRIM(SUBCODE03) AS HANGER FROM PRODUCTIONDEMAND p WHERE CODE = '$row1[nodemand]'");
+                  $row_hanger = db2_fetch_assoc($q_hanger);
+                ?>
+                <?= $row_hanger['HANGER']; ?>
+              </td>
               <td align="left"><?php echo substr($row1['warna'],0,10)."...";?></td>
               <td align="center"><?php echo $row1['tgl_pengiriman'];?></td>
               <td align="center"><?php echo $row1['lot'];?></td>

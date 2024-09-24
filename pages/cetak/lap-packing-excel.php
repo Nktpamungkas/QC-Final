@@ -54,7 +54,13 @@ No MC 	: <?php echo $_GET['nomc'];?>
     <td><?php echo $row['pelanggan'];?></td>
     <td><?php echo $row['no_order'];?></td>
     <td><?php echo $row['jenis_kain'];?></td>
-    <td><?php echo $row['no_item'];?></td>
+    <td>
+      <?php
+        $q_hanger = db2_exec($conn2, "SELECT TRIM(SUBCODE02) || TRIM(SUBCODE03) AS HANGER FROM PRODUCTIONDEMAND p WHERE CODE = '$row[nodemand]'");
+        $row_hanger = db2_fetch_assoc($q_hanger);
+      ?>
+      <?= $row_hanger['HANGER']; ?>
+    </td>
     <td><?php echo $row['warna'];?></td>
     <td><?php echo $row['tgl_pengiriman'];?></td>
     <td>'<?php echo $row['lot'];?></td>
