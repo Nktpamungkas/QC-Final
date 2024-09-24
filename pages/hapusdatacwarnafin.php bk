@@ -1,0 +1,8 @@
+<?php
+    $modal_id=$_GET['id'];
+    $modal=mysql_query("DELETE FROM tbl_lap_inspeksi WHERE id='$modal_id' ");
+    if ($modal) {
+        echo "<script>window.location='LihatCWarnaFin';</script>";
+    } else {
+        echo "<script>alert('Gagal Hapus');window.location='LihatCWarnaFin';</script>";
+    }

@@ -1,0 +1,364 @@
+<?php
+session_start();
+include"koneksi.php";
+
+?>
+<?php
+$Awal		= isset($_POST['awal']) ? $_POST['awal'] : '';
+$Akhir		= isset($_POST['akhir']) ? $_POST['akhir'] : '';
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Grafik</title>
+	<script src="plugins/highcharts/code/highcharts.js"></script>
+    <script src="plugins/highcharts/code/highcharts-3d.js"></script>
+	<script src="plugins/highcharts/code/modules/exporting.js"></script>
+    <script src="plugins/highcharts/code/modules/export-data.js"></script>
+	<style type="text/css">
+#container {
+    height: 400px; 
+    min-width: 310px; 
+    max-width: 800px;
+    margin: 0 auto;
+}
+#container1 {
+    height: 400px; 
+    min-width: 310px; 
+    max-width: 800px;
+    margin: 0 auto;
+}
+	</style>
+  </head>
+
+  <body>
+
+        <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Filter Grafik Per Periode</h3>
+            <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1">
+            <div class="box-body">
+            <div class="form-group">
+                <div class="col-sm-2">
+                <div class="input-group date">
+                    <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                    <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" />
+                </div>
+                </div>
+                <div class="col-sm-2">
+                <div class="input-group date">
+                    <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                    <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir; ?>" />
+                </div>
+                </div>
+                <button type="submit" class="btn btn-success " name="cari"><i class="fa fa-search"></i> Cari Data</button>
+                <!-- /.input group -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+            </div>
+            <!-- /.box-footer -->
+
+            </div>
+        </form>
+        </div>
+    <div class="row">
+    <div class="col-xs-6">	
+        <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"> Rangkuman 5 Besar KPE Langganan</h3>
+            <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+        <table class="table table-bordered table-striped" style="width: 100%;">
+                <thead class="bg-blue">
+                    <tr>
+                    <th width="5%"><div align="center">No</div></th>
+                    <th width="25%"><div align="center">Langganan</div></th>
+                    <th width="10%"><div align="center">Qty Claim</div></th>
+                    <th width="10%"><div align="center">Kasus</div></th>
+                    <th width="10%"><div align="center">Persentase</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php 
+                $no1=1;
+                $total=0;
+                $totalcase=0;
+                $totalpersen=0;
+                $qryAll=mysql_query("SELECT COUNT(*) AS jml_all, SUM(qty_claim) AS qty_claim_all FROM tbl_aftersales WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir'");
+                $rAll=mysql_fetch_array($qryAll);
+                $qrylgn=mysql_query("SELECT COUNT(*) AS jml, ROUND(COUNT(langganan)/(SELECT COUNT(*) FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir')*100,1) AS persen,
+                langganan
+                FROM
+                `tbl_aftersales`
+                WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir'
+                GROUP BY langganan
+                ORDER BY jml DESC LIMIT 5");
+                while($r=mysql_fetch_array($qrylgn)){
+                $qrycase=mysql_query("SELECT SUM(qty_claim) AS qty_claim_lgn FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' AND 
+                langganan='$r[langganan]'");
+                $r1=mysql_fetch_array($qrycase);
+                ?>
+                <tr valign="top">
+                    <td align="center"><?php echo $no1; ?></td>
+                    <td align="left"><?php echo $r['langganan'];?></td>
+                    <td align="right"><?php echo $r1['qty_claim_lgn']." Kg";?></td>
+                    <td align="right"><?php echo $r['jml']." Kasus"; ?></td>
+                    <td align="right"><?php echo $r['persen']." %";?></td>
+                </tr>
+                <?php	$no1++;  
+                $total=$total+$r1['qty_claim_lgn'];
+                $totalcase=$totalcase+$r['jml'];
+                $totalpersen=$totalpersen+$r['persen'];
+                } ?>
+                </tbody>
+                <tfoot>
+                    <tr valign="top">
+                    <td align="center" colspan="2"><strong>Total</strong></td>
+                    <td align="right"><strong><?php echo number_format($total,2)." Kg"; ?></strong></td>
+                    <td align="right"><strong><?php echo $totalcase." Kasus"; ?></strong></td>
+                    <td align="right"><strong><?php echo $totalpersen." %"; ?></strong></td>
+                    </tr>
+                    <tr valign="top">
+                    <td align="center" colspan="2"><strong>Total Keseluruhan</td>
+                    <td align="right"><strong><?php echo number_format($rAll['qty_claim_all'],2)." Kg"; ?></strong></td>
+                    <td align="right"><strong><?php echo $rAll['jml_all']." Kasus"; ?></strong></td>
+                    <td align="right"><strong><?php if($Awal==""){echo "0 %";}else{echo "100.0 %";} ?></strong></td>
+                    </tr>
+                </tfoot>
+        </table>
+        <div class="box-footer">
+                <a href="pages/cetak/excel_5besar_langganan.php?awal=<?php echo $_POST[awal]; ?>&akhir=<?php echo $_POST[akhir]; ?>" class="btn btn-success <?php if($_POST[awal]=="") { echo "disabled"; }?>" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-xs-6">	
+        <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"> Rangkuman 5 Besar KPE Defect</h3>
+            <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+        <table class="table table-bordered table-striped" style="width: 100%;">
+                <thead class="bg-blue">
+                    <tr>
+                    <th width="5%"><div align="center">No</div></th>
+                    <th width="25%"><div align="center">Masalah Dominan</div></th>
+                    <th width="14%"><div align="center">Qty Claim</div></th>
+                    <th width="10%"><div align="center">Kasus</div></th>
+                    <th width="10%"><div align="center">Persentase</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php 
+                $no2=1;
+                $totald=0;
+                $totalcased=0;
+                $totalpersend=0;
+                $qrydef=mysql_query("SELECT COUNT(*) AS jml, ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' 
+                AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS persen,
+                masalah_dominan
+                FROM
+                `tbl_aftersales`
+                WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' AND (masalah_dominan!='' OR masalah_dominan!=NULL)
+                GROUP BY masalah_dominan
+                ORDER BY jml DESC LIMIT 5");
+                while($rd=mysql_fetch_array($qrydef)){
+                $qrycased=mysql_query("SELECT SUM(qty_claim) AS qty_claim_lgn FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' AND 
+                masalah_dominan='$rd[masalah_dominan]'");
+                $r2=mysql_fetch_array($qrycased);
+                ?>
+                <tr valign="top">
+                    <td align="center"><?php echo $no2; ?></td>
+                    <td align="left"><?php echo $rd['masalah_dominan'];?></td>
+                    <td align="right"><?php echo $r2['qty_claim_lgn']." Kg";?></td>
+                    <td align="right"><?php echo $rd['jml']." Kasus"; ?></td>
+                    <td align="right"><?php echo $rd['persen']." %"; ?></td>
+                </tr>
+                <?php	$no2++;  
+                $totald=$totald+$r2['qty_claim_lgn'];
+                $totalcased=$totalcased+$rd['jml'];
+                $totalpersend=$totalpersend+$rd['persen'];
+                } ?>
+                </tbody>
+                <tfoot>
+                    <tr valign="top">
+                    <td align="center" colspan="2"><strong>Total</strong></td>
+                    <td align="right"><strong><?php echo number_format($totald,2)." Kg"; ?></strong></td>
+                    <td align="right"><strong><?php echo $totalcased." Kasus"; ?></strong></td>
+                    <td align="right"><strong><?php echo $totalpersend." %"; ?></strong></td>
+                    </tr>
+                    <tr valign="top">
+                    <td align="center" colspan="2"><strong>Total Keseluruhan</strong></td>
+                    <td align="right"><strong><?php echo number_format($rAll['qty_claim_all'],2)." Kg"; ?></strong></td>
+                    <td align="right"><strong><?php echo $rAll['jml_all']." Kasus"; ?></strong></td>
+                    <td align="right"><strong><?php if($Awal==""){echo "0 %";}else{echo "100.0 %";} ?></strong></td>
+                    </tr>
+                </tfoot>
+        </table>
+        <div class="box-footer">
+                <a href="pages/cetak/excel_5besar_defect.php?awal=<?php echo $_POST[awal]; ?>&akhir=<?php echo $_POST[akhir]; ?>" class="btn btn-success <?php if($_POST[awal]=="") { echo "disabled"; }?>" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<?php $qry3=mysql_query("SELECT GROUP_CONCAT('''',a.nama,'''') buyer, GROUP_CONCAT(IFNULL(b.jml,0)) as jml FROM tbl_langganan_aftersales a
+INNER JOIN(SELECT ROUND(COUNT(langganan)/(SELECT COUNT(*) FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir')*100,1) AS jml, langganan 
+FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' GROUP BY langganan ORDER BY jml DESC LIMIT 5) b ON a.nama=b.langganan");
+	$r3=mysql_fetch_array($qry3); 
+    $qry1=mysql_query("SELECT GROUP_CONCAT('''',a.masalah,'''') defect ,GROUP_CONCAT(IFNULL(b.jml,0)) as jml FROM tbl_masalah_aftersales a
+INNER JOIN(SELECT ROUND(COUNT(masalah_dominan)/(SELECT COUNT(*) FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' 
+AND (masalah_dominan!='' OR masalah_dominan!=NULL))*100,1) AS jml,masalah_dominan FROM tbl_aftersales WHERE tgl_buat BETWEEN '$Awal' AND '$Akhir' 
+AND (masalah_dominan!='' OR masalah_dominan!=NULL) GROUP BY masalah_dominan ORDER BY jml DESC LIMIT 5) b ON a.masalah=b.masalah_dominan");
+	$r1=mysql_fetch_array($qry1);
+	if($Awal!="" and $Akhir!=""){  
+	$tglAwal=date('d F Y', strtotime($Awal));
+	$tglAkhir=date('d F Y', strtotime($Akhir));
+	}else{
+	$tglAwal=" - ";
+	$tglAkhir=" - ";	
+	}
+	?>	
+    	  <!-- BAR CHART -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Grafik Langganan</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+          <!-- BAR CHART -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Grafik Masalah Dominan</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+    </div>
+    </div>
+  </body>
+
+</html>
+<script type="text/javascript">
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'column',        
+    },
+    title: {
+        text: 'Langganan'
+    },
+    subtitle: {
+        text: '<?php echo $tglAwal." s/d ".$tglAkhir;?>'
+    },
+    plotOptions: {
+        column: {
+            depth: 25,
+			color: 'brown',
+        }
+    },
+    xAxis: {
+		categories: [<?php echo $r3['buyer'];?>],
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '10px',
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Persentase'
+        }
+    },
+    series: [{
+        name: 'Langganan',
+        data: [<?php echo $r3['jml']; ?>],
+		dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}%',
+				style: {
+                fontSize: '10px',
+                fontFamily: 'Arial, sans-serif'
+            }
+            }
+    }]
+});
+
+Highcharts.chart('container1', {
+    chart: {
+        type: 'column',        
+    },
+    title: {
+        text: 'Masalah Dominan'
+    },
+    subtitle: {
+        text: '<?php echo $tglAwal." s/d ".$tglAkhir;?>'
+    },
+    plotOptions: {
+        column: {
+            depth: 25,
+			color: 'green',
+        }
+    },
+    xAxis: {
+		categories: [<?php echo $r1['defect'];?>],
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '10px',
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Persentase'
+        }
+    },
+    series: [{
+        name: 'Masalah Dominan',
+        data: [<?php echo $r1[jml]; ?>],
+		dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}%',
+				style: {
+                fontSize: '10px',
+                fontFamily: 'Arial, sans-serif'
+            }
+            }
+    }]
+});		
+		</script>

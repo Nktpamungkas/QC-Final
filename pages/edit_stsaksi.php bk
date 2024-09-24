@@ -1,0 +1,21 @@
+<?
+if ($_POST) {
+    extract($_POST);
+    $id = mysql_real_escape_string($_POST['id']);
+    $sts_aksi =mysql_real_escape_string($_POST['sts_aksi']);
+    $editor =mysql_real_escape_string($_POST['editor']);
+    $sqlupdate=mysql_query("UPDATE `tbl_qcf` SET
+				`sts_aksi`='$sts_aksi',
+				`editor`='$editor',
+				`tgl_update`=now()
+				WHERE `id`='$id' LIMIT 1");
+    echo "<script>swal({
+  title: 'Data Telah diUbah',
+  text: 'Klik Ok untuk melanjutkan',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+    window.history.back();
+  }
+});</script>";
+}

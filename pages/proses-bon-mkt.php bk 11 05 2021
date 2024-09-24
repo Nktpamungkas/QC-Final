@@ -1,0 +1,99 @@
+<?php
+$nokk=$_GET['nokk'];
+$sqlCek=mysql_query("SELECT * FROM tbl_qcf WHERE sts_pbon='1' AND nokk='$nokk' ORDER BY id DESC LIMIT 1");
+$cek=mysql_num_rows($sqlCek);
+$rcek=mysql_fetch_array($sqlCek);
+?>	
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Proses Bon</h3>
+            <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body"> 
+                <!-- col --> 
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="bpp" class="col-sm-2 control-label">No BPP</label>
+                    <div class="col-sm-2">  
+                        <input name="bpp" type="text" class="form-control" id="bpp" value="<?php echo $rcek['bpp']; ?>" placeholder="No BPP" readonly>			
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tgl_masuk" class="col-sm-2 control-label">Tgl. Masuk</label>
+                    <div class="col-sm-2">
+                        <div class="input-group date">
+                            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                            <input name="tgl_masuk" type="text" class="form-control pull-right" id="datepicker" placeholder="0000-00-00" value="<?php echo $rcek['tgl_masuk']; ?>" autocomplete="off" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sales" class="col-sm-2 control-label">Nama Sales</label>
+                    <div class="col-sm-2">  
+                        <input name="sales" type="text" class="form-control" id="sales" value="<?php echo $rcek['sales']; ?>" placeholder="Sales" readonly>			
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nokk" class="col-sm-2 control-label">No KK</label>
+                    <div class="col-sm-2">  
+                        <input name="nokk" type="text" class="form-control" id="nokk" value="<?php echo $rcek['nokk']; ?>" placeholder="No KK" readonly>			
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pelanggan" class="col-sm-2 control-label">Langganan</label>
+                    <div class="col-sm-3">  
+                        <input name="pelanggan" type="text" class="form-control" id="pelanggan" value="<?php echo $rcek['pelanggan']; ?>" placeholder="Langganan" readonly>			
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sts_aksi" class="col-sm-2 control-label">Verifikasi Proses</label>
+                    <div class="col-sm-2">  
+                        <select class="form-control" name="sts_aksi" required>
+                            <option value="">Pilih</option>
+                            <option value="Proses" <?php if($rcek['sts_aksi']=="Proses"){echo "SELECTED"; } ?>>Proses</option>
+                            <option value="Hold" <?php if($rcek['sts_aksi']=="Hold"){echo "SELECTED"; } ?>>Hold</option>
+                            <option value="Tidak Proses" <?php if($rcek['sts_aksi']=="Tidak Proses"){echo "SELECTED"; } ?>>Tidak Proses</option>
+                            <option value="Siapkan Greig" <?php if($rcek['sts_aksi']=="Siapkan Greig"){echo "SELECTED"; } ?>>Siapkan Greig</option>
+                        </select>		
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editor" class="col-sm-2 control-label">Editor</label>
+                    <div class="col-sm-2">  
+                        <input name="editor" type="text" class="form-control" id="editor" value="<?php echo $rcek['editor']; ?>" placeholder="Editor" required>			
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-default pull-left" name="save" Onclick="window.location='SummaryOrder'">Kembali <i class="fa fa-cycle"></i></button>	   
+            <input type="submit" value="Simpan" name="save" id="save" class="btn btn-primary pull-right" > 
+        </div>
+        <!-- /.box-footer -->
+    </div>
+</form>
+
+<?php
+if($_POST['save']=="Simpan"){
+    $sqlData=mysql_query("UPDATE tbl_qcf SET 
+		  sts_aksi='$_POST[sts_aksi]',
+          editor='$_POST[editor]'
+		  WHERE nokk='$nokk'");	 	  
+	  
+		if($sqlData){	
+            echo "<script>swal({
+        title: 'Status Berhasil Berubah Menjadi Proses',   
+        text: 'Klik Ok untuk kembali',
+        type: 'success',
+        }).then((result) => {
+        if (result.value) {
+                window.location.href='ProsesBonMKT-$nokk';
+            
+        }
+        });</script>";
+		}
+}
+?>

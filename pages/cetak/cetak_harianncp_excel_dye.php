@@ -182,9 +182,9 @@
                             <td>No. NCP</td>
                             <td>Langganan</td>
                             <td>Order</td>
+                            <td>No Warna</td>
                             <td>Warna</td>
                             <td>Lot</td>
-                            <td>Lot Salinan</td>
                             <td>Rol</td>
                             <td>Quantity</td>
                             <td>Hanger</td>
@@ -284,150 +284,153 @@
                                                                             b.no_mesin ASC");
                                 $row_analisaresep   = mysqli_fetch_assoc($q_analisaresep);
                         ?>
-                            <tr valign="top">
-                                <td align="center"><?php echo $no; ?></td>
-                                <td align="center"><?php echo date("d/m/y", strtotime($row1['tgl_buat'])); ?></td>
-                                <td align="center"><?php echo strtoupper($row1['no_ncp_gabungan']); ?></td>
-                                <td><?php echo strtoupper($row1['langganan']); ?></td>
-                                <td align="center"><?php echo strtoupper($row1['no_order']); ?></td>
-                                <td><?php echo strtoupper($row1['warna']); ?></td>
-                                <td align="center">'<?php echo strtoupper($row1['lot']); ?></td>
-                                <td align="center"><?php echo strtoupper($row1['lot_salinan']); ?></td>
-                                <td align="center"><?php echo strtoupper($row1['rol']); ?></td>
-                                <td align="right"><?php echo strtoupper($row1['berat']); ?></td>
-                                <td><?php echo strtoupper($row1['no_hanger']); ?></td>
-                                <td align="left"><?php echo strtoupper($row1['masalah']); ?></td>
-                                <td><?php echo $row1['masalah_dominan']; ?></td>
-                                <td>
-                                    <?php
-                                        if(!empty($dt_ori_pd_code['VALUESTRING'])){
-                                            $where_oriPDCode    = "a.nodemand = '$dt_ori_pd_code[VALUESTRING]'";
-                                        }else{
-                                            $where_oriPDCode    = "a.nokk = '$row1[prod_order]'";
-                                        }
-                                        $nomesin_hasilcelup = mysqli_query($condye, "SELECT
-                                                                                            b.no_mesin
-                                                                                        FROM
-                                                                                            tbl_schedule b
-                                                                                            LEFT JOIN  tbl_montemp c ON c.id_schedule = b.id
-                                                                                            LEFT JOIN tbl_hasilcelup a ON a.id_montemp=c.id
-                                                                                        WHERE
-                                                                                            $where_oriPDCode
-                                                                                            AND (a.`status`='OK' OR a.`status` = 'Gagal Proses')");
-                                        $r_nomesin  = mysqli_fetch_assoc($nomesin_hasilcelup);
-                                        if(!empty($r_nomesin['no_mesin'])){
-                                            echo $r_nomesin['no_mesin'];
-                                        }
-                                    ?>
-                                </td>
-                                <td align="left"><?php echo strtoupper($row1['akar_masalah_dye']); ?></td>
-                                <td align="left"><?php echo strtoupper($row1['solusi_jangka_panjang_dye']); ?></td>
-                                <td align="left"><?php echo strtoupper($row1['ket_dye']); ?></td>
-                                <td><?= $row_analisaresep['kk_kestabilan']; ?></td> <!-- K.R -->
-                                <td><?= $row_analisaresep['resep']; ?></td> <!-- R.B/R.L/R.S -->
-                                <td><?= $row_analisaresep['status_resep'] ?></td><!-- Status Resep -->
-                                <td><?= $row_analisaresep['analisa_resep'] ?></td><!-- Analisa Resep-->
-                                <td><?php echo $row1['ncp_hitung']; ?></td>
-                                <td><?php echo $row1['status']; ?></td>
-                                <td><?php echo $row1['m_proses']; ?></td>
-                                <td>`<?php echo $row1['prod_order']; ?></td>
-                                <td>`<?php echo $row1['nodemand']; ?></td>
-                                <td>`<?= $dt_ori_pd_code['VALUESTRING']; ?></td>
-                                <td><?php echo $row1['suffix_dye']; ?></td>
-                                <td>
-                                    <?php
-                                        if(!empty($dt_ori_pd_code['VALUESTRING'])){
-                                            $where_oriPDCode2    = "nodemand = '$dt_ori_pd_code[VALUESTRING]'";
-                                        }else{
-                                            $where_oriPDCode2    = "nokk = '$row1[prod_order]'";
-                                        }
-                                        $cw_dyeing = mysqli_query($con, "SELECT status_warna 
-                                                                            FROM `tbl_cocok_warna_dye`
-                                                                            WHERE 
-                                                                                $where_oriPDCode2
-                                                                            AND no_mesin = '$r_nomesin[no_mesin]'");
-                                        $row_cw_dyeing  = mysqli_fetch_assoc($cw_dyeing);
-                                        if(!empty($row_cw_dyeing['status_warna'])){
-                                            echo $row_cw_dyeing['status_warna'];
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
+                        <tr valign="top">
+                            <td align="center"><?php echo $no; ?></td>
+                            <td align="center"><?php echo date("d/m/y", strtotime($row1['tgl_buat'])); ?></td>
+                            <td align="center"><?php echo strtoupper($row1['no_ncp_gabungan']); ?></td>
+                            <td><?php echo strtoupper($row1['langganan']); ?></td>
+                            <td align="center"><?php echo strtoupper($row1['no_order']); ?></td>
+                            <td><?php echo strtoupper($row1['no_warna']); ?></td>
+                            <td><?php echo strtoupper($row1['warna']); ?></td>
+                            <td align="center">
+                                <?php
+                                    $q_ITXVIEWKK    = db2_exec($conn2, "SELECT * FROM ITXVIEWKK WHERE PRODUCTIONDEMANDCODE = '$row1[nodemand]'");
+                                    $d_ITXVIEWKK    = db2_fetch_assoc($q_ITXVIEWKK);
+                                ?>
+                                '<?php echo $d_ITXVIEWKK['LOT']; ?>
+                            </td>
+                            <td align="center"><?php echo strtoupper($row1['rol']); ?></td>
+                            <td align="right"><?php echo strtoupper($row1['berat']); ?></td>
+                            <td><?php echo strtoupper($row1['no_hanger']); ?></td>
+                            <td align="left"><?php echo strtoupper($row1['masalah']); ?></td>
+                            <td><?php echo $row1['masalah_dominan']; ?></td>
+                            <td>
+                                <?php
+                                    if(!empty($dt_ori_pd_code['VALUESTRING'])){
+                                        $where_oriPDCode    = "a.nodemand = '$dt_ori_pd_code[VALUESTRING]'";
+                                    }else{
+                                        $where_oriPDCode    = "a.nokk = '$row1[prod_order]'";
+                                    }
+                                    $nomesin_hasilcelup = mysqli_query($condye, "SELECT
+                                                                                        b.no_mesin
+                                                                                    FROM
+                                                                                        tbl_schedule b
+                                                                                        LEFT JOIN  tbl_montemp c ON c.id_schedule = b.id
+                                                                                        LEFT JOIN tbl_hasilcelup a ON a.id_montemp=c.id
+                                                                                    WHERE
+                                                                                        $where_oriPDCode
+                                                                                        AND (a.`status`='OK' OR a.`status` = 'Gagal Proses')");
+                                    $r_nomesin  = mysqli_fetch_assoc($nomesin_hasilcelup);
+                                    if(!empty($r_nomesin['no_mesin'])){
+                                        echo $r_nomesin['no_mesin'];
+                                    }
+                                ?>
+                            </td>
+                            <td align="left"><?php echo strtoupper($row1['akar_masalah_dye']); ?></td>
+                            <td align="left"><?php echo strtoupper($row1['solusi_jangka_panjang_dye']); ?></td>
+                            <td align="left"><?php echo strtoupper($row1['ket_dye']); ?></td>
+                            <td><?= $row_analisaresep['kk_kestabilan']; ?></td> <!-- K.R -->
+                            <td><?= $row_analisaresep['resep']; ?></td> <!-- R.B/R.L/R.S -->
+                            <td><?= $row_analisaresep['status_resep'] ?></td><!-- Status Resep -->
+                            <td><?= $row_analisaresep['analisa_resep'] ?></td><!-- Analisa Resep-->
+                            <td><?php echo $row1['ncp_hitung']; ?></td>
+                            <td><?php echo $row1['status']; ?></td>
+                            <td><?php echo $row1['m_proses']; ?></td>
+                            <td>`<?php echo $row1['prod_order']; ?></td>
+                            <td>`<?php echo $row1['nodemand']; ?></td>
+                            <td>`<?= $dt_ori_pd_code['VALUESTRING']; ?></td>
+                            <td><?php echo $row1['suffix_dye']; ?></td>
+                            <td>
+                                <?php
+                                    if(!empty($dt_ori_pd_code['VALUESTRING'])){
+                                        $where_oriPDCode2    = "nodemand = '$dt_ori_pd_code[VALUESTRING]'";
+                                    }else{
+                                        $where_oriPDCode2    = "nokk = '$row1[prod_order]'";
+                                    }
+                                    $cw_dyeing = mysqli_query($con, "SELECT status_warna 
+                                                                        FROM `tbl_cocok_warna_dye`
+                                                                        WHERE 
+                                                                            $where_oriPDCode2
+                                                                        AND no_mesin = '$r_nomesin[no_mesin]'");
+                                    $row_cw_dyeing  = mysqli_fetch_assoc($cw_dyeing);
+                                    if(!empty($row_cw_dyeing['status_warna'])){
+                                        echo $row_cw_dyeing['status_warna'];
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <?php
+                                    $cw_fin_oven = mysqli_query($con, "SELECT `status` 
+                                                                        FROM
+                                                                            `tbl_lap_inspeksi` 
+                                                                        WHERE
+                                                                            nodemand = '$dt_ori_pd_code[VALUESTRING]' 
+                                                                            AND proses = 'Oven' AND dept = 'QCF'");
+                                    $row_cw_fin_oven  = mysqli_fetch_assoc($cw_fin_oven);
+                                    if(!empty($row_cw_fin_oven['status'])){
+                                        echo $row_cw_fin_oven['status'];
+                                    }else{
                                         $cw_fin_oven = mysqli_query($con, "SELECT `status` 
                                                                             FROM
                                                                                 `tbl_lap_inspeksi` 
                                                                             WHERE
-                                                                                nodemand = '$dt_ori_pd_code[VALUESTRING]' 
+                                                                                nokk = '$row1[prod_order]' 
                                                                                 AND proses = 'Oven' AND dept = 'QCF'");
-                                        $row_cw_fin_oven  = mysqli_fetch_assoc($cw_fin_oven);
-                                        if(!empty($row_cw_fin_oven['status'])){
-                                            echo $row_cw_fin_oven['status'];
-                                        }else{
-                                            $cw_fin_oven = mysqli_query($con, "SELECT `status` 
+                                        $row_cw_fin_oven  = mysqli_fetch_assoc($cw_fin_oven); 
+                                        echo $row_cw_fin_oven['status'];
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <?php
+                                    $cw_fin_fin = mysqli_query($con, "SELECT `status` 
                                                                                 FROM
                                                                                     `tbl_lap_inspeksi` 
                                                                                 WHERE
-                                                                                    nokk = '$row1[prod_order]' 
-                                                                                    AND proses = 'Oven' AND dept = 'QCF'");
-                                            $row_cw_fin_oven  = mysqli_fetch_assoc($cw_fin_oven); 
-                                            echo $row_cw_fin_oven['status'];
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
+                                                                                    nodemand = '$dt_ori_pd_code[VALUESTRING]'
+                                                                                    AND proses = 'FIN' AND dept = 'QCF'");
+                                    $row_cw_fin_fin  = mysqli_fetch_assoc($cw_fin_fin);
+
+                                    if(!empty($row_cw_fin_fin['status'])){
+                                        echo $row_cw_fin_fin['status'];
+                                    }else{
                                         $cw_fin_fin = mysqli_query($con, "SELECT `status` 
-                                                                                    FROM
-                                                                                        `tbl_lap_inspeksi` 
-                                                                                    WHERE
-                                                                                        nodemand = '$dt_ori_pd_code[VALUESTRING]'
-                                                                                        AND proses = 'FIN' AND dept = 'QCF'");
+                                                                                FROM
+                                                                                    `tbl_lap_inspeksi` 
+                                                                                WHERE
+                                                                                    nokk = '$row1[prod_order]'
+                                                                                    AND proses = 'FIN' AND dept = 'QCF'");
                                         $row_cw_fin_fin  = mysqli_fetch_assoc($cw_fin_fin);
+                                        echo $row_cw_fin_fin['status'];
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <?php
+                                    $cw_fin_Comp = mysqli_query($con, "SELECT `status` 
+                                                                                FROM
+                                                                                    `tbl_lap_inspeksi` 
+                                                                                WHERE
+                                                                                    nodemand = '$dt_ori_pd_code[VALUESTRING]'
+                                                                                    AND proses = 'Comp' AND dept = 'QCF'");
+                                    $row_cw_fin_Comp  = mysqli_fetch_assoc($cw_fin_Comp);
 
-                                        if(!empty($row_cw_fin_fin['status'])){
-                                            echo $row_cw_fin_fin['status'];
-                                        }else{
-                                            $cw_fin_fin = mysqli_query($con, "SELECT `status` 
-                                                                                    FROM
-                                                                                        `tbl_lap_inspeksi` 
-                                                                                    WHERE
-                                                                                        nokk = '$row1[prod_order]'
-                                                                                        AND proses = 'FIN' AND dept = 'QCF'");
-                                            $row_cw_fin_fin  = mysqli_fetch_assoc($cw_fin_fin);
-                                            echo $row_cw_fin_fin['status'];
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
+                                    if(!empty($row_cw_fin_Comp['status'])){
+                                        echo $row_cw_fin_Comp['status'];
+                                    }else{
                                         $cw_fin_Comp = mysqli_query($con, "SELECT `status` 
-                                                                                    FROM
-                                                                                        `tbl_lap_inspeksi` 
-                                                                                    WHERE
-                                                                                        nodemand = '$dt_ori_pd_code[VALUESTRING]'
-                                                                                        AND proses = 'Comp' AND dept = 'QCF'");
+                                                                                FROM
+                                                                                    `tbl_lap_inspeksi` 
+                                                                                WHERE
+                                                                                    nokk = '$row1[prod_order]'
+                                                                                    AND proses = 'Comp' AND dept = 'QCF'");
                                         $row_cw_fin_Comp  = mysqli_fetch_assoc($cw_fin_Comp);
-
-                                        if(!empty($row_cw_fin_Comp['status'])){
-                                            echo $row_cw_fin_Comp['status'];
-                                        }else{
-                                            $cw_fin_Comp = mysqli_query($con, "SELECT `status` 
-                                                                                    FROM
-                                                                                        `tbl_lap_inspeksi` 
-                                                                                    WHERE
-                                                                                        nokk = '$row1[prod_order]'
-                                                                                        AND proses = 'Comp' AND dept = 'QCF'");
-                                            $row_cw_fin_Comp  = mysqli_fetch_assoc($cw_fin_Comp);
-                                            echo $row_cw_fin_Comp['status'];
-                                        }
-                                    ?>
-                                </td>
-                            </tr>
-                        <?php 
-                                $no++;
-                            } 
-                        ?>
+                                        echo $row_cw_fin_Comp['status'];
+                                    }
+                                ?>
+                            </td>
+                        </tr>
+                        <?php $no++; } ?>
                     </tbody>
                 </table>
             </td>

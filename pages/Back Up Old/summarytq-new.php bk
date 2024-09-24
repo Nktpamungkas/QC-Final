@@ -1,0 +1,779 @@
+<?php
+$nokk=$_GET[nokk];
+$no_test=$_GET[no_test];
+$qry=mysql_query("SELECT a.*, a.id AS idkk, b.* From tbl_tq_nokk a INNER JOIN tbl_master_test b ON a.no_test=b.no_testmaster WHERE no_test='$no_test'");
+$cekd=mysql_num_rows($qry); 
+$rd=mysql_fetch_array($qry);
+?>	
+<?php 
+$sqlCek1=mysql_query("SELECT *,
+	CONCAT_WS(' ',fc_note,ph_note, abr_note, bas_note, dry_note, fla_note, fwe_note, fwi_note, burs_note,repp_note,wick_note,wick_note,absor_note,apper_note,fiber_note,pillb_note,pillm_note,pillr_note,thick_note,growth_note,recover_note,stretch_note,sns_note,snab_note,snam_note,snap_note,wash_note,water_note,acid_note,alkaline_note,crock_note,phenolic_note,cm_printing_note,cm_dye_note,light_note,light_pers_note,saliva_note,h_shrinkage_note,fibre_note) AS note_g FROM tbl_tq_test WHERE id_nokk='$rd[idkk]' ORDER BY id DESC LIMIT 1");
+$cek1=mysql_num_rows($sqlCek1);
+$rcek1=mysql_fetch_array($sqlCek1);
+?>
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form0" id="form0">
+<div class="box box-info" style="width: 98%;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Summary Test Quality</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" ><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body"> 
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="no_test" class="col-sm-3 control-label">No Test</label>
+                <div class="col-sm-5">
+                    <input name="no_test" type="text" class="form-control" id="no_test" onchange="window.location='SummaryTQNew-'+this.value" 
+                    value="<?php echo $_GET[no_test];?>" placeholder="No Test" required>
+                </div>
+            </div> 
+            <div class="form-group">
+                <label for="nokk" class="col-sm-3 control-label">No KK</label>
+                <div class="col-sm-5">
+                    <input name="nokk" type="text" class="form-control" id="nokk" placeholder="No KK" value="<?php echo $rd[nokk];?>" readonly="readonly">
+                </div>				   
+            </div>
+            <div class="form-group">
+                <label for="buyer" class="col-sm-3 control-label">Buyer</label>
+                <div class="col-sm-8">
+                    <input name="buyer" type="text" class="form-control" id="buyer" placeholder="Buyer" value="<?php echo $rd[pelanggan];?>" readonly="readonly">
+                </div>
+            </div> 
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="jenis_kain" class="col-sm-3 control-label">Jenis Kain</label>
+                <div class="col-sm-8">
+                    <input name="jenis_kain" type="text" class="form-control" id="jenis_kain" placeholder="Jenis Kain" value="<?php echo $rd[jenis_kain];?>" readonly="readonly">
+                </div>
+            </div> 
+            <div class="form-group">
+                <label for="warna" class="col-sm-3 control-label">Warna</label>
+                <div class="col-sm-8">
+                    <input name="warna" type="text" class="form-control" id="warna" placeholder="Warna" value="<?php echo $rd[warna];?>" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </div>	 
+   <!--<div class="box-footer"> 
+	<button type="submit" value="cari" class="btn btn-danger">Cari Data</button>
+   </div>-->
+    <!-- /.box-footer -->
+</div>
+</form>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header">
+            <small class="pull-right">Date: <?php echo $rcek1[tgl_buat];?></small>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-hover table-striped" width="100%"> 
+                        <thead class="bg-blue">
+                            <tr>
+                                <th width="24"><div align="center">Nama Test</div></th>
+                                <th width="24"><div align="center">Status Test</div></th>
+                                <th width="80"><div align="center">Note</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <?php
+                                $sql = "SELECT a.*, b.*, c.* From tbl_tq_nokk a 
+                                INNER JOIN tbl_master_test b ON a.no_test=b.no_testmaster
+                                INNER JOIN tbl_tq_test c ON a.id=c.id_nokk
+                                WHERE no_test='$no_test'";
+                                $result=mysql_query($sql); 
+                                $no="1";
+                                while($row=mysql_fetch_array($result)){ 
+                                $detail=explode(",",$row['physical']);
+                                $detail2=explode(",",$row['functional']);
+                                $detail3=explode(",",$row['colorfastness']);
+                                ?>
+                            <?php if(in_array("FLAMMABILITY",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FLAMMABILITY",$detail)){echo "FLAMMABILITY";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fla']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fla']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fla']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fla']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fla']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fla']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['fla_note']!=""){echo $row['fla_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FIBER CONTENT",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FIBER CONTENT",$detail)){echo "FIBER CONTENT";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fib']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fib']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fib']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fib']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fib']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fib']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['fiber_note']!=""){echo $row['fiber_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FABRIC COUNT",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FABRIC COUNT",$detail)){echo "FABRIC COUNT";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fc']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fc']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fc']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fc']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fc']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fc']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['fc_note']!=""){echo $row['fc_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("BOW & SKEW",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BOW & SKEW",$detail)){echo "BOW & SKEW";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_bsk']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_bsk']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_bsk']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_bsk']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_bsk']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_bsk']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['bas_note']!=""){echo $row['bas_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PILLING MARTINDLE",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PILLING MARTINDLE",$detail)){echo "PILLING MARTINDLE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_pm']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_pm']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_pm']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_pm']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_pm']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_pm']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['pillm_note']!=""){echo $row['pillm_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PILLING LOCUS",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PILLING LOCUS",$detail)){echo "PILLING LOCUS";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_pl']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_pl']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_pl']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_pl']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_pl']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_pl']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['pilll_note']!=""){echo $row['pilll_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){echo "FABRIC WEIGHT";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fwss2']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fwss2']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fwss2']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fwss2']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fwss2']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fwss2']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['fwe_note']!=""){echo $row['fwe_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){echo "FABRIC WIDTH";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fwss3']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fwss3']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fwss3']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fwss3']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fwss3']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fwss3']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['fwi_note']!=""){echo $row['fwi_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FABRIC WEIGHT & SHRINKAGE & SPIRALITY",$detail)){echo "SHRINKAGE & SPIRALITY";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_fwss']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_fwss']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_fwss']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_fwss']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_fwss']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_fwss']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['sns_note']!=""){echo $row['sns_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PILLING BOX",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PILLING BOX",$detail)){echo "PILLING BOX";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_pb']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_pb']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_pb']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_pb']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_pb']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_pb']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['pillb_note']!=""){echo $row['pillb_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PILLING RANDOM TUMBLER",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PILLING RANDOM TUMBLER",$detail)){echo "PILLING RANDOM TUMBLER";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_prt']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_prt']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_prt']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_prt']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_prt']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_prt']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['pillr_note']!=""){echo $row['pillr_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("ABRATION",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("ABRATION",$detail)){echo "ABRATION";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_abr']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_abr']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_abr']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_abr']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_abr']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_abr']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['abr_note']!=""){echo $row['abr_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("SNAGGING MACE",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("SNAGGING MACE",$detail)){echo "SNAGGING MACE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_sm']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_sm']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_sm']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_sm']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_sm']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_sm']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['snam_note']!=""){echo $row['snam_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("SNAGGING POD",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("SNAGGING POD",$detail)){echo "SNAGGING POD";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_sp']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_sp']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_sp']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_sp']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_sp']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_sp']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['snap_note']!=""){echo $row['snap_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("BEAN BAG",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BEAN BAG",$detail)){echo "BEAN BAG";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_sb']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_sb']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_sb']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_sb']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_sb']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_sb']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['snab_note']!=""){echo $row['snab_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if($row['bs_instron']!=""){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BURSTING STRENGTH",$detail)){echo "BURSTING STRENGTH (INSTRON)";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_bs2']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_bs2']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_bs2']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_bs2']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_bs2']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_bs2']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['burs_note']!=""){echo $row['burs_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if($row['bs_mullen']!=""){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BURSTING STRENGTH",$detail)){echo "BURSTING STRENGTH (MULLEN)";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_bs3']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_bs3']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_bs3']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_bs3']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_bs3']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_bs3']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['burs_note']!=""){echo $row['burs_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if($row['bs_tru']!=""){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BURSTING STRENGTH",$detail)){echo "BURSTING STRENGTH (TRU)";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_bs']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_bs']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_bs']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_bs']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_bs']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_bs']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['burs_note']!=""){echo $row['burs_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("THICKNESS",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("THICKNESS",$detail)){echo "THICKNESS";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_th']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_th']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_th']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_th']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_th']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_th']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['thick_note']!=""){echo $row['thick_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("STRETCH & RECOVERY",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("STRETCH & RECOVERY",$detail)){echo "STRETCH & RECOVERY";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_sr']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_sr']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_sr']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_sr']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_sr']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_sr']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['stretch_note']!="" or $row['recover_note']!=""){echo $row['stretch_note']." ".$row['recover_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("GROWTH",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("GROWTH",$detail)){echo "GROWTH";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_gr']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_gr']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_gr']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_gr']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_gr']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_gr']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['growth_note']!=""){echo $row['growth_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("APPEARANCE",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("APPEARANCE",$detail)){echo "APPEARANCE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_ap']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_ap']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_ap']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_ap']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_ap']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_ap']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['apper_note']!=""){echo $row['apper_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("HEAT SHRINKAGE",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("HEAT SHRINKAGE",$detail)){echo "HEAT SHRINKAGE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_hs']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_hs']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_hs']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_hs']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_hs']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_hs']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['h_shrinkage_note']!=""){echo $row['h_shrinkage_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("FIBRE/FUZZ",$detail)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("FIBRE/FUZZ",$detail)){echo "FIBRE/FUZZ";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_ff']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_ff']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_ff']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_ff']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_ff']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_ff']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['fibre_note']!=""){echo $row['fibre_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("WICKING",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("WICKING",$detail2)){echo "WICKING";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_wic']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_wic']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_wic']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_wic']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_wic']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_wic']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['wick_note']!=""){echo $row['wick_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("ABSORBENCY",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("ABSORBENCY",$detail2)){echo "ABSORBENCY";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_abs']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_abs']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_abs']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_abs']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_abs']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_abs']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['absor_note']!=""){echo $row['absor_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("DRYING TIME",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("DRYING TIME",$detail2)){echo "DRYING TIME";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_dry']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_dry']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_dry']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_dry']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_dry']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_dry']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['dry_note']!=""){echo $row['dry_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("WATER REPPELENT",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("WATER REPPELENT",$detail2)){echo "WATER REPPELENT";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_wp']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_wp']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_wp']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_wp']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_wp']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_wp']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['repp_note']!=""){echo $row['repp_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PH",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PH",$detail2)){echo "PH";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_ph']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_ph']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_ph']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_ph']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_ph']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_ph']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['ph_note']!=""){echo $row['ph_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("SOIL RELEASE",$detail2)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("SOIL RELEASE",$detail2)){echo "SOIL RELEASE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_sor']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_sor']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_sor']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_sor']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_sor']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_sor']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['soil_note']!=""){echo $row['soil_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("WASHING",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("WASHING",$detail3)){echo "WASHING";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_wf']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_wf']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_wf']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_wf']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_wf']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_wf']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['wash_note']!=""){echo $row['wash_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PERSPIRATION ACID",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PERSPIRATION ACID",$detail3)){echo "PERSPIRATION ACID";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_pac']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_pac']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_pac']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_pac']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_pac']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_pac']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['acid_note']!=""){echo $row['acid_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PERSPIRATION ALKALINE",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PERSPIRATION ALKALINE",$detail3)){echo "PERSPIRATION ALKALINE";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_pal']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_pal']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_pal']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_pal']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_pal']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_pal']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['alkaline_note']!=""){echo $row['alkaline_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("WATER",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("WATER",$detail3)){echo "WATER";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_wtr']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_wtr']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_wtr']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_wtr']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_wtr']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_wtr']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['water_note']!=""){echo $row['water_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("CROCKING",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("CROCKING",$detail3)){echo "CROCKING";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_cr']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_cr']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_cr']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_cr']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_cr']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_cr']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['crock_note']!=""){echo $row['crock_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("PHENOLIC YELLOWING",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("PHENOLIC YELLOWING",$detail3)){echo "PHENOLIC YELLOWING";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_py']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_py']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_py']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_py']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_py']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_py']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['phenolic_note']!=""){echo $row['phenolic_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("LIGHT",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("LIGHT",$detail3)){echo "LIGHT";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_lg']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_lg']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_lg']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_lg']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_lg']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_lg']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['light_note']!=""){echo $row['light_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("COLOR MIGRATION-OVEN TEST",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("COLOR MIGRATION-OVEN TEST",$detail3)){echo "COLOR MIGRATION-OVEN TEST";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_cmo']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_cmo']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_cmo']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_cmo']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_cmo']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_cmo']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['cm_printing_note']!=""){echo $row['cm_printing_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("COLOR MIGRATION",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("COLOR MIGRATION",$detail3)){echo "COLOR MIGRATION";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_cm']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_cm']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_cm']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_cm']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_cm']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_cm']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?> 
+                                </td>
+                                <td align="center" ><?php if($row['cm_dye_note']!=""){echo $row['cm_dye_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("LIGHT PERSPIRATION",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("LIGHT PERSPIRATION",$detail3)){echo "LIGHT PERSPIRATION";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_lp']=="DISPOSISI"){?> <span class='label bg-yellow blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_lp']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_lp']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_lp']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_lp']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_lp']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['light_pers_note']!=""){echo $row['light_pers_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("SALIVA",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("SALIVA",$detail3)){echo "SALIVA";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_slv']=="DISPOSISI"){?> <span class='label label-bg-red blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_slv']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_slv']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_slv']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_slv']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_slv']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['saliva_note']!=""){echo $row['saliva_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php if(in_array("BLEEDING",$detail3)){?>
+                            <tr>
+                                <td align="left" ><a href="Testing2New-<?php echo $row['nokk'];?>-<?php echo $row['no_test'];?>"><?php if(in_array("BLEEDING",$detail3)){echo "BLEEDING";} ?></a></td>
+                                <td align="center" >
+                                <?php if($row['stat_bld']=="DISPOSISI"){?> <span class='label label-bg-red blink_me'><?php echo "DISPOSISI"; ?></span> 
+                                <?php }else if($row['stat_bld']=="FAIL"){?> <span class='label bg-red blink_me'><?php echo "FAIL"; ?></span> 
+                                <?php }else if($row['stat_bld']=="PASS"){?> <span class='label bg-green'><?php echo "PASS"; ?></span>
+                                <?php }else if($row['stat_bld']=="R"){?> <span class='label bg-orange'><?php echo "R"; ?></span>
+                                <?php }else if($row['stat_bld']=="RANDOM"){?> <span class='label bg-maroon'><?php echo "RANDOM"; ?></span>
+                                <?php }else if($row['stat_bld']=="A"){?> <span class='label bg-teal'><?php echo "A"; ?></span> <?php } ?>
+                                </td>
+                                <td align="center" ><?php if($row['bleeding_note']!=""){echo $row['bleeding_note'];}?></td>
+                            </tr>
+                            <?php } ?>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+	        </div>
+	    </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-body">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form4" id="form4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="status" class="col-sm-4 control-label">SUMMARY STATUS TEST</label>
+                            <div class="col-sm-5">
+                                <select name="status" class="form-control select2" id="status" style="width: 100%;">
+                                    <option <?php if($rcek1['status']==""){?> selected=selected <?php };?>value="">Pilih</option>
+                                    <option <?php if($rcek1['status']=="Approve"){?> selected=selected <?php };?>value="Approve">Approve</option>
+                                    <option <?php if($rcek1['status']=="Conditional Approve"){?> selected=selected <?php };?>value="Conditional Approve">Conditional Approve</option>
+                                    <option <?php if($rcek1['status']=="Limit Approve"){?> selected=selected <?php };?>value="Limit Approve">Limit Approve</option>
+                                    <option <?php if($rcek1['status']=="Reject"){?> selected=selected <?php };?>value="Reject">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label for="approve" class="col-sm-4 control-label">APPROVED BY</label>
+                                <div class="col-sm-5">
+                                    <input name="approve" type="text" class="form-control" id="approve" placeholder="" value="<?php echo $rcek1[approve];?>" readonly="readonly">
+                                </div>				   
+                            </div>
+                        <div class="form-group">					
+                            <?php if($no_test!=""){ ?>
+                                <button type="submit" class="btn btn-primary pull-right" name="status_save" value="save"><i class="fa fa-save"></i> Simpan Status</button>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+	        </div>
+	    </div>
+    </div>
+</div>
+<div class="row">
+    
+</div>
+<?php
+if($_POST[status_save]=="save" and $cek1>0){
+	$sqlST=mysql_query("UPDATE tbl_tq_test SET
+	`status`='$_POST[status]',
+    `approve`='$_SESSION[nama1]',
+	`tgl_update`=now()
+    WHERE `id_nokk`='$rd[idkk]'
+	");
+	if($sqlST){
+	echo "<script>swal({
+  title: 'Status save',   
+  text: 'Klik Ok untuk input data kembali',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+    
+	 window.location.href='SummaryTQNew-$no_test'; 
+  }
+});</script>";
+	}
+}else if($_POST[status_save]=="save"){
+	$sqlST=mysql_query("INSERT tbl_tq_test SET
+	`id_nokk`='$rd[idkk]',
+	`status`='$_POST[status]',
+    `approve`='$_SESSION[nama1]',
+	`tgl_buat`=now(),
+	`tgl_update`=now()    
+	");
+	if($sqlST){
+	echo "<script>swal({
+  title: 'Status save',   
+  text: 'Klik Ok untuk input data kembali',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+    
+	 window.location.href='SummaryTQNew-$no_test'; 
+  }
+});</script>";
+	}
+}
+if($no_test!="" and $cekd==0){
+    echo "<script>swal({
+ title: 'No Test Tidak Ditemukan',   
+ text: 'Klik Ok untuk input data kembali',
+ type: 'info',
+ }).then((result) => {
+ if (result.value) {
+   
+    window.location.href='SummaryTQNew'; 
+ }
+});</script>";
+}
+?>

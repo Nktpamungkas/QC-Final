@@ -1,0 +1,13 @@
+<?php
+if ($_POST) {
+    extract($_POST);
+    $id = mysql_real_escape_string($_POST['id']);
+    $analisa =mysql_real_escape_string($_POST['analisa']);
+	$pencegahan =mysql_real_escape_string($_POST['pencegahan']);
+    $sqlupdate=mysql_query("UPDATE `tbl_ganti_kain` SET
+		`analisa`='$analisa',
+        `pencegahan`='$pencegahan',
+        `sebab`='$_POST[penyebab]'
+				WHERE `id`='$id' LIMIT 1");
+    
+}

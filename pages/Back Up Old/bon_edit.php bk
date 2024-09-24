@@ -1,0 +1,59 @@
+<?php
+session_start();
+include("../koneksi.php");
+    $modal_id=$_GET['id'];
+	$modal=mysql_query("SELECT * FROM tbl_ganti_kain WHERE id='$modal_id' ");
+while($r=mysql_fetch_array($modal)){	
+?>
+          <div class="modal-dialog">
+            <div class="modal-content">
+            <form class="form-horizontal" name="modal_popup" data-toggle="validator" method="post" action="EditBon" enctype="multipart/form-data">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Bon</h4>
+              </div>
+              <div class="modal-body">
+              <input type="hidden" id="id" name="id" value="<?php echo $r[id];?>">
+		<div class="form-group">
+                  <label for="penyebab" class="col-sm-3 control-label">Penyebab</label>
+			      <div class="col-sm-6">
+                  <select class="form-control select2" name="penyebab">
+				  <option value="">Pilih</option>	  
+				  <option value="Man" <?php if($r[sebab]=="Man"){ echo "SELECTED"; }?>>Man</option>
+				  <option value="Methode" <?php if($r[sebab]=="Methode"){ echo "SELECTED"; }?>>Methode</option>
+				  <option value="Machine" <?php if($r[sebab]=="Machine"){ echo "SELECTED"; }?>>Machine</option>
+				  <option value="Material" <?php if($r[sebab]=="Material"){ echo "SELECTED"; }?>>Material</option>
+				  <option value="Environment" <?php if($r[sebab]=="Environment"){ echo "SELECTED"; }?>>Environment</option>	  
+				  </select>
+			</div>  
+		</div>		  
+		<div class="form-group">
+                  <label for="analisa" class="col-sm-3 control-label">Analisa</label>
+			      <div class="col-sm-6">
+                    <textarea name="analisa" class="form-control"><?php echo $r[analisa]; ?></textarea>
+			</div>  
+		</div>		  
+		<div class="form-group">
+                  <label for="pencegahan" class="col-sm-3 control-label">Pencegahan</label>
+			      <div class="col-sm-6">
+                    <textarea name="pencegahan" class="form-control"><?php echo $r[pencegahan]; ?></textarea>
+			</div>  
+		</div>		  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Save</button>
+              </div>
+            </form>
+            </div>
+            <!-- /.modal-content -->
+  </div>
+          <!-- /.modal-dialog -->
+          <?php } ?>
+<script>
+	$(function () {
+    //Initialize Select2 Elements
+	$('.select2').select2();
+	}
+	?>

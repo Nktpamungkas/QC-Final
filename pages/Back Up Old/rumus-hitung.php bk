@@ -1,0 +1,772 @@
+<script>
+	
+function roundToTwo(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+}
+function roundToThree(num) {    
+    return +(Math.round(num + "e+3")  + "e-3");
+}
+	
+function hitung_len_stretch(){
+	var len=document.forms['form1']['len_stretch'].value;
+	var hasil_len;
+	    if(len>0){len=document.forms['form1']['len_stretch'].value;}else{ len=0;}
+		hasil_len=roundToTwo(((parseFloat(len)-12.5)/12.5)*100).toFixed(2);
+        if(len==0){document.forms['form1']['hasil_len_stretch'].value=0;}else{
+        document.forms['form1']['hasil_len_stretch'].value=hasil_len;}
+}
+function hitung_wid_stretch(){
+	var wid=document.forms['form1']['wid_stretch'].value;
+    var hasil_wid;
+		if(wid>0){wid=document.forms['form1']['wid_stretch'].value;}else{ wid=0;}
+        hasil_wid=roundToTwo(((parseFloat(wid)-12.5)/12.5)*100).toFixed(2);
+        if(wid==0){document.forms['form1']['hasil_wid_stretch'].value=0;}else{
+        document.forms['form1']['hasil_wid_stretch'].value=hasil_wid;}
+}
+function hitung_len15_gr(){
+	var len15=document.forms['form1']['len15_gr'].value;
+	var hasil_len15_growth;
+    var hasil_len15_rec;
+	    if(len15>0){len15=document.forms['form1']['len15_gr'].value;}else{ len15=0;}
+		hasil_len15_growth=roundToTwo(((parseFloat(len15)-12.5)/12.5)*100).toFixed(2);
+        hasil_len15_rec=roundToTwo(((14.4-parseFloat(len15))/(14.4-12.5))*100).toFixed(2);
+        if(len15==0){document.forms['form1']['hasil_len15_growth'].value=0;}else{
+        document.forms['form1']['hasil_len15_growth'].value=hasil_len15_growth;}
+        if(len15==0){document.forms['form1']['hasil_len15_rec'].value=0;}else{
+        document.forms['form1']['hasil_len15_rec'].value=hasil_len15_rec;}
+}
+function hitung_wid30_gr(){
+	var wid30=document.forms['form1']['wid30_gr'].value;
+	var hasil_wid30_growth;
+    var hasil_wid30_rec;
+	    if(wid30>0){wid30=document.forms['form1']['wid30_gr'].value;}else{ wid30=0;}
+		hasil_wid30_growth=roundToTwo(((parseFloat(wid30)-12.5)/12.5)*100).toFixed(2);
+        hasil_wid30_rec=roundToTwo(((16.2-parseFloat(wid30))/(16.2-12.5))*100).toFixed(2);
+        if(wid30==0){document.forms['form1']['hasil_wid30_growth'].value=0;}else{
+        document.forms['form1']['hasil_wid30_growth'].value=hasil_wid30_growth;}
+        if(wid30==0){document.forms['form1']['hasil_wid30_rec'].value=0;}else{
+        document.forms['form1']['hasil_wid30_rec'].value=hasil_wid30_rec;}
+}
+function hitung_len35_gr(){
+	var len35=document.forms['form1']['len35_gr'].value;
+	var hasil_len35_growth;
+    var hasil_len35_rec;
+	    if(len35>0){len35=document.forms['form1']['len35_gr'].value;}else{ len35=0;}
+		hasil_len35_growth=roundToTwo(((parseFloat(len35)-12.5)/12.5)*100).toFixed(2);
+        hasil_len35_rec=roundToTwo(((16.8-parseFloat(len35))/(16.8-12.5))*100).toFixed(2);
+        if(len35==0){document.forms['form1']['hasil_len35_growth'].value=0;}else{
+        document.forms['form1']['hasil_len35_growth'].value=hasil_len35_growth;}
+        if(len35==0){document.forms['form1']['hasil_len35_rec'].value=0;}else{
+        document.forms['form1']['hasil_len35_rec'].value=hasil_len35_rec;}
+}
+function hitung_wid60_gr(){
+	var wid60=document.forms['form1']['wid60_gr'].value;
+	var hasil_wid60_growth;
+    var hasil_wid60_rec;
+	    if(wid60>0){wid60=document.forms['form1']['wid60_gr'].value;}else{ wid60=0;}
+		hasil_wid60_growth=roundToTwo(((parseFloat(wid60)-12.5)/12.5)*100).toFixed(2);
+        hasil_wid60_rec=roundToTwo(((20-parseFloat(wid60))/(20-12.5))*100).toFixed(2);
+        if(wid60==0){document.forms['form1']['hasil_wid60_growth'].value=0;}else{
+        document.forms['form1']['hasil_wid60_growth'].value=hasil_wid60_growth;}
+        if(wid60==0){document.forms['form1']['hasil_wid60_rec'].value=0;}else{
+        document.forms['form1']['hasil_wid60_rec'].value=hasil_wid60_rec;}
+}
+function hitung_rec_lulu(){
+	var max_lulu=document.forms['form1']['max_lulu'].value;
+    var after1_lulu=document.forms['form1']['after1_lulu'].value;
+    var after30_lulu=document.forms['form1']['after30_lulu'].value;
+	var hasil_after1_lulu;
+    var hasil_after30_lulu;
+	    if(max_lulu>0){max_lulu=document.forms['form1']['max_lulu'].value;}else{ max_lulu=0;}
+        if(after1_lulu>0){after1_lulu=document.forms['form1']['after1_lulu'].value;}else{ after1_lulu=0;}
+        if(after30_lulu>0){after30_lulu=document.forms['form1']['after30_lulu'].value;}else{ after30_lulu=0;}
+		hasil_after1_lulu=roundToTwo(((parseFloat(max_lulu)+10-parseFloat(after1_lulu))/parseFloat(max_lulu))*100).toFixed(2);
+        hasil_after30_lulu=roundToTwo(((parseFloat(max_lulu)+10-parseFloat(after30_lulu))/parseFloat(max_lulu))*100).toFixed(2);
+        if(after1_lulu==0){document.forms['form1']['hasil_after1_lulu'].value=0;}else{
+        document.forms['form1']['hasil_after1_lulu'].value=hasil_after1_lulu;}
+        if(after30_lulu==0){document.forms['form1']['hasil_after30_lulu'].value=0;}else{
+        document.forms['form1']['hasil_after30_lulu'].value=hasil_after30_lulu;}
+}
+function hitung_rec_ua(){
+	var max_ua=document.forms['form1']['max_ua'].value;
+    var after1_ua=document.forms['form1']['after1_ua'].value;
+	var hasil_after1_ua;
+	    if(max_ua>0){max_ua=document.forms['form1']['max_ua'].value;}else{ max_ua=0;}
+        if(after1_ua>0){after1_ua=document.forms['form1']['after1_ua'].value;}else{ after1_ua=0;}
+		hasil_after1_ua=roundToTwo(((parseFloat(max_ua)+12.7-parseFloat(after1_ua))/parseFloat(max_ua))*100).toFixed(2);
+        if(after1_ua==0){document.forms['form1']['hasil_after1_ua'].value=0;}else{
+        document.forms['form1']['hasil_after1_ua'].value=hasil_after1_ua;}
+}
+function hitung_rec_adi(){
+	var max_adi=document.forms['form1']['max_adi'].value;
+    var after30_adi=document.forms['form1']['after30_adi'].value;
+	var hasil_after30_adi;
+	    if(max_adi>0){max_adi=document.forms['form1']['max_adi'].value;}else{ max_adi=0;}
+        if(after30_adi>0){after30_adi=document.forms['form1']['after30_adi'].value;}else{ after30_adi=0;}
+		hasil_after30_adi=roundToTwo(((parseFloat(max_adi)+12.7-parseFloat(after30_adi))/parseFloat(max_adi))*100).toFixed(2);
+        if(after30_adi==0){document.forms['form1']['hasil_after30_adi'].value=0;}else{
+        document.forms['form1']['hasil_after30_adi'].value=hasil_after30_adi;}
+}
+function hitung_dm(){
+    var m0=document.forms['form1']['m0'].value;
+    var m=document.forms['form1']['m'].value;
+    var m1_5=document.forms['form1']['m1_5'].value;
+    var m1_10=document.forms['form1']['m1_10'].value;
+    var m1_15=document.forms['form1']['m1_15'].value;
+    var m1_20=document.forms['form1']['m1_20'].value;
+    var m1_25=document.forms['form1']['m1_25'].value;
+    var m1_30=document.forms['form1']['m1_30'].value;
+    var jml_air;
+    var dm_5;
+    var dm_10;
+    var dm_15;
+    var dm_20;
+    var dm_25;
+    var dm_30;
+    var sisa_air_5;
+    var sisa_air_10;
+    var sisa_air_15;
+    var sisa_air_20;
+    var sisa_air_25;
+    var sisa_air_30;
+    var evap_5;
+    var evap_10;
+    var evap_15;
+    var evap_20;
+    var evap_25;
+    var evap_30;
+    var slope_1;
+    var slope_2;
+    var slope_3;
+    var slope_4;
+    var slope_5;
+    var slope_6;
+    var ev;
+    if(m0>0){m0=document.forms['form1']['m0'].value;}else{ m0=0;}
+    if(m>0){m=document.forms['form1']['m'].value;}else{ m=0;}
+    if(m1_5>0){m1_5=document.forms['form1']['m1_5'].value;}else{ m1_5=0;}
+    if(m1_10>0){m1_10=document.forms['form1']['m1_10'].value;}else{ m1_10=0;}
+    if(m1_15>0){m1_15=document.forms['form1']['m1_15'].value;}else{ m1_15=0;}
+    if(m1_20>0){m1_20=document.forms['form1']['m1_20'].value;}else{ m1_20=0;}
+    if(m1_25>0){m1_25=document.forms['form1']['m1_25'].value;}else{ m1_25=0;}
+    if(m1_30>0){m1_30=document.forms['form1']['m1_30'].value;}else{ m1_30=0;}
+    //DM5
+    dm_5=roundToThree(parseFloat(m)-parseFloat(m1_5)).toFixed(3);
+    if(m1_5==0){document.forms['form1']['dm_5'].value=0;}else{
+    document.forms['form1']['dm_5'].value=dm_5;}
+    //DM10
+    dm_10=roundToThree(parseFloat(m)-parseFloat(m1_10)).toFixed(3);
+    if(m1_10==0){document.forms['form1']['dm_10'].value=0;}else{
+    document.forms['form1']['dm_10'].value=dm_10;}
+    //DM15
+    dm_15=roundToThree(parseFloat(m)-parseFloat(m1_15)).toFixed(3);
+    if(m1_15==0){document.forms['form1']['dm_15'].value=0;}else{
+    document.forms['form1']['dm_15'].value=dm_15;}
+    //DM20
+    dm_20=roundToThree(parseFloat(m)-parseFloat(m1_20)).toFixed(3);
+    if(m1_20==0){document.forms['form1']['dm_20'].value=0;}else{
+    document.forms['form1']['dm_20'].value=dm_20;}
+    //DM25
+    dm_25=roundToThree(parseFloat(m)-parseFloat(m1_25)).toFixed(3);
+    if(m1_25==0){document.forms['form1']['dm_25'].value=0;}else{
+    document.forms['form1']['dm_25'].value=dm_25;}
+    //DM30
+    dm_30=roundToThree(parseFloat(m)-parseFloat(m1_30)).toFixed(3);
+    if(m1_30==0){document.forms['form1']['dm_30'].value=0;}else{
+    document.forms['form1']['dm_30'].value=dm_30;}
+    //Jumlah Air
+    jml_air=roundToThree(parseFloat(m)-parseFloat(m0)).toFixed(3);
+    if(m==0){document.forms['form1']['jml_air'].value=0;}else{
+    document.forms['form1']['jml_air'].value=jml_air;}
+    //% Air 5 Menit
+    sisa_air_5= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_5)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_5==0){document.forms['form1']['sisa_air_5'].value=0;}else{
+    document.forms['form1']['sisa_air_5'].value=sisa_air_5;}
+    //% Air 10 Menit
+    sisa_air_10= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_10)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_10==0){document.forms['form1']['sisa_air_10'].value=0;}else{
+    document.forms['form1']['sisa_air_10'].value=sisa_air_10;}
+    //% Air 15 Menit
+    sisa_air_15= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_15)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_15==0){document.forms['form1']['sisa_air_15'].value=0;}else{
+    document.forms['form1']['sisa_air_15'].value=sisa_air_15;}
+    //% Air 20 Menit
+    sisa_air_20= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_20)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_20==0){document.forms['form1']['sisa_air_20'].value=0;}else{
+    document.forms['form1']['sisa_air_20'].value=sisa_air_20;}
+    //% Air 25 Menit
+    sisa_air_25= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_25)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_25==0){document.forms['form1']['sisa_air_25'].value=0;}else{
+    document.forms['form1']['sisa_air_25'].value=sisa_air_25;}
+    //% Air 30 Menit
+    sisa_air_30= roundToThree(((parseFloat(jml_air)-(parseFloat(m)-parseFloat(m1_30)))/parseFloat(jml_air))*100).toFixed(3);
+    if(m1_30==0){document.forms['form1']['sisa_air_30'].value=0;}else{
+    document.forms['form1']['sisa_air_30'].value=sisa_air_30;}
+    //Evaporasi 5 Menit
+    evap_5= roundToThree((parseFloat(dm_5)/parseFloat(m0))*100).toFixed(3);
+    if(m1_5==0){document.forms['form1']['evap_5'].value=0;}else{
+    document.forms['form1']['evap_5'].value=evap_5;}
+    //Evaporasi 10 Menit
+    evap_10= roundToThree((parseFloat(dm_10)/parseFloat(m0))*100).toFixed(3);
+    if(m1_10==0){document.forms['form1']['evap_10'].value=0;}else{
+    document.forms['form1']['evap_10'].value=evap_10;}
+    //Evaporasi 15 Menit
+    evap_15= roundToThree((parseFloat(dm_15)/parseFloat(m0))*100).toFixed(3);
+    if(m1_15==0){document.forms['form1']['evap_15'].value=0;}else{
+    document.forms['form1']['evap_15'].value=evap_15;}
+    //Evaporasi 20 Menit
+    evap_20= roundToThree((parseFloat(dm_20)/parseFloat(m0))*100).toFixed(3);
+    if(m1_20==0){document.forms['form1']['evap_20'].value=0;}else{
+    document.forms['form1']['evap_20'].value=evap_20;}
+    //Evaporasi 25 Menit
+    evap_25= roundToThree((parseFloat(dm_25)/parseFloat(m0))*100).toFixed(3);
+    if(m1_25==0){document.forms['form1']['evap_25'].value=0;}else{
+    document.forms['form1']['evap_25'].value=evap_25;}
+    //Evaporasi 30 Menit
+    evap_30= roundToThree((parseFloat(dm_30)/parseFloat(m0))*100).toFixed(3);
+    if(m1_30==0){document.forms['form1']['evap_30'].value=0;}else{
+    document.forms['form1']['evap_30'].value=evap_30;}
+    //Slope 1
+    slope_1= roundToTwo((parseFloat(evap_5)-0)/(0.08-0)).toFixed(2);
+    if(m1_5==0){document.forms['form1']['slope_1'].value=0;}else{
+    document.forms['form1']['slope_1'].value=slope_1;}
+    //Slope 2
+    slope_2= roundToTwo((parseFloat(evap_10)-parseFloat(evap_5))/(0.17-0.08)).toFixed(2);
+    if(m1_10==0){document.forms['form1']['slope_2'].value=0;}else{
+    document.forms['form1']['slope_2'].value=slope_2;}
+    //Slope 3
+    slope_3= roundToTwo((parseFloat(evap_15)-parseFloat(evap_10))/(0.25-0.17)).toFixed(2);
+    if(m1_15==0){document.forms['form1']['slope_3'].value=0;}else{
+    document.forms['form1']['slope_3'].value=slope_3;}
+    //Slope 4
+    slope_4= roundToTwo((parseFloat(evap_20)-parseFloat(evap_15))/(0.33-0.25)).toFixed(2);
+    if(m1_20==0){document.forms['form1']['slope_4'].value=0;}else{
+    document.forms['form1']['slope_4'].value=slope_4;}
+    //Slope 5
+    slope_5= roundToTwo((parseFloat(evap_25)-parseFloat(evap_20))/(0.42-0.33)).toFixed(2);
+    if(m1_25==0){document.forms['form1']['slope_5'].value=0;}else{
+    document.forms['form1']['slope_5'].value=slope_5;}
+    //Slope 6
+    slope_6= roundToTwo((parseFloat(evap_30)-parseFloat(evap_25))/(0.50-0.42)).toFixed(2);
+    if(m1_30==0){document.forms['form1']['slope_6'].value=0;}else{
+    document.forms['form1']['slope_6'].value=slope_6;}
+    //eV
+    ev=roundToTwo((parseFloat(slope_1)+parseFloat(slope_2)+parseFloat(slope_3)+parseFloat(slope_4)+parseFloat(slope_5)+parseFloat(slope_6))/6).toFixed(2);
+    if(m1_30==0){document.forms['form1']['rata_slope'].value=0;}else{
+    document.forms['form1']['rata_slope'].value=ev;}
+}
+function hitung_fiber_cs(){
+    var berat_asal_cs=document.forms['form1']['berat_asal_cs'].value;
+    var berat_cotton_cs=document.forms['form1']['berat_cotton_cs'].value;
+    var cotton_cs;
+    var spandex_cs;
+    var total_cs;
+    var a;
+    var b;
+    if(berat_asal_cs>0){berat_asal_cs=document.forms['form1']['berat_asal_cs'].value;}else{ berat_asal_cs=0;}
+    if(berat_cotton_cs>0){berat_cotton_cs=document.forms['form1']['berat_cotton_cs'].value;}else{ berat_cotton_cs=0;}
+    a=roundToTwo((parseFloat(berat_cotton_cs)/parseFloat(berat_asal_cs))*100*1.085).toFixed(2);
+    b=roundToTwo(((parseFloat(berat_asal_cs)-parseFloat(berat_cotton_cs))/parseFloat(berat_asal_cs))*100*1.015).toFixed(2);
+    //% Cotton 
+    cotton_cs=roundToTwo((parseFloat(a)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_cotton_cs==0){document.forms['form1']['cotton_cs'].value=0;}else{
+    document.forms['form1']['cotton_cs'].value=cotton_cs;}
+    //% Spandex 
+    spandex_cs=roundToTwo((parseFloat(b)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_cotton_cs==0){document.forms['form1']['spandex_cs'].value=0;}else{
+    document.forms['form1']['spandex_cs'].value=spandex_cs;}
+    // % Total
+    total_cs=roundToTwo(parseFloat(cotton_cs)+parseFloat(spandex_cs)).toFixed(2);
+    if(berat_cotton_cs==0){document.forms['form1']['total_cs'].value=0;}else{
+    document.forms['form1']['total_cs'].value=total_cs;}
+}
+function hitung_fiber_ps(){
+    var berat_asal_ps=document.forms['form1']['berat_asal_ps'].value;
+    var berat_poly_ps=document.forms['form1']['berat_poly_ps'].value;
+    var poly_ps;
+    var spandex_ps;
+    var total_ps;
+    var a;
+    var b;
+    if(berat_asal_ps>0){berat_asal_ps=document.forms['form1']['berat_asal_ps'].value;}else{ berat_asal_ps=0;}
+    if(berat_poly_ps>0){berat_poly_ps=document.forms['form1']['berat_poly_ps'].value;}else{ berat_poly_ps=0;}
+    a=roundToTwo((parseFloat(berat_poly_ps)/parseFloat(berat_asal_ps))*100*1.015).toFixed(2);
+    b=roundToTwo(((parseFloat(berat_asal_ps)-parseFloat(berat_poly_ps))/parseFloat(berat_asal_ps))*100*1.015).toFixed(2);
+    //% Poly 
+    poly_ps=roundToTwo((parseFloat(a)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_poly_ps==0){document.forms['form1']['poly_ps'].value=0;}else{
+    document.forms['form1']['poly_ps'].value=poly_ps;}
+    //% Spandex 
+    spandex_ps=roundToTwo((parseFloat(b)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_poly_ps==0){document.forms['form1']['spandex_ps'].value=0;}else{
+    document.forms['form1']['spandex_ps'].value=spandex_ps;}
+    // % Total
+    total_ps=roundToTwo(parseFloat(poly_ps)+parseFloat(spandex_ps)).toFixed(2);
+    if(berat_poly_ps==0){document.forms['form1']['total_ps'].value=0;}else{
+    document.forms['form1']['total_ps'].value=total_ps;}
+}
+function hitung_fiber_ns(){
+    var berat_asal_ns=document.forms['form1']['berat_asal_ns'].value;
+    var berat_nylon_ns=document.forms['form1']['berat_nylon_ns'].value;
+    var nylon_ns;
+    var spandex_ns;
+    var total_ns;
+    var a;
+    var b;
+    if(berat_asal_ns>0){berat_asal_ns=document.forms['form1']['berat_asal_ns'].value;}else{ berat_asal_ns=0;}
+    if(berat_nylon_ns>0){berat_nylon_ns=document.forms['form1']['berat_nylon_ns'].value;}else{ berat_nylon_ns=0;}
+    a=roundToTwo((parseFloat(berat_nylon_ns)/parseFloat(berat_asal_ns))*100*1.045).toFixed(2);
+    b=roundToTwo(((parseFloat(berat_asal_ns)-parseFloat(berat_nylon_ns))/parseFloat(berat_asal_ns))*100*1.015).toFixed(2);
+    //% Nylon 
+    nylon_ns=roundToTwo((parseFloat(a)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_nylon_ns==0){document.forms['form1']['nylon_ns'].value=0;}else{
+    document.forms['form1']['nylon_ns'].value=nylon_ns;}
+    //% Spandex 
+    spandex_ns=roundToTwo((parseFloat(b)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_nylon_ns==0){document.forms['form1']['spandex_ns'].value=0;}else{
+    document.forms['form1']['spandex_ns'].value=spandex_ns;}
+    // % Total
+    total_ns=roundToTwo(parseFloat(nylon_ns)+parseFloat(spandex_ns)).toFixed(2);
+    if(berat_nylon_ns==0){document.forms['form1']['total_ns'].value=0;}else{
+    document.forms['form1']['total_ns'].value=total_ns;}
+}
+function hitung_fiber_cp(){
+    var berat_asal_cp=document.forms['form1']['berat_asal_cp'].value;
+    var berat_cotpol_cp=document.forms['form1']['berat_cotpol_cp'].value;
+    var cotton_cp;
+    var poly_cp;
+    var total_cp;
+    var a;
+    var b;
+    if(berat_asal_cp>0){berat_asal_cp=document.forms['form1']['berat_asal_cp'].value;}else{ berat_asal_cp=0;}
+    if(berat_cotpol_cp>0){berat_cotpol_cp=document.forms['form1']['berat_cotpol_cp'].value;}else{ berat_cotpol_cp=0;}
+    a=roundToTwo((parseFloat(berat_cotpol_cp)/parseFloat(berat_asal_cp))*100*1.015).toFixed(2);
+    b=roundToTwo(((parseFloat(berat_asal_cp)-parseFloat(berat_cotpol_cp))/parseFloat(berat_asal_cp))*100*1.085).toFixed(2);
+    //% Cotton 
+    cotton_cp=roundToTwo((parseFloat(a)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_cotpol_cp==0){document.forms['form1']['cotton_cp'].value=0;}else{
+    document.forms['form1']['cotton_cp'].value=cotton_cp;}
+    //% Poly 
+    poly_cp=roundToTwo((parseFloat(b)/(parseFloat(a)+parseFloat(b)))*100).toFixed(2);
+    if(berat_cotpol_cp==0){document.forms['form1']['poly_cp'].value=0;}else{
+    document.forms['form1']['poly_cp'].value=poly_cp;}
+    // % Total
+    total_cp=roundToTwo(parseFloat(cotton_cp)+parseFloat(poly_cp)).toFixed(2);
+    if(berat_cotpol_cp==0){document.forms['form1']['total_cp'].value=0;}else{
+    document.forms['form1']['total_cp'].value=total_cp;}
+}
+function hitung_fiber_cps(){
+    var berat_asal_cps=document.forms['form1']['berat_asal_cps'].value;
+    var berat_cotpol_cps=document.forms['form1']['berat_cotpol_cps'].value;
+    var berat_poly_cps=document.forms['form1']['berat_poly_cps'].value;
+    var cotton_cps;
+    var poly_cps;
+    var spandex_cps;
+    var total_cps;
+    var a;
+    var b;
+    var c;
+    if(berat_asal_cps>0){berat_asal_cps=document.forms['form1']['berat_asal_cps'].value;}else{ berat_asal_cps=0;}
+    if(berat_cotpol_cps>0){berat_cotpol_cps=document.forms['form1']['berat_cotpol_cps'].value;}else{ berat_cotpol_cps=0;}
+    if(berat_poly_cps>0){berat_poly_cps=document.forms['form1']['berat_poly_cps'].value;}else{ berat_poly_cps=0;}
+    a=roundToTwo(((parseFloat(berat_asal_cps)-parseFloat(berat_cotpol_cps))/parseFloat(berat_asal_cps))*100*1.015).toFixed(2);
+    b=roundToTwo(((parseFloat(berat_cotpol_cps)-parseFloat(berat_poly_cps))/parseFloat(berat_asal_cps))*100*1.085).toFixed(2);
+    c=roundToTwo((parseFloat(berat_poly_cps)/parseFloat(berat_asal_cps))*100*1.015).toFixed(2);
+    //% Spandex 
+    spandex_cps=roundToTwo((parseFloat(a)/(parseFloat(a)+parseFloat(b)+parseFloat(c)))*100).toFixed(2);
+    if(berat_poly_cps==0){document.forms['form1']['spandex_cps'].value=0;}else{
+    document.forms['form1']['spandex_cps'].value=spandex_cps;}
+    //% Cotton 
+    cotton_cps=roundToTwo((parseFloat(b)/(parseFloat(a)+parseFloat(b)+parseFloat(c)))*100).toFixed(2);
+    if(berat_poly_cps==0){document.forms['form1']['cotton_cps'].value=0;}else{
+    document.forms['form1']['cotton_cps'].value=cotton_cps;}
+    //% Poly 
+    poly_cps=roundToTwo((parseFloat(c)/(parseFloat(a)+parseFloat(b)+parseFloat(c)))*100).toFixed(2);
+    if(berat_poly_cps==0){document.forms['form1']['poly_cps'].value=0;}else{
+    document.forms['form1']['poly_cps'].value=poly_cps;}
+    // % Total
+    total_cps=roundToTwo(parseFloat(cotton_cps)+parseFloat(poly_cps)+parseFloat(spandex_cps)).toFixed(2);
+    if(berat_poly_cps==0){document.forms['form1']['total_cps'].value=0;}else{
+    document.forms['form1']['total_cps'].value=total_cps;}
+}
+</script>
+<script>
+	function tampil(){
+        if(document.forms['form1']['jenis_rumus'].value=="STRETCH, GROWTH AND RECOVERY ASTM D2594"){
+            $("#stretch").css("display", "");  // To unhide
+            $("#growth").css("display", "");  // To unhide
+        }else{
+            $("#stretch").css("display", "none");  // To hide
+            $("#growth").css("display", "none");  // To hide
+        }
+        if(document.forms['form1']['jenis_rumus'].value=="RECOVERY ASTM D4964 (LULULEMON)"){
+            $("#reclulu").css("display", "");  // To unhide
+        }else{
+            $("#reclulu").css("display", "none");  // To hide
+        }
+        if(document.forms['form1']['jenis_rumus'].value=="RECOVERY ASTM D4964 (UNDER ARMOUR)"){
+            $("#recua").css("display", "");  // To unhide
+        }else{
+            $("#recua").css("display", "none");  // To hide
+        }
+        if(document.forms['form1']['jenis_rumus'].value=="RECOVERY ASTM D4964 (ADIDAS)"){
+            $("#recadi").css("display", "");  // To unhide
+        }else{
+            $("#recadi").css("display", "none");  // To hide
+        }
+        if(document.forms['form1']['jenis_rumus'].value=="DRYING TIME"){
+            $("#dry").css("display", "");  // To unhide
+        }else{
+            $("#dry").css("display", "none");  // To hide
+        }
+        if(document.forms['form1']['jenis_rumus'].value=="FIBER CONTENT"){
+            $("#fiber").css("display", "");  // To unhide
+            $("#fiber1").css("display", "");  // To unhide
+            $("#fiber2").css("display", "");  // To unhide
+            $("#fiber3").css("display", "");  // To unhide
+            $("#fiber4").css("display", "");  // To unhide
+            $("#fiber5").css("display", "");  // To unhide
+        }else{
+            $("#fiber").css("display", "none");  // To hide
+            $("#fiber1").css("display", "none");  // To hide
+            $("#fiber2").css("display", "none");  // To hide
+            $("#fiber3").css("display", "none");  // To hide
+            $("#fiber4").css("display", "none");  // To hide
+            $("#fiber5").css("display", "none");  // To hide
+        }
+    }
+</script>
+
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
+    <div class="box box-success" style="width: 98%;">
+        <div class="box-header with-border">
+            <h3 class="box-title">Rumus Hitung</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" ><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body"> 
+	        <div class="col-md-10">
+                <div class="form-group">
+					<label for="rumus_hitung" class="col-sm-3 control-label">JENIS RUMUS</label>
+					<div class="col-sm-4">
+						<select name="jenis_rumus" class="form-control select2" id="jenis_rumus" onChange="tampil();" style="width: 100%;">
+                            <option selected="selected" value="">Pilih</option>
+							<option value="STRETCH, GROWTH AND RECOVERY ASTM D2594">STRETCH, GROWTH AND RECOVERY ASTM D2594</option>
+                            <option value="RECOVERY ASTM D4964 (LULULEMON)">RECOVERY ASTM D4964 (LULULEMON)</option>
+                            <option value="RECOVERY ASTM D4964 (UNDER ARMOUR)">RECOVERY ASTM D4964 (UNDER ARMOUR)</option>
+                            <option value="RECOVERY ASTM D4964 (ADIDAS)">RECOVERY ASTM D4964 (ADIDAS)</option>
+                            <option value="DRYING TIME">DRYING TIME (ON PROGRESS)</option>
+                            <option value="FIBER CONTENT">FIBER CONTENT (ON PROGRESS)</option>
+						</select>
+					</div>
+				</div>
+                <!-- STRETCH BEGIN-->	
+				<div class="form-group" id="stretch" style="display:none;">
+					<label for="stretch" class="col-sm-3 control-label">STRETCH ASTM D2594</label>
+					<div class="col-sm-3">
+						<input name="len_stretch" type="text" class="form-control" id="len_stretch" value="" placeholder="After Test (CM) Length" onChange="hitung_len_stretch();" onBlur="hitung_len_stretch();" style="text-align: right;"> 
+                        <input name="wid_stretch" type="text" class="form-control" id="wid_stretch" value="" placeholder="After Test (CM) Width" onChange="hitung_wid_stretch();" onBlur="hitung_wid_stretch();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <input name="hasil_len_stretch" class="form-control" id="hasil_len_stretch" value="0" placeholder="Length" style="text-align: right;">
+                        <input name="hasil_wid_stretch" class="form-control" id="hasil_wid_stretch" value="0" placeholder="Width" style="text-align: right;">
+					</div>
+				</div>
+                <!-- STRETCH END-->
+                <!-- GROWTH AND RECOVERY BEGIN-->	
+				<div class="form-group" id="growth" style="display:none;">
+					<label for="growth" class="col-sm-3 control-label">GROWTH AND RECOVERY ASTM D2594</label>
+					<div class="col-sm-3">
+						<input name="len15_gr" type="text" class="form-control" id="len15_gr" value="" placeholder="After Test (CM) Length 15%" onChange="hitung_len15_gr();" onBlur="hitung_len15_gr();" style="text-align: right;"> 
+                        <input name="wid30_gr" type="text" class="form-control" id="wid30_gr" value="" placeholder="After Test (CM) Width 30%" onChange="hitung_wid30_gr();" onBlur="hitung_wid30_gr();" style="text-align: right;">
+                        <input name="len35_gr" type="text" class="form-control" id="len35_gr" value="" placeholder="After Test (CM) Length 35%" onChange="hitung_len35_gr();" onBlur="hitung_len35_gr();" style="text-align: right;"> 
+                        <input name="wid60_gr" type="text" class="form-control" id="wid60_gr" value="" placeholder="After Test (CM) Width 60%" onChange="hitung_wid60_gr();" onBlur="hitung_wid60_gr();" style="text-align: right;">
+					</div>
+                    <label for="growth" class="col-sm-1 control-label">GROWTH</label>
+					<div class="col-sm-2">
+                        <input name="hasil_len15_growth" class="form-control" id="hasil_len15_growth" value="0" placeholder="Length 15%" style="text-align: right;">
+                        <input name="hasil_wid30_growth" class="form-control" id="hasil_wid30_growth" value="0" placeholder="Width 30%" style="text-align: right;">
+                        <input name="hasil_len35_growth" class="form-control" id="hasil_len65_growth" value="0" placeholder="Length 35%" style="text-align: right;">
+                        <input name="hasil_wid60_growth" class="form-control" id="hasil_wid60_growth" value="0" placeholder="Width 60%" style="text-align: right;">
+					</div>
+                    <label for="rec" class="col-sm-1 control-label">RECOVERY</label>
+                    <div class="col-sm-2">
+                        <input name="hasil_len15_rec" class="form-control" id="hasil_len15_rec" value="0" placeholder="Length 15%" style="text-align: right;">
+                        <input name="hasil_wid30_rec" class="form-control" id="hasil_wid30_rec" value="0" placeholder="Width 30%" style="text-align: right;">
+                        <input name="hasil_len35_rec" class="form-control" id="hasil_len35_rec" value="0" placeholder="Length 35%" style="text-align: right;">
+                        <input name="hasil_wid60_rec" class="form-control" id="hasil_wid60_rec" value="0" placeholder="Width 60%" style="text-align: right;">
+					</div>
+				</div>
+                <!-- GROWTH AND RECOVERY END-->
+                <!-- RECOVERY LULULELOM BEGIN-->	
+				<div class="form-group" id="reclulu" style="display:none;">
+					<label for="reclulu" class="col-sm-3 control-label">RECOVERY ASTM D4964 (LULULEMON)</label>
+					<div class="col-sm-3">
+						<input name="max_lulu" type="text" class="form-control" id="max_lulu" value="" placeholder="Max E (CM)" onChange="hitung_rec_lulu();" onBlur="hitung_rec_lulu();" style="text-align: right;"> 
+					</div>
+                    <div class="col-sm-3">
+                        <input name="after1_lulu" type="text" class="form-control" id="after1_lulu" value="" placeholder="After Test 1' (CM)" onChange="hitung_rec_lulu();" onBlur="hitung_rec_lulu();" style="text-align: right;"> 
+                        <input name="after30_lulu" type="text" class="form-control" id="after30_lulu" value="" placeholder="After Test 30' (CM)" onChange="hitung_rec_lulu();" onBlur="hitung_rec_lulu();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <input name="hasil_after1_lulu" class="form-control" id="hasil_after1_lulu" value="0" placeholder="" style="text-align: right;">
+                        <input name="hasil_after30_lulu" class="form-control" id="hasil_after30_lulu" value="0" placeholder="" style="text-align: right;">
+					</div>
+				</div>
+                <!-- RECOVERY LULULELOM END-->
+                <!-- RECOVERY UA BEGIN-->	
+				<div class="form-group" id="recua" style="display:none;">
+					<label for="recua" class="col-sm-3 control-label">RECOVERY ASTM D4964 (UNDER ARMOUR)</label>
+					<div class="col-sm-3">
+						<input name="max_ua" type="text" class="form-control" id="max_ua" value="" placeholder="Max E (CM)" onChange="hitung_rec_ua();" onBlur="hitung_rec_ua();" style="text-align: right;">
+                        <input name="after1_ua" type="text" class="form-control" id="after1_ua" value="" placeholder="After Test 1' (CM)" onChange="hitung_rec_ua();" onBlur="hitung_rec_ua();" style="text-align: right;">  
+					</div>
+					<div class="col-sm-2">
+                        <input name="hasil_after1_ua" class="form-control" id="hasil_after1_ua" value="0" placeholder="" style="text-align: right;">
+					</div>
+				</div>
+                <!-- RECOVERY UA END-->
+                <!-- RECOVERY UA BEGIN-->	
+				<div class="form-group" id="recadi" style="display:none;">
+					<label for="recadi" class="col-sm-3 control-label">RECOVERY ASTM D4964 (ADIDAS)</label>
+					<div class="col-sm-3">
+						<input name="max_adi" type="text" class="form-control" id="max_adi" value="" placeholder="Max E (CM)" onChange="hitung_rec_adi();" onBlur="hitung_rec_adi();" style="text-align: right;">
+                        <input name="after30_adi" type="text" class="form-control" id="after30_adi" value="" placeholder="After Test 30' (CM)" onChange="hitung_rec_adi();" onBlur="hitung_rec_adi();" style="text-align: right;">  
+					</div>
+					<div class="col-sm-2">
+                        <input name="hasil_after30_adi" class="form-control" id="hasil_after30_adi" value="0" placeholder="" style="text-align: right;">
+					</div>
+				</div>
+                <!-- RECOVERY UA END-->
+                <!-- DRYING TIME BEGIN-->	
+				<div class="form-group" id="dry" style="display:none;">
+                    <label for="dry" class="col-sm-2 control-label">DRYING TIME</label>
+                        <table class="table table-bordered table-hover table-striped" width="100%">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th width="8%"><div align="center">M0</div></th>
+                                    <th width="8%"><div align="center">M</div></th>
+                                    <th width="8%"><div align="center">M1</div></th>
+                                    <th width="10%"><div align="center">&#916;t</div></th>
+                                    <th width="10%"><div align="center">&#916;M</div></th>
+                                    <th width="10%"><div align="center">% Air Sisa</div></th>
+                                    <th width="5%"><div align="center">Time(hours)</div></th>
+                                    <th width="5%"><div align="center">Evaporation(g)</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td align="center" rowspan="6"><input name="m0" id="m0" class="form-control" type="text" placeholder="M0"  onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center" rowspan="6"><input name="m" id="m" class="form-control" type="text" placeholder="M"  onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center"><input name="m1_5" type="text" id="m1_5" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();" /></td>
+                                    <td align="center">5 Menit</td>
+                                    <td align="center"><input name="dm_5" type="text" class="form-control" id="dm_5" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_5" type="text"  class="form-control" id="sisa_air_5" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.08</td>
+                                    <td align="center"><input name="evap_5" type="text" class="form-control" id="evap_5" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><input name="m1_10" type="text" id="m1_10" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center">10 Menit</td>
+                                    <td align="center"><input name="dm_10" type="text" class="form-control" id="dm_10" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_10" type="text" class="form-control" id="sisa_air_10" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.17</td>
+                                    <td align="center"><input name="evap_10" type="text" class="form-control" id="evap_10" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><input name="m1_15" type="text" id="m1_15" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center">15 Menit</td>
+                                    <td align="center"><input name="dm_15" type="text" class="form-control" id="dm_15" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_15" type="text" class="form-control" id="sisa_air_15" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.25</td>
+                                    <td align="center"><input name="evap_15" type="text" class="form-control" id="evap_15" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><input name="m1_20" type="text" id="m1_20" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center">20 Menit</td>
+                                    <td align="center"><input name="dm_20" type="text" class="form-control" id="dm_20" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_20" type="text" class="form-control" id="sisa_air_20" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.33</td>
+                                    <td align="center"><input name="evap_20" type="text" class="form-control" id="evap_20" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><input name="m1_25" type="text" id="m1_25" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();"/></td>
+                                    <td align="center">25 Menit</td>
+                                    <td align="center"><input name="dm_25" type="text" class="form-control" id="dm_25" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_25" type="text" class="form-control" id="sisa_air_25" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.42</td>
+                                    <td align="center"><input name="evap_25" type="text" class="form-control" id="evap_25" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><input name="m1_30" type="text" id="m1_30" class="form-control" placeholder="M1" onChange="hitung_dm();" onBlur="hitung_dm();" /></td>
+                                    <td align="center">30 Menit</td>
+                                    <td align="center"><input name="dm_30" type="text" class="form-control" id="dm_30" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center"><input name="sisa_air_30" type="text" class="form-control" id="sisa_air_30" value="" placeholder="" style="text-align: right;"></td>
+                                    <td align="center">0.50</td>
+                                    <td align="center"><input name="evap_30" type="text" class="form-control" id="evap_30" value="" placeholder="" style="text-align: right;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <b>Jumlah Air</b> <input name="jml_air" type="text" id="jml_air" class="form-control" value="" placeholder="" style="text-align: left;">
+                        <br/>
+                        <table class="table table-bordered table-hover table-striped" width="30%">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th width="5%"><div align="center">Slope</div></th>
+                                    <th width="10%"><div align="center">Hasil Slope</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td align="center">I</td>
+                                    <td align="center"><input name="slope_1" type="text" class="form-control" id="slope_1" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">II</td>
+                                    <td align="center"><input name="slope_2" type="text" class="form-control" id="slope_2" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">III</td>
+                                    <td align="center"><input name="slope_3" type="text" class="form-control" id="slope_3" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">IV</td>
+                                    <td align="center"><input name="slope_4" type="text" class="form-control" id="slope_4" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">V</td>
+                                    <td align="center"><input name="slope_5" type="text" class="form-control" id="slope_5" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">VI</td>
+                                    <td align="center"><input name="slope_6" type="text" class="form-control" id="slope_6" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">eV (g/h)</td>
+                                    <td align="center"><input name="rata_slope" type="text" class="form-control" id="rata_slope" value="" placeholder="" style="text-align: left;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+                <!-- DRYING TIME END-->	
+                <!-- FIBER CONTENT BEGIN-->	
+                <div class="form-group" id="fiber" style="display:none;">
+                    <label for="fiber" class="col-sm-3 control-label">FIBER CONTENT</label>
+                </div>
+				<div class="form-group" id="fiber1" style="display:none;">
+                    <label for="cs" class="col-sm-3 control-label">COTTON &amp; SPANDEX</label>
+					<div class="col-sm-3">
+						<input name="berat_asal_cs" type="text" class="form-control" id="berat_asal_cs" value="" placeholder="Berat Asal" onChange="hitung_fiber_cs();" onBlur="hitung_fiber_cs();" style="text-align: right;"> 
+                        <input name="berat_cotton_cs" type="text" class="form-control" id="berat_cotton_cs" value="" placeholder="Berat Cotton" onChange="hitung_fiber_cs();" onBlur="hitung_fiber_cs();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <div class="input-group">
+                            <input name="cotton_cs" class="form-control" id="cotton_cs" value="" placeholder="% Cotton" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="spandex_cs" class="form-control" id="spandex_cs" value="" placeholder="% Spandex" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="total_cs" class="form-control" id="total_cs" value="" placeholder="% Total" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+					</div>
+				</div>
+                <div class="form-group" id="fiber2" style="display:none;">
+                    <label for="ps" class="col-sm-3 control-label">POLYESTER &amp; SPANDEX</label>
+					<div class="col-sm-3">
+						<input name="berat_asal_ps" type="text" class="form-control" id="berat_asal_ps" value="" placeholder="Berat Asal" onChange="hitung_fiber_ps();" onBlur="hitung_fiber_ps();" style="text-align: right;"> 
+                        <input name="berat_poly_ps" type="text" class="form-control" id="berat_poly_ps" value="" placeholder="Berat Polyester" onChange="hitung_fiber_ps();" onBlur="hitung_fiber_ps();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <div class="input-group">
+                            <input name="poly_ps" class="form-control" id="poly_ps" value="" placeholder="% Polyester" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="spandex_ps" class="form-control" id="spandex_ps" value="" placeholder="% Spandex" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="total_ps" class="form-control" id="total_ps" value="" placeholder="% Total" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+					</div>
+				</div>
+                <div class="form-group" id="fiber3" style="display:none;">
+                    <label for="ns" class="col-sm-3 control-label">NYLON &amp; SPANDEX</label>
+					<div class="col-sm-3">
+						<input name="berat_asal_ns" type="text" class="form-control" id="berat_asal_ns" value="" placeholder="Berat Asal" onChange="hitung_fiber_ns();" onBlur="hitung_fiber_ns();" style="text-align: right;"> 
+                        <input name="berat_nylon_ns" type="text" class="form-control" id="berat_nylon_ns" value="" placeholder="Berat Nylon" onChange="hitung_fiber_ns();" onBlur="hitung_fiber_ns();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <div class="input-group">
+                            <input name="nylon_ns" class="form-control" id="nylon_ns" value="" placeholder="% Nylon" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="spandex_ns" class="form-control" id="spandex_ns" value="" placeholder="% Spandex" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="total_ns" class="form-control" id="total_ns" value="" placeholder="% Total" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+					</div>
+				</div>
+                <div class="form-group" id="fiber4" style="display:none;">
+                    <label for="cp" class="col-sm-3 control-label">COTTON &amp; POLYESTER</label>
+					<div class="col-sm-3">
+						<input name="berat_asal_cp" type="text" class="form-control" id="berat_asal_cp" value="" placeholder="Berat Asal" onChange="hitung_fiber_cp();" onBlur="hitung_fiber_cp();" style="text-align: right;"> 
+                        <input name="berat_cotpol_cp" type="text" class="form-control" id="berat_cotpol_cp" value="" placeholder="Berat Cotton Poly" onChange="hitung_fiber_cp();" onBlur="hitung_fiber_cp();" style="text-align: right;">
+					</div>
+					<div class="col-sm-2">
+                        <div class="input-group">
+                            <input name="cotton_cp" class="form-control" id="cotton_cp" value="" placeholder="% Cotton" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="poly_cp" class="form-control" id="poly_cp" value="" placeholder="% Polyester" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="total_cp" class="form-control" id="total_cp" value="" placeholder="% Total" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+					</div>
+				</div>
+                <div class="form-group" id="fiber5" style="display:none;">
+                    <label for="cps" class="col-sm-3 control-label">COTTON, POLYESTER &amp; SPANDEX</label>
+					<div class="col-sm-3">
+						<input name="berat_asal_cps" type="text" class="form-control" id="berat_asal_cps" value="" placeholder="Berat Asal" onChange="hitung_fiber_cps();" onBlur="hitung_fiber_cps();" style="text-align: right;"> 
+                        <input name="berat_cotpol_cps" type="text" class="form-control" id="berat_cotpol_cps" value="" placeholder="Berat Cotton + Poly" onChange="hitung_fiber_cps();" onBlur="hitung_fiber_cps();" style="text-align: right;">
+                        <input name="berat_poly_cps" type="text" class="form-control" id="berat_poly_cps" value="" placeholder="Berat Polyester" onChange="hitung_fiber_cps();" onBlur="hitung_fiber_cps();" style="text-align: right;"> 
+					</div>
+					<div class="col-sm-2">
+                        <div class="input-group">
+                            <input name="cotton_cps" class="form-control" id="cotton_cps" value="" placeholder="% Cotton" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="poly_cps" class="form-control" id="poly_cps" value="" placeholder="% Polyester" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="spandex_cps" class="form-control" id="spandex_cps" value="" placeholder="% Spandex" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+                        <div class="input-group">
+                            <input name="total_cps" class="form-control" id="total_cps" value="" placeholder="% Total" style="text-align: right;">
+                            <span class="input-group-addon">&#37;</span>	
+						</div>
+					</div>
+				</div>
+                <!-- FIBER CONTENT END-->
+            </div>
+        </div>
+    </div>
+
+</form>

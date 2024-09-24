@@ -1,0 +1,260 @@
+<script>
+function aktif(){
+		if(document.forms['form1']['sjreturplg'].value == ""){
+		document.form1.datepicker.setAttribute("disabled",true);
+		document.form1.datepicker.removeAttribute("required");	
+		}
+		else{
+		document.form1.datepicker.removeAttribute("disabled");
+		document.form1.datepicker.setAttribute("required",true);
+		}
+	}
+function aktif1(){
+		if(document.forms['form1']['sj_itti'].value == ""){
+		document.form1.datepicker2.setAttribute("disabled",true);
+		document.form1.datepicker2.removeAttribute("required");	
+		}
+		else{
+		document.form1.datepicker2.removeAttribute("disabled");
+		document.form1.datepicker2.setAttribute("required",true);
+		}
+	}
+</script>
+<?php
+	$qryCek=mysql_query("SELECT * FROM tbl_aftersales WHERE `id`='$_GET[id]'");
+	$rCek=mysql_fetch_array($qryCek);
+	 ?>
+<?php
+	if($_POST['save']=="save"){	
+		$order=$rCek[no_order];
+		$po=$rCek[po];
+		$langganan=$rCek[langganan];
+		$no_hanger=$rCek[no_hanger];
+		$no_item=$rCek[no_item];
+		$t_jawab=$rCek[t_jawab];
+		$t_jawab1=$rCek[t_jawab1];
+		$t_jawab2=$rCek[t_jawab2];
+		//$langganan=$rCek[langganan];
+		$pos=strpos($rCek[langganan], "/");
+		$posbuyer=substr($rCek[langganan],$pos+1,50);
+		$buyer=str_replace("'","''",$posbuyer);
+		$pmas= strpos($_POST[warna], ':');
+		$pwar= strpos($_POST[warna], ';');
+		$posmas=substr($_POST[warna],$pmas+1,100);
+		$masalah=str_replace("'","''",$posmas);
+		$potW=substr($_POST[warna],0,$pwar);
+		$potKK=substr($_POST[warna],$pwar+1,15);
+		$kk=str_replace("'","''",$potKK);
+		$warna=str_replace("'","''",$potW);
+		$jenis_kain=str_replace("'","''",$_POST[jenis_kain]);
+		$lot=str_replace("'","''",$_POST[lot]);
+		$kg=str_replace("'","''",$_POST[kg]);
+		$pjg=str_replace("'","''",$_POST[pjg]);
+		$satuan=str_replace("'","''",$_POST[satuan]);
+		$roll=str_replace("'","''",$_POST[roll]);
+		$ket=str_replace("'","''",$_POST[ket]);
+		$sjreturplg=str_replace("'","''",$_POST[sjreturplg]);
+		$tgl_sjretur=$_POST[tgl_sjretur];
+		$tgltrm_sjretur=$_POST[tgltrm_sjretur];
+		$sj_itti=str_replace("'","''",$_POST[sj_itti]);
+		$tgl_sjitti=$_POST[tgl_sjitti];
+		$qty_tu=str_replace("'","''",$_POST[qty_tu]);
+		$qry1=mysql_query("INSERT INTO tbl_detail_retur SET
+		`id_nsp`='$_GET[id]',
+		`po`='$po',
+		`no_order`='$order',
+		`langganan`='$langganan',
+		`no_hanger`='$no_hanger',
+		`no_item`='$no_item',
+		`buyer`='$buyer',
+		`masalah`='$masalah',
+		`jenis_kain`='$jenis_kain',
+		`warna`='$warna',
+		`lot`='$lot',
+		`kg`='$kg',
+		`pjg`='$pjg',
+		`satuan`='$satuan',
+		`roll`='$roll',
+		`nokk`='$kk',
+		`t_jawab`='$t_jawab',
+		`t_jawab1`='$t_jawab1',
+		`t_jawab2`='$t_jawab2',
+		`tgl_buat`=now(),
+		`tgl_update`=now()
+		");	
+		if($qry1){	
+	echo "<script>swal({
+  title: 'Data Telah diSimpan',   
+  text: 'Klik Ok untuk input data kembali',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+
+      window.location.href='TambahDetailRetur-$_GET[id]';
+	 
+  }
+});</script>";
+		}
+	}
+//window.open('pages/cetak/cetak_retur.php?no_retur=$retur','_blank');//Above Line TambahRetur
+?>	
+
+<div class="box box-info">
+ 	<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1">
+		<div class="box-header with-border">
+			<h3 class="box-title">Formulir Retur</h3> <br>
+			<div class="box-tools pull-right">
+      			<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+  		</div>
+  		<div class="box-body">
+	  		<div class="form-group">
+                <label for="warna" class="col-sm-2 control-label">Warna / Masalah </label>
+                  	<div class="col-sm-3">
+                    	<select class="form-control select2" name="warna" required>
+							<option value="">Pilih</option>
+							<?php $sqlw1=mysql_query("SELECT warna,nokk,masalah FROM tbl_aftersales WHERE po='$rCek[po]' and no_order='$rCek[no_order]' ORDER BY warna");
+							while ($rwarna=mysql_fetch_array($sqlw1)){ ?>
+							<option value="<?php echo $rwarna[warna].";".$rwarna[nokk].":".$rwarna[masalah];?>"><?php echo $rwarna[warna]." ; ".$rwarna[masalah];?></option>
+							<?php } ?>
+						</select>
+                  	</div>
+            </div>
+			<div class="form-group">
+				<label for="jenis_kain" class="col-sm-2 control-label">Jenis Kain</label>
+					<div class="col-sm-3">
+                    	<select class="form-control select2" name="jenis_kain" >
+							<option value="">Pilih</option>
+							<?php $sqll1=mysql_query("SELECT jenis_kain,warna FROM tbl_aftersales WHERE po='$rCek[po]' and no_order='$rCek[no_order]' ORDER BY warna");
+							while ($rjns_kain=mysql_fetch_array($sqll1)){ ?>
+							<option value="<?php echo $rjns_kain[jenis_kain];?>"><?php echo $rjns_kain[jenis_kain]." ; ".$rjns_kain[warna];?></option>
+							<?php } ?>
+						</select>
+                  	</div>
+			</div>
+			<div class="form-group">
+				<label for="lot" class="col-sm-2 control-label">Lot</label>
+					<div class="col-sm-2">
+						<input name="lot" type="text" class="form-control" id="lot" value="" placeholder="Lot">
+                  	</div>
+			</div>
+			<div class="form-group">
+				<label for="roll" class="col-sm-2 control-label">Quantity</label>
+					<div class="col-sm-2">
+						<input name="roll" type="text" class="form-control" id="roll" value="" placeholder="Roll">
+                  	</div>
+					<div class="col-sm-2">
+                    	<div class="input-group"> 
+							<input name="kg" type="text" class="form-control" id="kg" value="" placeholder="0.00" style="text-align: right;">
+							<span class="input-group-addon">Kg</span>	
+						</div>
+                  	</div>
+				  	<div class="col-sm-2">
+                    	<div class="input-group">  
+							<input name="pjg" type="text" class="form-control" id="pjg" value="" placeholder="0.00" style="text-align: right;">
+							<span class="input-group-addon">
+								<select name="satuan" style="font-size: 12px;" id="satuan">
+									<option value="Yard" <?php if($rcek[satuan]=="Yard"){ echo "SELECTED"; }?>>Yard</option>
+								  	<option value="Meter" <?php if($rcek[satuan]=="Meter"){ echo "SELECTED"; }?>>Meter</option>
+								  	<option value="PCS" <?php if($rcek[satuan]=="PCS"){ echo "SELECTED"; }?>>PCS</option>
+							  	</select>
+							</span>	
+						</div>
+                  	</div>
+			</div>
+		</div>
+<!-- /.box-footer -->
+<div class="box-footer">
+	<?php 
+	$qrycek1=mysql_query("SELECT * FROM tbl_detail_retur WHERE no_order='$rCek[no_order]' AND po='$rCek[po]' AND id_nsp='$_GET[id]'");
+	$cek1=mysql_num_rows($qrycek1);
+	?>
+	<button type="submit" class="btn btn-primary pull-right" <?php if($cek1>=5){echo "disabled";} ?> name="save" value="save">Simpan <i class="fa fa-save"></i></button> 
+	<!--<input type="submit" value="Simpan" name="save" id="save" class="btn btn-primary pull-right" >
+	<button type="submit" class="btn btn-success pull-right" <?php if($cek1<1 OR $cek>5){echo "disabled";} ?> name="selesai" value="selesai">Selesai <i class="fa fa-check-square"></i></button>-->
+</div>	
+</form>	 
+</div>
+<div class="row">
+  	<div class="col-xs-12">
+    	<div class="box">
+            <div class="box-header with-border">
+					<div class="pull-right">
+						<a href="pages/cetak/cetak_suratretur.php?no_order=<?php echo $rCek[no_order];?>&po=<?php echo $rCek[po];?>&id_nsp=<?php echo $_GET[id];?>" class="btn btn-danger" target="_blank">Cetak Surat Barang Retur</a>
+						<!--<a href="pages/cetak/cetak_suratretur_pdf.php?no_order=<?php echo $rCek[no_order];?>&po=<?php echo $rCek[po];?>&id_nsp=<?php echo $_GET[id];?>" class="btn btn-danger" target="_blank">Cetak Surat Barang Retur PDF</a>-->
+					</div>
+	                </div>    
+			<div class="box-body">		
+				<table id="example3" class="table table-bordered table-hover table-striped nowrap" width="100%">
+					<thead class="bg-green">
+					<tr>
+						<th width="48"><div align="center">No</div></th>
+						<th width="60"><div align="center">Tgl Keputusan</div></th>
+						<th width="301"><div align="center">Masalah</div></th>
+						<th width="343"><div align="center">Jenis Kain</div></th>
+						<th width="331"><div align="center">Warna</div></th>
+						<th width="331"><div align="center">Lot</div></th>
+						<th width="331"><div align="center">SJ Retur Pelanggan</div></th>
+						<th width="331"><div align="center">Tgl Terima SJ Retur</div></th>
+						<th width="331"><div align="center">SJ ITTI</div></th>
+						<th width="331"><div align="center">Qty</div></th>
+						<th width="331"><div align="center">Keterangan</div></th>
+						<th width="48"><div align="center">Aksi</div></th>
+					</tr>
+					</thead>
+				<tbody>
+					<?php 
+					$sql=mysql_query(" SELECT * FROM tbl_detail_retur WHERE id_nsp='$rCek[id]' AND po='$rCek[po]' AND no_order='$rCek[no_order]' ORDER BY tgl_buat ASC");
+					while($r=mysql_fetch_array($sql)){
+			
+					$no++;
+					$bgcolor = ($col++ & 1) ? 'gainsboro' : 'antiquewhite';	  
+				
+					?>
+						<tr bgcolor="<?php echo $bgcolor; ?>">
+							<td align="center"><a href="#" class="edit_retur" id="<?php echo $r['id'] ?>"><?php echo $no; ?></a></td>
+							<td align="left" valign="top"><?php echo $r[tgl_keputusan];?></td>
+							<td align="left" valign="top"><?php echo $r[masalah];?></td>
+							<td align="left" valign="top"><?php echo $r[jenis_kain];?></td>
+							<td align="left" valign="top"><?php echo $r[warna];?></td>
+							<td align="left" valign="top"><?php echo $r[lot];?></td>
+							<td align="left"><?php echo $r[sjreturplg]."/".$r[tgl_sjretur]; ?></td>
+							<td align="left" valign="top"><?php echo $r[tgltrm_sjretur];?></td>
+							<td align="left"><?php echo $r[sj_itti]."/".$r[tgl_sjitti];?></td>
+							<td align="right"><?php echo $r[roll]." Roll ".$r[kg]." Kg "; ?></td>
+							<td align="left" valign="top"><?php echo $r[ket]; ?></td>
+							<!--<td align="center"><div class="btn-group"><a href="pages/cetak/cetak_retur.php?no_retur=<?php echo $r[no_retur] ?>" class="btn btn-info btn-xs <?php if($_SESSION['akses']=='biasa'){ echo "disabled"; } ?>" target="_blank"><i class="fa fa-print"></i> </a>-->
+							<td align="center"><div><a href="#" class="btn btn-danger btn-xs <?php if($_SESSION['akses']=='biasa'){ echo "disabled"; } ?>" onclick="confirm_delete('./HapusDataDetailRetur-<?php echo $r[id] ?>');"><i class="fa fa-trash"></i> </a></div></td>
+						</tr>   
+					<?php 
+						} 
+					?>
+				</tbody>   
+				</table> 
+					<div id="EditRetur" class="modal fade modal-3d-slit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+					</div>
+    		</div>
+		</div>
+	</div>
+<div class="modal fade" id="modal_del" tabindex="-1" >
+  	<div class="modal-dialog modal-sm" >
+    	<div class="modal-content" style="margin-top:100px;">
+      		<div class="modal-header">
+				<button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="text-align:center;">Are you sure to delete all data ?</h4>
+      		</div>
+
+      		<div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+        		<a href="#" class="btn btn-danger" id="delete_link">Delete</a>
+        		<button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+         <script type="text/javascript">
+    function confirm_delete(delete_url)
+    {
+      $('#modal_del').modal('show', {backdrop: 'static'});
+      document.getElementById('delete_link').setAttribute('href' , delete_url);
+    }
+</script>

@@ -204,8 +204,8 @@
 												TRIM(DSUBCODE05) AS NO_WARNA,
 												TRIM(DSUBCODE02) || '-' || TRIM(DSUBCODE03)  AS NO_HANGER,
 												TRIM(ITEMDESCRIPTION) AS ITEMDESCRIPTION,
-												DELIVERYDATE
-												-- ABSUNIQUEID_DEMAND
+												DELIVERYDATE,
+												ABSUNIQUEID_DEMAND
 											FROM 
 												ITXVIEWKK 
 											WHERE 
@@ -262,7 +262,8 @@
 											GROUP BY s2.PRODUCTIONORDERCODE");
 		$dt_roll   		= db2_fetch_assoc($sql_roll);
 
-		
+		$sql_ori_pd_code	= db2_exec($conn2, "SELECT * FROM ADSTORAGE WHERE UNIQUEID = '$dt_ITXVIEWKK[ABSUNIQUEID_DEMAND]' AND FIELDNAME = 'OriginalPDCode'");
+		$dt_ori_pd_code		= db2_fetch_assoc($sql_ori_pd_code);
 	// NOW
 
 ?>
@@ -298,9 +299,9 @@
 					<div class="col-sm-4">
 						<input name="prod_demand" type="text" class="form-control" placeholder="Production Demand" value="<?= $rcek['nodemand']; ?>" required>
 					</div>
-					<!-- <div class="col-sm-4">
+					<div class="col-sm-4">
 						<input name="originalpdcode" type="text" class="form-control" placeholder="Proginal PD Code" value="<?= $dt_ori_pd_code['VALUESTRING']; ?>" required>
-					</div> -->
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="no_order" class="col-sm-3 control-label">No Order</label>

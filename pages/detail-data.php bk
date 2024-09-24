@@ -1,0 +1,145 @@
+<?php
+    $qryCek=mysql_query("SELECT * FROM tbl_qcf WHERE `id`='$_GET[id]'");
+    $rCek=mysql_fetch_array($qryCek);
+    if (isset($_POST[save])) {
+        $qry1=mysql_query("INSERT INTO tbl_qcf_detail SET
+		`id_qcf`='$_GET[id]',
+		`persen`='$_POST[prsn]',
+		`masalah`='$_POST[masalah]',
+		`dept`='$_POST[dept]'
+		");
+        
+    }
+?>
+<div class="box box-info">
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1">
+    <div class="box-header with-border">
+      <h3 class="box-title">Detail Data</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="box-body">
+      <div class="form-group">
+        <label for="prsn" class="col-sm-2 control-label">Persentase</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input name="prsn" type="text" class="form-control" id="prsn" value="" placeholder="0" required style="text-align: right;"><span class="input-group-addon">%</span></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dept" class="col-sm-2 control-label">Dept</label>
+        <div class="col-sm-2">
+          <select name="dept" class="form-control" id="dept" required>
+            <option value="">-PILIH-</option>
+			<option value="BRS">BRS</option>  
+            <option value="DYE">DYE</option>
+			<option value="FIN">FIN</option>
+			<option value="KNT">KNT</option>
+			<option value="LAB">LAB</option>
+			<option value="PRT">PRT</option>
+			<option value="RMP">RMP</option>  
+            <option value="YND">YND</option>
+		  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="masalah" class="col-sm-2 control-label">Masalah Ke-1</label>        
+<div class="col-sm-6">
+          <textarea name="masalah" rows="2" class="form-control" id="masalah" placeholder="Masalah"></textarea>
+        </div>
+      </div>
+	  	<input type="hidden" name="id" value="<?php echo $_GET[id];?>">
+    </div>
+
+    <div class="box-footer">
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-block btn-social btn-linkedin" name="save" style="width: 60%">Add <i class="fa fa-plus"></i></button>
+      </div>
+      <a href="InputData-<?php echo $rCek[nokk];?>" class="btn btn-default pull-right"><span class="fa fa-arrow-circle-left "></span> Kembali</a>
+    </div>
+    <!-- /.box-footer -->
+
+
+  </form>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header with-border">
+
+      </div>
+      <div class="box-body">
+        <table id="example2" class="table table-bordered table-hover table-striped nowrap" style="width:100%">
+          <thead class="bg-green">
+            <tr>
+              <th width="40">No</th>
+              <th width="97">Persentase</th>
+              <th width="139">%KGs</th>
+              <th width="124">Dept</th>
+              <th width="704">Masalah</th>
+              <th width="64">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+  $sql=mysql_query("SELECT * FROM tbl_qcf_detail WHERE id_qcf='$_GET[id]'");
+  while ($r=mysql_fetch_array($sql)) {
+      $no++;
+      $bgcolor = ($col++ & 1) ? 'gainsboro' : 'antiquewhite';
+      ?>
+            <tr bgcolor="<?php echo $bgcolor; ?>">
+              <td align="center">
+                <?php echo $no; ?>
+              </td>
+              <td align="center">
+                <?php echo $r[persen]; ?>
+              </td>
+              <td align="center"><?php if($rCek[qty_mslh]>0){echo ($r[persen]*$rCek[qty_mslh])/100;}; ?></td>
+              <td align="center">
+                <?php echo $r[dept]; ?>
+              </td>
+              <td align="left">
+                <?php echo $r[masalah]; ?>
+              </td>
+              <td align="center"><a href="#" class="btn-sm btn-danger" onclick="confirm_del_detaildata('?p=detailrealisasi_hapus&id=<?php echo $r[id] ?>&idr=<?php echo $_GET[id]; ?>&po=<?php echo $_GET[po]; ?>');"><i class="fa fa-trash"></i> </a></td>
+            </tr>
+            <?php
+  } ?>
+          </tbody>
+
+        </table>
+        <div id="BenangPEdit" class="modal fade modal-3d-slit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        </div>
+        <div id="BenangPDetail" class="modal fade modal-3d-slit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Popup untuk delete-->
+<div class="modal fade" id="delRealisasi" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="margin-top:100px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
+      </div>
+
+      <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+        <a href="#" class="btn btn-danger" id="del_link">Delete</a>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function confirm_del_realisasi(delete_url) {
+    $('#delRealisasi').modal('show', {
+      backdrop: 'static'
+    });
+    document.getElementById('del_link').setAttribute('href', delete_url);
+  }
+
+</script>

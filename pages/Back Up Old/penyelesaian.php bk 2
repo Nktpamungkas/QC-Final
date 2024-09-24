@@ -1,0 +1,228 @@
+<?php
+$id=$_GET[id];
+$sqlCek=mysql_query("SELECT * FROM tbl_ncp_qcf WHERE id='$id' ORDER BY id DESC LIMIT 1");
+$cek=mysql_num_rows($sqlCek);
+$rcek=mysql_fetch_array($sqlCek);
+?>	
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
+ <div class="box box-info">
+   <div class="box-header with-border">
+    <h3 class="box-title">Input Tindakan Penyelesaian</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body"> 
+	 <!-- col --> 
+	  <div class="col-md-12">
+	<div class="form-group">
+        <label for="tgl_rencana" class="col-sm-2 control-label">Tgl. Rencana Penyelesaian</label>
+        <div class="col-sm-2">
+          <div class="input-group date">
+            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+            <input name="tgl_rencana" type="text" class="form-control pull-right" id="datepicker" placeholder="0000-00-00" value="<?php echo $rcek[tgl_rencana]; ?>"/>
+          </div>
+        </div>
+	  </div>	  
+	<div class="form-group">
+                <label for="multi" class="col-sm-2 control-label">Tindakan Penyelesaian</label>
+			    <div class="col-sm-4">
+				<div class="input-group">
+                <select class="form-control select2" multiple="multiple" data-placeholder="Jenis Masalah" name="rmp_benang[]" id="kerusakan">
+				<?php
+				$dtArr=trim($rcek[penyelesaian]);	
+				$data = explode(",",$dtArr);
+				$qCek1=mysql_query("SELECT nama FROM tbl_masalah_ncp WHERE jenis='Penyelesaian' ORDER BY nama ASC");
+				$i=0;	
+				while($dCek1=mysql_fetch_array($qCek1)){ ?>
+				<option value="<?php echo $dCek1[nama];?>" <?php if($dCek1[nama]==$data[0] or $dCek1[nama]==$data[1] or $dCek1[nama]==$data[2] or $dCek1[nama]==$data[3] or $dCek1[nama]==$data[4] or $dCek1[nama]==$data[5]){echo "SELECTED";} ?>><?php echo $dCek1[nama];?></option>
+				<?php $i++;} ?>                 
+                </select>
+				<span class="input-group-btn"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#DataPenyelesaian"> ...</button></span>
+			</div>
+				</div>	
+        </div>
+	<?php if(strtoupper($_SESSION[usrid])=="ADM-FIN"){?>	  
+	<div class="form-group">
+        <label for="shift" class="col-sm-2 control-label">Shift</label>
+        <div class="col-sm-1">  
+		<select class="form-control" name="shift">
+			<option value="">Pilih</option>
+			<option value="A" <?php if($rcek[shift]=="A"){echo "SELECTED"; } ?>>A</option>
+			<option value="B" <?php if($rcek[shift]=="B"){echo "SELECTED"; } ?>>B</option>
+			<option value="C" <?php if($rcek[shift]=="C"){echo "SELECTED"; } ?>>C</option>
+		</select>		
+        </div>
+	</div>
+	<div class="form-group">
+        <label for="mesin" class="col-sm-2 control-label">Mesin</label>
+        <div class="col-sm-3">  
+		<select class="form-control" name="mesin">
+			<option value="">Pilih</option>
+			<option value="STENTER FONG 8" <?php if($rcek[mesin]=="STENTER FONG 8"){echo "SELECTED"; } ?>>STENTER FONG 8</option>
+			<option value="STENTER FONG 2" <?php if($rcek[mesin]=="STENTER FONG 2"){echo "SELECTED"; } ?>>STENTER FONG 2</option>
+			<option value="STENTER LK 07" <?php if($rcek[mesin]=="STENTER LK 07"){echo "SELECTED"; } ?>>STENTER LK 07</option>
+			<option value="STENTER LK 06" <?php if($rcek[mesin]=="STENTER LK 06"){echo "SELECTED"; } ?>>STENTER LK 06</option>
+			<option value="STENTER LK 05" <?php if($rcek[mesin]=="STENTER LK 05"){echo "SELECTED"; } ?>>STENTER LK 05</option>
+			<option value="STENTER LK 03" <?php if($rcek[mesin]=="STENTER LK 03"){echo "SELECTED"; } ?>>STENTER LK 03</option>
+			<option value="STENTER LK 01" <?php if($rcek[mesin]=="STENTER LK 01"){echo "SELECTED"; } ?>>STENTER LK 01</option>
+			<option value="COMPACT" <?php if($rcek[mesin]=="COMPACT"){echo "SELECTED"; } ?>>COMPACT</option>
+		</select>			
+        </div>
+	    </div>
+	<div class="form-group">
+        <label for="acc" class="col-sm-2 control-label">ACC</label>
+        <div class="col-sm-3">  
+		<input name="acc" type="text" class="form-control" id="acc" value="<?php echo $rcek[acc]; ?>" placeholder="Nama Staff">			
+        </div>
+	    </div>	  
+	<?php } ?>
+		<?php if(strtoupper($_SESSION[usrid])=="ADM-DYE"){?>	  
+	<div class="form-group">
+        <label for="shift" class="col-sm-2 control-label">Shift</label>
+        <div class="col-sm-1">  
+		<select class="form-control" name="shift">
+			<option value="">Pilih</option>
+			<option value="A" <?php if($rcek[shift]=="A"){echo "SELECTED"; } ?>>A</option>
+			<option value="B" <?php if($rcek[shift]=="B"){echo "SELECTED"; } ?>>B</option>
+			<option value="C" <?php if($rcek[shift]=="C"){echo "SELECTED"; } ?>>C</option>
+		</select>		
+        </div>
+	</div>
+	<div class="form-group">
+        <label for="mesin" class="col-sm-2 control-label">Mesin</label>
+        <div class="col-sm-2">  
+		<input name="mesin" type="text" class="form-control" id="acc" value="<?php echo $rcek[mesin]; ?>" placeholder="No Mesin">			
+        </div>
+	    </div>
+		<div class="form-group">
+        <label for="acc" class="col-sm-2 control-label">Colorist</label>
+        <div class="col-sm-3">  
+		<input name="acc" type="text" class="form-control" id="acc" value="<?php echo $rcek[acc]; ?>" placeholder="Nama Staff">			
+        </div>
+	    </div>  
+	<?php } ?>  
+		  <div class="form-group">
+        <label for="penyebab" class="col-sm-2 control-label">Penyebab</label>
+        <div class="col-sm-3">  
+		<input name="penyebab" type="text" class="form-control" id="penyebab" value="<?php echo $rcek[penyebab]; ?>" placeholder="Nama Staff">			
+        </div>
+	    </div>
+	<div class="form-group">
+        <label for="perbaikan" class="col-sm-2 control-label">Perbaikan</label>
+        <div class="col-sm-3">  
+			<input name="perbaikan" type="text" class="form-control" id="perbaikan" value="<?php echo $rcek[perbaikan]; ?>" placeholder="Nama Staff">			
+        </div>
+	    </div>
+	<div class="form-group">
+		  <label for="ket" class="col-sm-2 control-label">Keterangan</label>
+		  <div class="col-sm-4">
+			<textarea name="ket" rows="3" class="form-control" id="ket" placeholder="Keterangan"><?php if($cek>0){echo $rcek[ket_penyelesaian]; }?></textarea>
+		  </div>				   
+		</div>		  
+	 </div>
+	
+</div>	 
+   <div class="box-footer">
+   <button type="button" class="btn btn-default pull-left" name="save" Onclick="window.location='StatusNCP'">Kembali <i class="fa fa-cycle"></i></button>	   
+   <input type="submit" value="Simpan" name="save" id="save" class="btn btn-primary pull-right" > 
+   </div>
+    <!-- /.box-footer -->
+</div>
+</form>
+    
+						
+                    </div>
+                </div>
+            </div>
+        </div>
+<?php
+if($_POST[save]=="Simpan"){
+      $ket=str_replace("'","''",$_POST[ket]);
+	  if(isset($_POST["rmp_benang"]))  
+        { 
+            // Retrieving each selected option 
+            foreach ($_POST['rmp_benang'] as $index => $subject1){
+				   if($index>0){
+					  $kt1=$kt1.",".$subject1; 
+				   }else{
+					   $kt1=$subject1;
+				   }	
+				    
+			}
+        } 
+	if($_POST[tgl_rencana]!=""){$tglRC=" tgl_rencana='$_POST[tgl_rencana]', ";}else{$tglRC=" tgl_rencana=null, ";}
+	if($rcek[tgl_terima]!=""){$tglTrima=" "; }else{$tglTrima=" tgl_terima=now(), ";}
+  	  $sqlData=mysql_query("UPDATE tbl_ncp_qcf SET 
+	      $tglRC
+		  $tglTrima
+		  penyelesaian='$kt1',
+		  acc='$_POST[acc]',
+		  mesin='$_POST[mesin]',
+		  shift='$_POST[shift]',
+		  penyebab='$_POST[penyebab]',
+		  perbaikan='$_POST[perbaikan]',
+		  ket_penyelesaian='$ket'
+		  WHERE id='$id'");	 	  
+	  
+		if($sqlData){	
+	echo "<script>swal({
+  title: 'Data Telah Tersimpan',   
+  text: 'Klik Ok untuk input data kembali',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+        window.location.href='Penyelesaian-$id';
+	 
+  }
+});</script>";
+		}
+}
+?>
+<div class="modal fade" id="DataPenyelesaian">
+          <div class="modal-dialog ">
+            <div class="modal-content">
+            <form class="form-horizontal" name="modal_popup" data-toggle="validator" method="post" action="" enctype="multipart/form-data">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tindakan Penyelesaian</h4>
+              </div>
+              <div class="modal-body">
+                  <input type="hidden" id="id" name="id">
+                  <div class="form-group">
+                  <label for="penyelesaian" class="col-md-3 control-label">Jenis Penyelesaian</label>
+                  <div class="col-md-6">
+                  <input type="text" class="form-control" id="penyelesaian" name="penyelesaian" required>
+                  <span class="help-block with-errors"></span>
+                  </div>
+                  </div>		    
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+				<input type="submit" value="Simpan" name="simpan_penyelesaian" id="simpan_penyelesaian" class="btn btn-primary pull-right" >  
+              </div>
+            </form>
+            </div>
+            <!-- /.modal-content -->
+  </div>
+          <!-- /.modal-dialog -->
+</div>
+<?php 
+if($_POST[simpan_penyelesaian]=="Simpan"){
+	$sqlData1=mysql_query("INSERT INTO tbl_masalah_ncp SET 
+		  nama='$_POST[penyelesaian]',jenis='Penyelesaian'");
+	if($sqlData1){	
+	echo "<script>swal({
+  title: 'Data Telah Tersimpan',   
+  text: 'Klik Ok untuk input data kembali',
+  type: 'success',
+  }).then((result) => {
+  if (result.value) {
+         window.location.href='Penyelesaian-$id';
+	 
+  }
+});</script>";
+		}
+}
+?>

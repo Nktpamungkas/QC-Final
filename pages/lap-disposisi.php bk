@@ -1,0 +1,311 @@
+<?PHP
+session_start();
+include"koneksi.php";
+
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Laporan Harian Produksi</title>
+
+</head>
+<body>
+<?php
+$Awal	= isset($_POST['awal']) ? $_POST['awal'] : '';
+$Akhir	= isset($_POST['akhir']) ? $_POST['akhir'] : '';
+$Subdept = isset($_POST['subdept']) ? $_POST['subdept'] : '';
+$GShift	= isset($_POST['gshift']) ? $_POST['gshift'] : '';
+$GShift1 = $GShift;
+$TotalKirim	= isset($_POST['total']) ? $_POST['total'] : '';
+?>
+<div class="row">
+<div class="col-xs-6">
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title"> Filter Laporan KPE Disposisi</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1">
+    <div class="box-body">
+      <div class="form-group">
+        <div class="col-sm-5">
+          <div class="input-group date">
+            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+            <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" autocomplete="off"/>
+          </div>
+        </div>
+        <!-- /.input group -->
+      </div>
+      <div class="form-group">
+        <div class="col-sm-5">
+          <div class="input-group date">
+            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+            <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir;  ?>" autocomplete="off"/>
+          </div>
+        </div>
+        <!-- /.input group -->
+      </div>
+      <div class="form-group">
+		    <div class="col-sm-6">
+                <select class="form-control select2" name="subdept" id="subdept">
+                    <option value="">Pilih</option>
+                    <option value="ADM" <?php if($Subdept=="ADM"){echo "SELECTED";}?>>ADM</option>	
+                    <option value="AFTERSALES" <?php if($Subdept=="AFTERSALES"){echo "SELECTED";}?>>AFTERSALES</option>
+                    <option value="COLORIST" <?php if($Subdept=="COLORIST"){echo "SELECTED";}?>>COLORIST</option>
+                    <option value="INSPECTION" <?php if($Subdept=="INSPECTION"){echo "SELECTED";}?>>INSPECTION</option>
+                    <option value="KRAGH" <?php if($Subdept=="KRAGH"){echo "SELECTED";}?>>KRAGH</option>
+                    <option value="MANAGER/ASST.MANAGER" <?php if($Subdept=="MANAGER/ASST.MANAGER"){echo "SELECTED";}?>>MANAGER/ASST.MANAGER</option>
+                    <option value="PACKING" <?php if($Subdept=="PACKING"){echo "SELECTED";}?>>PACKING</option>
+                    <option value="TEST QUALITY" <?php if($Subdept=="TEST QUALITY"){echo "SELECTED";}?>>TEST QUALITY</option>		
+			    </select>
+		    </div>				   
+		</div> 
+        <div class="form-group">
+            <div class="col-sm-4">
+                <select name="gshift" class="form-control select2"> 
+                	<option value="ALL" <?php if($GShift=="ALL"){ echo "SELECTED";}?>>ALL</option>
+                	<option value="A" <?php if($GShift=="A"){ echo "SELECTED";}?>>A</option>
+                	<option value="B" <?php if($GShift=="B"){ echo "SELECTED";}?>>B</option>
+					        <option value="C" <?php if($GShift=="C"){ echo "SELECTED";}?>>C</option>
+                    <option value="Non-Shift" <?php if($GShift=="Non-Shift"){ echo "SELECTED";}?>>Non-Shift</option>
+                </select>
+            </div>			 
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4">
+            <div class="input-group date">
+              <div class="input-group-addon"> Total Kirim</div>
+                <input name="total" type="text" class="form-control pull-right" placeholder="0" value="<?php echo $TotalKirim; ?>" />
+            </div>
+          </div>
+        </div>	
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+      <div class="col-sm-6">
+        <button type="submit" class="btn btn-block btn-social btn-linkedin btn-sm" name="save" style="width: 60%">Search <i class="fa fa-search"></i></button>
+      </div>
+    </div>
+    <!-- /.box-footer -->
+  </form>
+</div>
+</div>
+
+
+<div class="col-xs-4">	
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title"> Rangkuman Disposisi</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+      <table class="table table-bordered table-striped" style="width: 100%;">
+            <thead class="bg-blue">
+                <tr>
+                <th width="5%"><div align="center">Shift</div></th>
+                <th width="14%"><div align="center">Qty Claim</div></th>
+                <th width="14%"><div align="center">Kasus</div></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            //Shift A
+            $qryjml1=mysql_query("SELECT COUNT(*) as jml_a FROM tbl_aftersales WHERE
+            DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+            AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%A%' OR shift2 LIKE '%A%')");
+            $rowjml1=mysql_fetch_array($qryjml1);
+            //Shift B
+            $qryjml2=mysql_query("SELECT COUNT(*) as jml_b FROM tbl_aftersales WHERE
+            DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+            AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%B%' OR shift2 LIKE '%B%')");
+            $rowjml2=mysql_fetch_array($qryjml2);
+            //Shift C
+            $qryjml3=mysql_query("SELECT COUNT(*) as jml_c FROM tbl_aftersales WHERE
+            DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+            AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%C%' OR shift2 LIKE '%C%')");
+            $rowjml3=mysql_fetch_array($qryjml3);
+            //Shift Non Shift
+            $qryjml4=mysql_query("SELECT COUNT(*) as jml_non FROM tbl_aftersales WHERE
+            DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+            AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%Non%' OR shift2 LIKE '%Non%')");
+            $rowjml4=mysql_fetch_array($qryjml4);
+            ?>
+            <?php if($Awal!=""){?>
+              <tr valign="top" bgcolor="<?php echo $bgcolor; ?>">
+              <?php
+              $qry1=mysql_query("SELECT shift, shift2, if(shift2!='',qty_claim/2,qty_claim) as qty_claim_a FROM tbl_aftersales WHERE
+              DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+              AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%A%' OR shift2 LIKE '%A%')"); 
+              $tot_a=0;
+              while($row1=mysql_fetch_array($qry1)){
+              $tot_a=$tot_a+$row1['qty_claim_a']; }?>
+                <td align="center">A</td>
+                <td align="center"><?php echo number_format($tot_a,2)." Kg";?></td>
+                <td align="center"><?php echo $rowjml1['jml_a']." Kasus"; ?></td>
+              </tr>
+              <tr valign="top" bgcolor="<?php echo $bgcolor; ?>">
+              <?php
+              $qry2=mysql_query("SELECT shift, shift2, if(shift2!='',qty_claim/2,qty_claim) as qty_claim_b FROM tbl_aftersales WHERE
+              DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+              AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%B%' OR shift2 LIKE '%B%') "); 
+              $tot_b=0;
+              while($row2=mysql_fetch_array($qry2)){
+              $tot_b=$tot_b+$row2['qty_claim_b']; }?>
+                <td align="center">B</td>
+                <td align="center"><?php echo number_format($tot_b,2)." Kg";?></td>
+                <td align="center"><?php echo $rowjml2['jml_b']." Kasus"; ?></td>
+              </tr>
+              <tr valign="top" bgcolor="<?php echo $bgcolor; ?>">
+              <?php
+              $qry3=mysql_query("SELECT shift, shift2, if(shift2!='',qty_claim/2,qty_claim) as qty_claim_c FROM tbl_aftersales WHERE
+              DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+              AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%C%' OR shift2 LIKE '%C%') "); 
+              $tot_c=0;
+              while($row3=mysql_fetch_array($qry3)){
+              $tot_c=$tot_c+$row3['qty_claim_c']; }?>
+                <td align="center">C</td>
+                <td align="center"><?php echo number_format($tot_c,2)." Kg";?></td>
+                <td align="center"><?php echo $rowjml3['jml_c']." Kasus"; ?></td>
+              </tr>
+              <tr valign="top" bgcolor="<?php echo $bgcolor; ?>">
+              <?php
+              $qry4=mysql_query("SELECT shift, shift2, if(shift2!='',qty_claim/2,qty_claim) as qty_claim_non FROM tbl_aftersales WHERE
+              DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' 
+              AND '$Akhir' AND sts='1' AND sts_revdis='0' AND (shift LIKE '%Non%' OR shift2 LIKE '%Non%') "); 
+              $tot_non=0;
+              while($row4=mysql_fetch_array($qry4)){
+              $tot_non=$tot_non+$row4['qty_claim_non']; }?>
+                <td align="center">Non-Shift</td>
+                <td align="center"><?php echo number_format($tot_non,2)." Kg";?></td>
+                <td align="center"><?php echo $rowjml4['jml_non']." Kasus"; ?></td>
+              </tr>
+            <?php } ?>           
+          </tbody>
+          <tfoot>
+          <?php 
+         $total=$tot_a+$tot_b+$tot_c+$tot_non; 
+         $totalkasus=$rowjml1['jml_a']+$rowjml2['jml_b']+$rowjml3['jml_c']+$rowjml4['jml_non'];
+          ?>
+                <tr valign="top" bgcolor="<?php echo $bgcolor; ?>">
+                  <td align="center">Total</td>
+                  <td align="center"><?php echo number_format($total,2)." Kg"; ?></td>
+                  <td align="center"><?php echo $totalkasus." Kasus"; ?></td>
+                </tr>
+            </tfoot>  
+      </table>
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Data KPE Disposisi</h3><br>
+        <?php if($_POST[awal]!="") { ?><b>Periode: <?php echo $_POST[awal]." to ".$_POST[akhir]; ?></b>
+		<?php } ?>
+        <div class="pull-right">
+            <a href="pages/cetak/cetak_disposisi.php?awal=<?php echo $_POST[awal]; ?>&akhir=<?php echo $_POST[akhir]; ?>&shft=<?php echo $GShift; ?>&subdept=<?php echo $Subdept; ?>&total=<?php echo $_POST[total]; ?>" class="btn btn-danger <?php if($_POST[awal]=="") { echo "disabled"; }?>" target="_blank">Cetak Disposisi QC</a> 
+        </div>
+	  </div>
+      <div class="box-body">
+      <table class="table table-bordered table-hover table-striped nowrap" id="example3" style="width:100%">
+        <thead class="bg-blue">
+          <tr>
+            <th><div align="center">No</div></th>
+            <th><div align="center">Tgl</div></th>
+            <th><div align="center">No KK</div></th>
+            <th><div align="center">Langganan</div></th>
+            <th><div align="center">PO</div></th>
+            <th><div align="center">Order</div></th>
+            <th><div align="center">Hanger</div></th>
+            <th><div align="center">Jenis Kain</div></th>
+            <th><div align="center">Lebar &amp; Gramasi</div></th>
+            <th><div align="center">Lot</div></th>
+            <th><div align="center">Warna</div></th>
+            <th><div align="center">Qty Kirim</div></th>
+            <th><div align="center">Qty Claim</div></th>
+            <th><div>
+              <div align="center">T Jawab</div>
+            </div></th>
+            <th><div align="center">Masalah</div></th>
+            <th><div align="center">Penyebab</div></th>
+            <th><div align="center">Personil</div></th>
+            <th><div align="center">Shift</div></th>
+            <th><div align="center">Ket</div></th>
+            </tr>
+        </thead>
+        <tbody>
+          <?php
+	    $no=1;
+	    if($Awal!=""){ $Where =" WHERE DATE_FORMAT( tgl_buat, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND sts='1' AND sts_revdis='0' "; }
+        if($GShift=="ALL"){ $shft=" ";}else{$shft=" AND (shift LIKE '$GShift' OR shift2 LIKE '$GShift') ";}
+        //if($GShift1=="ALL"){ $shft1=" ";}else{$shft1=" AND shift2 LIKE '$GShift1' ";}
+        if($Subdept!=""){ $subdpt=" AND subdept='$Subdept' "; }else{$subdpt=" ";}
+	    $qry1=mysql_query("SELECT * FROM tbl_aftersales $Where $shft $subdpt ORDER BY id ASC");
+			while($row1=mysql_fetch_array($qry1)){
+		 ?>
+          <tr bgcolor="<?php echo $bgcolor; ?>">
+            <td align="center"><?php echo $no; ?></td>
+            <td align="center"><?php echo $row1['tgl_buat'];?></td>
+            <td align="center"><?php echo $row1['nokk'];?></td>
+            <td><?php echo $row1['langganan'];?></td>
+            <td align="center"><?php echo $row1['po'];?></td>
+            <td align="center"><?php echo $row1['no_order'];?></td>
+            <td align="center" valign="top"><?php echo $row1['no_hanger'];?></td>
+            <td><?php echo $row1['jenis_kain'];?></td>
+            <td align="center"><?php echo $row1['lebar']."x".$row1['gramasi'];?></td>
+            <td align="center"><?php echo $row1['lot'];?></td>
+            <td align="center"><?php echo $row1['warna'];?></td>
+            <td align="right"><?php echo $row1['qty_kirim'];?></td>
+            <td align="right"><?php echo $row1['qty_claim'];?></td>
+            <td align="center"><?php echo $row1['t_jawab'];?></td>
+            <td><?php echo $row1['masalah'];?></td>
+            <td><?php echo $row1['penyebab'];?></td>
+            <td><?php echo $row1['personil'];?></td>
+            <td><?php if($row1['shift2']!=""){echo $row1['shift'].",".$row1['shift2'];}else{echo $row1['shift'];}?></td>
+            <td><?php echo $row1['ket'];?></td>
+          </tr>
+          <?php	$no++;  } ?>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_del" tabindex="-1" >
+  <div class="modal-dialog modal-sm" >
+    <div class="modal-content" style="margin-top:100px;">
+      <div class="modal-header">
+        <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" style="text-align:center;">Are you sure to delete all data ?</h4>
+      </div>
+
+      <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+        <a href="#" class="btn btn-danger" id="delete_link">Delete</a>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>	
+<script type="text/javascript">
+    function confirm_delete(delete_url)
+    {
+      $('#modal_del').modal('show', {backdrop: 'static'});
+      document.getElementById('delete_link').setAttribute('href' , delete_url);
+    }
+</script>	
+<script>
+		$(document).ready(function() {
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Cetak Random</title>
+<style type="text/css">
+#container {
+    height: 300px; 
+    min-width: 310px; 
+    max-width: 500px;
+    margin: 0 auto;
+}
+	</style>
+</head>
+<body>
+<?php
+$Awal	= isset($_POST['awal']) ? $_POST['awal'] : '';
+$Akhir	= isset($_POST['akhir']) ? $_POST['akhir'] : '';
+?>
+<div class="row">
+<div class="col-md-12">
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title"> Filter Cetak Random</h3>
+        <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1">
+        <div class="box-body">
+        <div class="form-group">
+            <div class="col-sm-3">
+                <div class="input-group date">
+                    <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                    <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" autocomplete="off"/>
+                </div>
+            </div>
+            <!-- /.input group -->
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <div class="input-group date">
+                    <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                    <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir;  ?>" autocomplete="off"/>
+                </div>
+            </div>
+            <!-- /.input group -->
+        </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-block btn-social btn-linkedin btn-sm" name="search" style="width: 60%">Search <i class="fa fa-search"></i></button>
+            </div>
+            <?php if($Awal!=""){?>
+            <a href="pages/cetak/cetak_randomnew.php?awal=<?php echo $_POST[awal]; ?>&akhir=<?php echo $_POST[akhir]; ?>" target="_blank" class="btn btn-danger pull-right">Cetak</a>
+            <?php }?>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</body>
+</html>

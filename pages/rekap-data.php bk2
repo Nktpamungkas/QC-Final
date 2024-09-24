@@ -1,0 +1,302 @@
+<?PHP
+error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+session_start();
+include"koneksi.php";
+
+?>
+<?php
+$Awal	= isset($_POST['awal']) ? $_POST['awal'] : '';
+$Akhir	= isset($_POST['akhir']) ? $_POST['akhir'] : '';
+$Order		= isset($_POST['no_order']) ? $_POST['no_order'] : '';
+$PO			= isset($_POST['no_po']) ? $_POST['no_po'] : '';
+$Item		= isset($_POST['item']) ? $_POST['item'] : '';
+$Warna		= isset($_POST['warna']) ? $_POST['warna'] : '';
+$Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
+$Delay = isset($_POST['delay']) ? $_POST['delay'] : '';
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+</head>
+<body>
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">Filter Rekap Data Kartu Kerja</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form method="post" enctype="multipart/form-data" name="form1" class="form-horizontal" id="form1">
+    <div class="box-body">
+    <div class="form-group">
+        <div class="col-sm-2">
+          <div class="input-group date">
+            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+            <input name="awal" type="text" class="form-control pull-right" id="datepicker" placeholder="Tanggal Awal" value="<?php echo $Awal; ?>" autocomplete="off"/>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="input-group date">
+            <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+            <input name="akhir" type="text" class="form-control pull-right" id="datepicker1" placeholder="Tanggal Akhir" value="<?php echo $Akhir;  ?>" autocomplete="off"/>
+          </div>
+        </div>
+        <!-- /.input group -->
+      </div>
+      <!--<div class="form-group">
+		  <label for="delay" class="col-sm-0 control-label"></label>		  
+        <div class="col-sm-3">
+        <input type="checkbox" name="delay" id="delay" value="1" <?php  if($Delay=="1"){ echo "checked";} ?>>  
+        <label> Delay > 3 Hari</label>
+        </div>		  	
+		  </div>-->
+      <div class="form-group">
+        <div class="col-sm-2">
+             <input name="no_order" type="text" class="form-control" id="no_order" placeholder="No Order" value="<?php echo $Order; ?>" />
+		</div>
+		<div class="col-sm-2">
+		<input name="no_po" type="text" class="form-control" id="no_po" placeholder="No PO" value="<?php echo $PO; ?>" />
+		</div>
+		<div class="col-sm-2">
+		<input name="item" type="text" class="form-control" id="item" placeholder="Hanger" value="<?php echo $Item; ?>" />
+		</div>
+		<div class="col-sm-2">
+		<input name="warna" type="text" class="form-control" id="warna" placeholder="Warna" value="<?php echo $Warna; ?>" />
+        </div>
+		<div class="col-sm-2">
+		<input name="langganan" type="text" class="form-control" id="langganan" placeholder="Pelanggan" value="<?php echo $Langganan; ?>" />
+        </div>  
+        <!-- /.input group -->
+      </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-success " name="cari" ><i class="fa fa-search"></i> Cari Data</button>
+      </div>
+    </div>
+    <!-- /.box-footer -->
+
+</div>
+</form>
+	</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Data Kartu Kerja</h3><br>
+        <b>No Order: <?php echo $_POST[no_order]; ?>
+		<a href="pages/cetak/rekap-data.php?order=<?php echo $Order; ?>&po=<?php echo $PO; ?>&item=<?php echo $Item; ?>&warna=<?php echo $Warna; ?>&buyer=<?php echo $Langganan; ?>" target="_blank"><span class="btn btn-primary pull-right"><i class="fa fa-file-pdf-o"></i> Cetak</span></a>
+      </div>
+<div class="box-body">
+<table id="example3" class="table table-bordered table-hover table-striped display nowrap" width="100%">
+<thead class="bg-red">
+   <tr>
+      <th width="24" rowspan="2"><div align="center">No</div></th>
+      <th width="200" rowspan="2"><div align="center">Aksi_detail</div></th>
+      <th width="78" rowspan="2"><div align="center">Nokk</div></th>
+      <th width="78" rowspan="2"><div align="center">Buyer</div></th>
+      <th width="78" rowspan="2"><div align="center">Order</div></th>
+      <th width="78" rowspan="2"><div align="center">PO</div></th>
+      <th width="78" rowspan="2"><div align="center">Qty Order</div></th>
+      <th width="88" rowspan="2"><div align="center">Jml Bruto</div></th>
+      <th width="111" rowspan="2"><div align="center">Hanger</div></th>
+      <th width="142" rowspan="2"><div align="center">Item</div></th>
+      <th width="142" rowspan="2"><div align="center">No Warna</div></th>
+      <th width="142" rowspan="2"><div align="center">Warna</div></th>
+      <th width="155" rowspan="2"><div align="center">Lot</div></th>
+      <th width="155" rowspan="2"><div align="center">L</div></th>
+      <th width="155" rowspan="2"><div align="center">Grms</div></th>
+      <th width="155" rowspan="2"><div align="center">Tgl Fin</div></th>
+      <th width="80" rowspan="2"><div align="center">Tgl Insp</div></th>
+      <th width="94" rowspan="2"><div align="center">Tgl Pack</div></th>
+      <th width="70" rowspan="2"><div align="center">Tgl Msk</div></th>
+      <th width="70" rowspan="2"><div align="center">Roll</div></th>
+      <th width="60" rowspan="2"><div align="center">Netto</div></th>
+      <th width="102" rowspan="2"><div align="center">Panjang</div></th>
+      <th width="70" rowspan="2"><div align="center">Sisa</div></th>
+      <th colspan="2"><div align="center"> Fin</div></th>
+      <th colspan="2"><div align="center"> Ins</div></th>
+      <th colspan="3"><div align="center"> Penyusutan</div></th>
+      <th width="70" rowspan="2"><div align="center">Cek Warna</div></th>
+      <th width="70" rowspan="2"><div align="center">Masalah</div></th>
+      <th colspan="2"><div align="center">Extra</div></th>
+      <th width="70" rowspan="2"><div align="center">Ket</div></th>
+      </tr>
+   <tr>
+     <th width="70"><div align="center">L</div></th>
+     <th width="70"><div align="center">Grms</div></th>
+     <th width="70"><div align="center">L</div></th>
+     <th width="70"><div align="center">Grms</div></th>
+     <th width="70">P</th>
+     <th width="70"><div align="center">L</div></th>
+     <th width="70"><div align="center">S</div></th>
+     <th width="70"><div align="center">KG</div></th>
+     <th width="70"><div align="center">Panjang</div></th>
+     </tr>
+</thead>
+<tbody>
+  <?php
+  $no=1;
+  if($Awal!=""){ $Where =" WHERE DATE_FORMAT( tgl_masuk, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' "; }
+  if($Order!=""){ $Where =" WHERE no_order LIKE '$Order%' "; }
+  if($Warna!=""){ $Where =" WHERE warna LIKE '$Warna%' "; }
+  if($Langganan!=""){ $Where =" WHERE pelanggan LIKE '$Langganan%' "; }
+  if($PO!=""){ $Where =" WHERE no_po LIKE '$PO%' "; }
+  if($Item!=""){ $Where =" WHERE no_hanger LIKE '$Item%' "; }
+  if($Order!="" AND $Item!=""){ $Where =" WHERE no_order LIKE '$Order%' AND no_hanger LIKE '$Hanger%' "; }
+  //if($Delay=="1"){ $Where =" WHERE DATEDIFF('2017-06-25', '2017-06-15')>3 "; }
+  if($Awal=="" and $Order=="" and $Item=="" and $PO=="" and $Warna=="" and $Langganan==""){ $Where =" WHERE DATE_FORMAT( tgl_masuk, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' "; }
+  $sql=mysql_query("SELECT * FROM tbl_qcf $Where");
+  //if($Awal!="" or $Order!="" or $Warna!="" or $Item!="" or $PO!="" or $Langganan!=""){
+  	//$sql=mysql_query("SELECT * FROM tbl_qcf WHERE DATE_FORMAT( tgl_masuk, '%Y-%m-%d' ) BETWEEN '$Awal' AND '$Akhir' AND no_order LIKE '$Order%' AND no_po LIKE '$PO%' AND no_hanger LIKE '$Item%' AND warna LIKE '$Warna%' AND pelanggan LIKE '$Langganan%' ");
+	//}else if($Awal=="" or $Order!="" or $Warna!="" or $Item!="" or $PO!="" or $Langganan!=""){
+  	//$sql=mysql_query("SELECT * FROM tbl_qcf WHERE no_order LIKE '$Order%' AND no_po LIKE '$PO%' AND no_hanger LIKE '$Item%' AND warna LIKE '$Warna%' AND pelanggan LIKE '$Langganan%' ");
+	//}else{
+		//$sql=mysql_query("SELECT * FROM tbl_qcf WHERE no_order LIKE '$Order' AND no_po LIKE '$PO' AND no_hanger LIKE '$Item' AND warna LIKE '$Warna' AND pelanggan LIKE '$Langganan' ");
+	//}
+	$col=0;
+	while($r=mysql_fetch_array($sql)){
+    $bgcolor = ($col++ & 1) ? 'gainsboro' : 'antiquewhite';
+    if($r['tglcwarna']==NULL){
+    $tgl_warna= new DateTime($r['tgl_pack']);}else{
+      $tgl_warna= new DateTime($r['tglcwarna']);
+    }
+    $tgl_pack= new DateTime($r['tgl_pack']);
+    $delay = $tgl_warna->diff($tgl_pack);
+	?>
+   <tr bgcolor="<?php echo $bgcolor; ?>">
+     <td align="center"><?php echo $no; ?></td>
+     <td>
+     <div class="btn-group">
+     <a href="#" id="<?php echo $r['id'] ?>" class="btn btn-info btn-sm data_edit <?php if($_SESSION['akses']=='biasa'){ echo "disabled"; } ?>"><i class="fa fa-edit"></i> </a>
+     <a href="#" class="btn btn-danger btn-sm <?php if($_SESSION['akses']=='biasa'){ echo "disabled"; } ?>" onclick="confirm_delete('./HapusData-<?php echo $r[id] ?>');"><i class="fa fa-trash"></i> </a></div>
+     </td>
+     <td align="center"><?php echo $r[nokk];?></br>
+      <?php if($tgl_pack>$tgl_warna){ ?>
+        <span class='badge bg-green'><?php echo "OK";?></span>
+      <?php }elseif($delay->d>=3){ ?>
+        <span class='badge bg-red blink_me'><?php echo "Delay "; echo $delay->d; echo " Hari";?></span>
+      <?php }else{?>
+        <span class='badge bg-green'><?php echo "OK";?></span>
+      <?php } ?>
+     </td>
+     <td><?php echo $r[pelanggan];?></td>
+     <td><?php echo $r[no_order];?></td>
+     <td><?php echo $r[no_po];?></td>
+     <td align="right"><?php echo $r[berat_order]."x".$r[panjang_order]." ".$r[satuan_order];?></td>
+     <td align="center"><?php echo $r[rol_bruto]."x".$r[berat_bruto];?></td>
+     <td align="center"><?php echo $r[no_hanger];?></td>
+     <td align="center"><?php echo $r[no_item];?></td>
+     <td align="center"><?php echo $r[no_warna];?></td>
+     <td align="center"><?php echo $r[warna];?></td>
+     <td align="center"><?php echo $r[lot];?></td>
+     <td align="center"><?php echo $r[lebar];?></td>
+     <td align="center"><?php echo $r[gramasi];?></td>
+     <td align="center"><?php echo $r[tgl_fin];?></td>
+     <td align="center"><?php echo $r[tgl_ins];?></td>
+     <td align="center"><?php echo $r[tgl_pack];?></td>
+     <td align="center"><?php echo $r[tgl_masuk];?></td>
+     <td align="right"><?php echo $r[rol];?></td>
+     <td align="right"><?php echo $r[netto];?></td>
+     <td align="center"><?php echo $r[panjang]." ".$r[satuan];?></td>
+     <td align="right"><?php echo $r[sisa];?></td>
+     <td align="center"><?php echo $r[lebar_fin];?></td>
+     <td align="center"><?php echo $r[gramasi_fin];?></td>
+     <td align="center"><?php echo $r[lebar_ins];?></td>
+     <td align="center"><?php echo $r[gramasi_ins];?></td>
+     <td align="center"><?php echo $r[susut_p];?></td>
+     <td align="center"><?php echo $r[susut_l];?></td>
+     <td align="center"><?php echo $r[susut_s];?></td>
+     <td><?php echo $r[cek_warna];?></td>
+     <td align="left"><?php echo $r[masalah];?></td>
+     <td align="right"><?php echo $r[berat_extra];?></td>
+     <td align="right"><?php echo $r[panjang_extra];?></td>
+     <td><?php echo $r[ket];?></td>
+     </tr>
+   <?php $no++; } ?>
+   </tbody>
+   <tfoot class="bg-red">
+   <tr>
+     <td align="center"><div align="center">No</div></td>
+     <td align="center"><div align="center">Aksi_detail</div></td>
+     <td align="center"><div align="center">Nokk</div></td>
+     <td align="center"><div align="center">Buyer</div></td>
+     <td align="center"><div align="center">Order</div></td>
+     <td align="center"><div align="center">PO</div></td>
+     <td align="center"><div align="center">Qty Order</div></td>
+     <td align="center"><div align="center">Jml Bruto</div></td>
+     <td><div align="center">Hanger</div></td>
+     <td align="right"><div align="center">Item</div></td>
+     <td align="right"><div align="center">No Warna</div></td>
+     <td align="right"><div align="center">Warna</div></td>
+     <td align="right"><div align="center">Lot</div></td>
+     <td align="right"><div align="center">L</div></td>
+     <td align="right"><div align="center">Grms</div></td>
+     <td align="right"><div align="center">Tgl Fin</div></td>
+     <td align="right"><div align="center">Tgl Insp</div></td>
+     <td align="right"><div align="center">Tgl Pack</div></td>
+     <td align="right"><div align="center">Tgl Msk</div></td>
+     <td align="right"><div align="center">Roll</div></td>
+     <td align="right"><div align="center">Netto</div></td>
+     <td align="right"><div align="center">Panjang</div></td>
+     <td align="right"><div align="center">Sisa</div></td>
+     <th><div align="center">L</div></th>
+     <th><div align="center">Grms</div></th>
+     <th><div align="center">L</div></th>
+     <th><div align="center">Grms</div></th>
+     <th>P</th>
+     <th><div align="center">L</div></th>
+     <th><div align="center">S</div></th>
+     <td align="right"><div align="center">Cek Warna</div></td>
+     <td align="right"><div align="center">Masalah</div></td>
+     <th><div align="center">KG</div></th>
+     <th><div align="center">Panjang</div></th>
+	   <td align="right"><div align="center">Ket</div></td>
+     </tr>
+   </tfoot>
+</table>
+</form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="Detail" class="modal fade modal-rotate-from-bottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+  <!-- Modal Popup untuk delete-->
+<div class="modal fade" id="modal_delete" tabindex="-1" >
+    <div class="modal-dialog modal-sm" >
+      <div class="modal-content" style="margin-top:100px;">
+        <div class="modal-header">
+          <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
+        </div>
+
+        <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+          <a href="#" class="btn btn-danger" id="delete_link">Delete</a>
+          <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Popup untuk Edit-->
+  <div id="DataEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    function confirm_delete(delete_url)
+    {
+      $('#modal_delete').modal('show', {backdrop: 'static'});
+      document.getElementById('delete_link').setAttribute('href' , delete_url);
+    }
+
+</script>
+</html>

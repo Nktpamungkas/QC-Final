@@ -497,7 +497,7 @@
           <?php } ?>
         </div>
         <div class="box-body">
-          <table class="table table-bordered table-hover table-striped nowrap" id="example1" style="width:100%">
+          <table class="table table-bordered table-hover table-striped nowrap" id="example8" style="width:100%">
             <thead class="bg-green">
               <tr>
                 <th>
