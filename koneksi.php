@@ -1,11 +1,11 @@
 <?php
 date_default_timezone_set('Asia/Jakarta');
-$host="10.0.0.174";
-$username="ditprogram";
-$password="Xou@RUnivV!6";
-$db_name="TM";
-$connInfo = array( "Database"=>$db_name, "UID"=>$username, "PWD"=>$password);
-$conn     = sqlsrv_connect( $host, $connInfo);
+// $host="10.0.0.174";
+// $username="ditprogram";
+// $password="Xou@RUnivV!6";
+// $db_name="TM";
+// $connInfo = array( "Database"=>$db_name, "UID"=>$username, "PWD"=>$password);
+// $conn     = sqlsrv_connect( $host, $connInfo);
 
 $hostmysqli = "10.0.0.10";  //replace your servername
 $usernamemysqli = "dit";   //replace your username
