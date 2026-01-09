@@ -173,21 +173,21 @@ ON a.id_stok=b.id WHERE a.nokk='$nokk' AND a.transtatus IS NULL ORDER BY a.id DE
 $rS=mysqli_fetch_array($qryS);
 
 //Data belum disimpan di database mysqli
-$sql=sqlsrv_query($conn,"SELECT processcontrolJO.SODID,processcontrol.productid,salesorders.customerid,joborders.documentno, 
-       salesorders.buyerid,processcontrolbatches.lotno,hangerno,color,description,CONVERT(VARCHAR(20),TM.dbo.SODetails.[RequiredDate],120) AS RequiredDate,Capacity
-          FROM Joborders 
-          INNER JOIN processcontrolJO on processcontrolJO.joid = Joborders.id 
-          INNER JOIN salesorders on soid= salesorders.id
-		  INNER JOIN SODetails on SODetails.id= processcontrolJO.SODID
-          INNER JOIN processcontrol on processcontrolJO.pcid = processcontrol.id 
-          INNER JOIN processcontrolbatches on processcontrolbatches.pcid = processcontrol.id 
-          INNER JOIN productmaster on productmaster.id= processcontrol.productid 
-          WHERE processcontrolbatches.documentno='$nokk'");
-		  $r=sqlsrv_fetch_array($sql);
-$sql1=sqlsrv_query($conn,"select partnername from partners where id='$r[customerid]'");	
-$r1=sqlsrv_fetch_array($sql1);
-$sql2=sqlsrv_query($conn,"select partnername from partners where id='$r[buyerid]'");	
-$r2=sqlsrv_fetch_array($sql2);
+// $sql=sqlsrv_query($conn,"SELECT processcontrolJO.SODID,processcontrol.productid,salesorders.customerid,joborders.documentno, 
+//        salesorders.buyerid,processcontrolbatches.lotno,hangerno,color,description,CONVERT(VARCHAR(20),TM.dbo.SODetails.[RequiredDate],120) AS RequiredDate,Capacity
+//           FROM Joborders 
+//           INNER JOIN processcontrolJO on processcontrolJO.joid = Joborders.id 
+//           INNER JOIN salesorders on soid= salesorders.id
+// 		  INNER JOIN SODetails on SODetails.id= processcontrolJO.SODID
+//           INNER JOIN processcontrol on processcontrolJO.pcid = processcontrol.id 
+//           INNER JOIN processcontrolbatches on processcontrolbatches.pcid = processcontrol.id 
+//           INNER JOIN productmaster on productmaster.id= processcontrol.productid 
+//           WHERE processcontrolbatches.documentno='$nokk'");
+// 		  $r=sqlsrv_fetch_array($sql);
+// $sql1=sqlsrv_query($conn,"select partnername from partners where id='$r[customerid]'");	
+// $r1=sqlsrv_fetch_array($sql1);
+// $sql2=sqlsrv_query($conn,"select partnername from partners where id='$r[buyerid]'");	
+// $r2=sqlsrv_fetch_array($sql2);
 $sqlp=mysqli_query($con,"SELECT
 	no_lot,
 	no_mc,

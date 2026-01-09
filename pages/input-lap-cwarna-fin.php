@@ -172,66 +172,66 @@ $rfin=mysqli_fetch_array($qryfin);
 $cekfin=mysqli_num_rows($qryfin);
 
 //Data belum disimpan di database mysqli
-$sql=sqlsrv_query($conn,"select top 1
-			x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight, 
-			pm.Weight as Gramasi,pm.CuttableWidth as Lebar, pm.Description as description, pm.colorno, pm.color,
-      dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
-		from
-			(
-			select
-				so.SONumber, convert(char(10),so.SODate,103) as TglSO, so.customerid, so.buyerid, so.PODate,
-				sod.ID as SODID, sod.ProductID, sod.Quantity, sod.UnitID, sod.WeightUnitID, 
-				soda.RefNo as DetailRefNo, jo.documentno as documentno,soda.PONumber,
-				pcb.ID as PCBID, pcb.Gross as Bruto,soda.HangerNo,pp.ProductCode,
-				pcb.Quantity as BatchQuantity, pcb.UnitID as BatchUnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-				pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID,sod.RequiredDate,
-				pcb.Capacity
+// $sql=sqlsrv_query($conn,"select top 1
+// 			x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight, 
+// 			pm.Weight as Gramasi,pm.CuttableWidth as Lebar, pm.Description as description, pm.colorno, pm.color,
+//       dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
+// 		from
+// 			(
+// 			select
+// 				so.SONumber, convert(char(10),so.SODate,103) as TglSO, so.customerid, so.buyerid, so.PODate,
+// 				sod.ID as SODID, sod.ProductID, sod.Quantity, sod.UnitID, sod.WeightUnitID, 
+// 				soda.RefNo as DetailRefNo, jo.documentno as documentno,soda.PONumber,
+// 				pcb.ID as PCBID, pcb.Gross as Bruto,soda.HangerNo,pp.ProductCode,
+// 				pcb.Quantity as BatchQuantity, pcb.UnitID as BatchUnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
+// 				pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID,sod.RequiredDate,
+// 				pcb.Capacity
 				
-			from
-				SalesOrders so inner join
-				JobOrders jo on jo.SOID=so.ID inner join
-				SODetails sod on so.ID = sod.SOID inner join
-				SODetailsAdditional soda on sod.ID = soda.SODID left join
-				ProductPartner pp on pp.productid= sod.productid left join
-				ProcessControlJO pcjo on sod.ID = pcjo.SODID left join
-				ProcessControlBatches pcb on pcjo.PCID = pcb.PCID left join
-				ProcessControlBatchesLastPosition pcblp on pcb.ID = pcblp.PCBID left join
-				ProcessFlowProcessNo pfpn on pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID and pfpn.MachineType = 24 left join
-				ProcessFlowDetailsNote pfdn on pfpn.EntryType = pfdn.EntryType and pfpn.ID = pfdn.ParentID
-			where pcb.DocumentNo='$nokk' and pcb.Gross<>'0'
-				group by
-					so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
-					sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
-					soda.RefNo,pcb.DocumentNo,soda.HangerNo,pp.ProductCode,
-					pcb.ID, pcb.DocumentNo, pcb.Gross,soda.PONumber,
-					pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-					pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID,sod.RequiredDate,pcb.Capacity
-				) x inner join
-				ProductMaster pm on x.ProductID = pm.ID left join
-				Departments dep on x.DepartmentID  = dep.ID left join
-				Departments pdep on dep.RootID = pdep.ID left join				
-				Partners cust on x.CustomerID = cust.ID left join
-				Partners buy on x.BuyerID = buy.ID left join
-				UnitDescription udq on x.UnitID = udq.ID left join
-				UnitDescription udw on x.WeightUnitID = udw.ID left join
-				UnitDescription udb on x.BatchUnitID = udb.ID
-			order by
-				x.SODID, x.PCBID");	
-/*$sql=mssql_query("SELECT processcontrolJO.SODID,processcontrol.productid,salesorders.customerid,salesorders.PONumber,joborders.documentno, 
-       salesorders.buyerid,processcontrolbatches.lotno,hangerno,color,colorno,description,RequiredDate,Capacity
-          FROM Joborders 
-          INNER JOIN processcontrolJO on processcontrolJO.joid = Joborders.id 
-          INNER JOIN salesorders on soid= salesorders.id
-		  INNER JOIN SODetails on SODetails.id= processcontrolJO.SODID
-          INNER JOIN processcontrol on processcontrolJO.pcid = processcontrol.id 
-          INNER JOIN processcontrolbatches on processcontrolbatches.pcid = processcontrol.id 
-          INNER JOIN productmaster on productmaster.id= processcontrol.productid 
-          WHERE processcontrolbatches.documentno='$nokk'");*/
-		  $r=sqlsrv_fetch_array($sql);
-$sql1=sqlsrv_query($conn,"select partnername from partners where id='$r[customerid]'");	
-$r1=sqlsrv_fetch_array($sql1);
-$sql2=sqlsrv_query($conn,"select partnername from partners where id='$r[buyerid]'");	
-$r2=sqlsrv_fetch_array($sql2);
+// 			from
+// 				SalesOrders so inner join
+// 				JobOrders jo on jo.SOID=so.ID inner join
+// 				SODetails sod on so.ID = sod.SOID inner join
+// 				SODetailsAdditional soda on sod.ID = soda.SODID left join
+// 				ProductPartner pp on pp.productid= sod.productid left join
+// 				ProcessControlJO pcjo on sod.ID = pcjo.SODID left join
+// 				ProcessControlBatches pcb on pcjo.PCID = pcb.PCID left join
+// 				ProcessControlBatchesLastPosition pcblp on pcb.ID = pcblp.PCBID left join
+// 				ProcessFlowProcessNo pfpn on pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID and pfpn.MachineType = 24 left join
+// 				ProcessFlowDetailsNote pfdn on pfpn.EntryType = pfdn.EntryType and pfpn.ID = pfdn.ParentID
+// 			where pcb.DocumentNo='$nokk' and pcb.Gross<>'0'
+// 				group by
+// 					so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
+// 					sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
+// 					soda.RefNo,pcb.DocumentNo,soda.HangerNo,pp.ProductCode,
+// 					pcb.ID, pcb.DocumentNo, pcb.Gross,soda.PONumber,
+// 					pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
+// 					pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID,sod.RequiredDate,pcb.Capacity
+// 				) x inner join
+// 				ProductMaster pm on x.ProductID = pm.ID left join
+// 				Departments dep on x.DepartmentID  = dep.ID left join
+// 				Departments pdep on dep.RootID = pdep.ID left join				
+// 				Partners cust on x.CustomerID = cust.ID left join
+// 				Partners buy on x.BuyerID = buy.ID left join
+// 				UnitDescription udq on x.UnitID = udq.ID left join
+// 				UnitDescription udw on x.WeightUnitID = udw.ID left join
+// 				UnitDescription udb on x.BatchUnitID = udb.ID
+// 			order by
+// 				x.SODID, x.PCBID");	
+// /*$sql=mssql_query("SELECT processcontrolJO.SODID,processcontrol.productid,salesorders.customerid,salesorders.PONumber,joborders.documentno, 
+//        salesorders.buyerid,processcontrolbatches.lotno,hangerno,color,colorno,description,RequiredDate,Capacity
+//           FROM Joborders 
+//           INNER JOIN processcontrolJO on processcontrolJO.joid = Joborders.id 
+//           INNER JOIN salesorders on soid= salesorders.id
+// 		  INNER JOIN SODetails on SODetails.id= processcontrolJO.SODID
+//           INNER JOIN processcontrol on processcontrolJO.pcid = processcontrol.id 
+//           INNER JOIN processcontrolbatches on processcontrolbatches.pcid = processcontrol.id 
+//           INNER JOIN productmaster on productmaster.id= processcontrol.productid 
+//           WHERE processcontrolbatches.documentno='$nokk'");*/
+// 		  $r=sqlsrv_fetch_array($sql);
+// $sql1=sqlsrv_query($conn,"select partnername from partners where id='$r[customerid]'");	
+// $r1=sqlsrv_fetch_array($sql1);
+// $sql2=sqlsrv_query($conn,"select partnername from partners where id='$r[buyerid]'");	
+// $r2=sqlsrv_fetch_array($sql2);
 ?>
 <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
 <div class="box box-info">
